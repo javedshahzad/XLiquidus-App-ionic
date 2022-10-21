@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "javed-app",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
