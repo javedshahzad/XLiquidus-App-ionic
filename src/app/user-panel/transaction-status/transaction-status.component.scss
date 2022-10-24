@@ -1,0 +1,15 @@
+.background-transaction-status{
+ --background: url('../../../assets/images/email-confirm-background.png');
+ --background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 1000px;
+  width: 100%;
+  position: absolute;
+}
+.m-t-20p{
+    margin-top: 20%;
+}
+.spinnerstyle{
+    zoom: 4.5;
+    color: aliceblue;
+}

@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar class="background-header">
+    <ion-buttons slot="start" (click)="_appServices?.goBack()">
+      <ion-icon name="chevron-back" color="light" class="size-32"></ion-icon>
+    </ion-buttons>
+    <ion-title class="size-16 font-weight-800 text-white futuraFontsBold letter-spacing">PROFILE & SETTINGS</ion-title> 
+  </ion-toolbar>
+</ion-header>
+<ion-progress-bar type="indeterminate" *ngIf="isProgressBar"></ion-progress-bar>
+<ion-content class="primary-second-color-background">
+  <ion-list lines="none" class="no-background">
+    <ion-item class="no-background"> 
+      <ion-title color="light" class="joshDemi size-23 text-white font-weight-600 p-0 ion-text-center">Limits</ion-title>
+    </ion-item>
+    <ion-item class="no-background border-bottom-Blue">
+      <p class="jostBook text-white size-15 font-weight-400 ion-text-center">
+        XLiquidus Limits are in place to with the purpose of limiting price risk. 
+      </p>
+    </ion-item>
+  </ion-list>
+  <ion-list lines="none" class="no-background limit" *ngIf="dataLoad" > 
+    <ion-item class="no-background">
+      <h4 class="text-white size-18 font-weight-600 p-l-10 jostDemi">User Transactions</h4>
+      <div slot="end" class="text-white size-15 p-l-10 jostBook">
+        <p class="m-b-0"> ${{LimitData?.default.daily.amount}}/day</p>
+        <p class="m-t-0 m-b-0"> ${{LimitData?.default.monthly.amount}}/weekly</p>
+        <p class="m-t-0"> ${{LimitData?.default.weekly.amount}}/monthly</p>  
+      </div>
+    </ion-item>
+    <ion-item class="no-background">
+      <h4 class="text-white size-18 font-weight-600 p-l-10 jostDemi">ACH Transactions</h4>
+      <div slot="end" class="text-white size-15 p-l-10 jostBook">
+        <p class="m-b-0"> ${{LimitData?.ach.daily.amount}}/day</p>
+        <p class="m-t-0 m-b-0"> ${{LimitData?.ach.monthly.amount}}/weekly</p>
+        <p class="m-t-0"> ${{LimitData?.ach.weekly.amount}}/monthly</p>  
+      </div>
+    </ion-item>
+    <ion-item class="no-background removeborder">
+      <h4 class="text-white  size-18 font-weight-600 p-l-10 jostDemi">Crypto Transactions</h4>
+      </ion-item>
+    <ion-item class="no-background removeborder color-tertiary size-18 p-l-10 jostDemi">
+      <h4 class="m-b-0 size-18 font-weight-600 p-l-10 jostDemi">Receive Crypto</h4>
+      <ion-button slot="end" fill="clear" class="p-0-end m-0">
+        <ion-toggle color="success"></ion-toggle>
+      </ion-button>
+    </ion-item>
+    <ion-item class="no-background color-tertiary size-18 p-l-10 jostDemi">
+      <h4 class="m-b-0 size-18 font-weight-600 p-l-10 jostDemi">Send Crypto</h4>
+      <ion-button slot="end" fill="clear" class="p-0-end m-0">
+        <ion-toggle color="success"></ion-toggle>  
+      </ion-button>
+    </ion-item>
+    </ion-list>
+    <ion-row *ngIf="dataLoad">
+      <ion-col class="ion-text-center">
+        <h4 class="color-primary font-weight-600 size-18 p-l-10 jostDemi">For higher limit send a request to help center</h4>
+      </ion-col>
+    </ion-row>
+  </ion-content>

@@ -1,0 +1,28 @@
+.background-liquidate {
+  background: url("../../../assets/images/signu1-background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: calc(100% - 400px);
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  z-index: -1;
+}
+
+.imgcss {
+  background: url("../../../assets/images/XL_Wallet_Card.png");
+  transform: rotate(-4.42deg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 46vw;
+  margin: 30px;
+  border: 1px solid #fff;
+  border-radius: 15px;
+}
+
+.wallet-card-bottom-content {
+  position: absolute;
+  bottom: 10%;
+  left: 10%;
+  width: 100%;
+}

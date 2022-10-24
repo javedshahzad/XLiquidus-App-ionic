@@ -1,0 +1,19 @@
+.background-maintenance {
+  background: url("../../../assets/images/signu1-background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 150px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  z-index: -1;
+}
+
+.gridBG {
+  background: url("../../../assets/images/maintenance_bg.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  // z-index: -1;
+  height: 100%;
+  margin: 15px;
+}

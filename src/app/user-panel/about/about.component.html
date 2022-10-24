@@ -1,0 +1,79 @@
+
+<!-- <app-user-panel-header></app-user-panel-header> -->
+<ion-header>
+  <ion-toolbar class="background-header">
+    <ion-buttons slot="start" (click)="_appservices?.goBack()">
+      <ion-icon name="chevron-back" color="light" class="size-32"></ion-icon>
+    </ion-buttons>
+    <ion-title class="size-16 font-weight-800 text-white futuraFontsBold letter-spacing">PROFILE & SETTINGS</ion-title> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="primary-second-color-background">
+   <ion-list lines="none" class="no-background">
+    <ion-item-divider class="height-30 removeborder no-background">
+      <!-- <ion-button slot="start" fill="clear" class="p-0-srart m-0" (click)="backtomarktplace()">
+        <ion-icon name="chevron-back" class="color-tertiary-dark size-32"></ion-icon>
+      </ion-button> -->
+      <ion-title color="light" class="joshDemi m-t-20 size-23 font-weight-500 p-0 ion-text-center">About Me</ion-title>
+    </ion-item-divider>
+    </ion-list>
+  <form>
+  <ion-list lines="none" class="no-background m-l-10 m-r-10">
+    <ion-item class="no-background">
+      <ion-row class="w-100">
+        <ion-col size="12">
+          <ion-input class="size-32 color-tertiary ion-text-center font-weight-600 ion-float-left" readonly [value]="userDetail?.firstName" [(ngModel)]="name" [ngModelOptions]="{standalone: true}"></ion-input>
+        </ion-col>
+        <!-- <ion-col size="4">
+          <div class="overflow-hidden display-block"> 
+            <ion-icon name="pencil" class="size-32 color-tertiary font-weight-600 ion-float-right m-t-20"></ion-icon>
+          </div>
+        </ion-col> -->
+      </ion-row>
+    </ion-item>
+    <ion-item class="no-background">
+      <ion-row class="w-100">
+        <ion-col class="ion-text-center">
+          <h5 class="size-15 text-white font-weight-800 jostBook">Member Since: 
+            <span class="size-15 jostBook text-white font-weight-400" *ngIf="userDetail?.joinDate">{{userDetail?.joinDate | date: 'longDate'}}</span>
+            <span class="size-15 jostBook text-white font-weight-400" *ngIf="!userDetail?.joinDate">Not Available</span>
+          </h5>
+          <h5 class="size-15 text-white font-weight-800 jostHeavy">Status: <span class="size-15 jostBook text-white font-weight-400 ">{{userDetail?.identityVerificationProfileLevel}}</span></h5>
+        </ion-col>
+      </ion-row>
+      </ion-item>
+      <ion-item class="no-background">
+        <ion-row class="w-100">
+          <ion-col class="ion-text-center">
+            <ion-text class="ion-text-center display-block">
+              <ion-avatar class="background-success m-b-20  border-white m-l-a m-r-a">
+                <h3 class="text-white size-32 m-t-10 ion-text-center font-weight-500">{{((userDetail?.firstName)== '' ? userDetail?.preferredName : userDetail?.firstName)?.substring(0,1)}}</h3>
+              </ion-avatar>
+              <!-- <img src="assets/images/user-big.png" class="m-auto"> -->
+              <!-- <ion-button expand="block" fill="outline" size="large"
+              class="letter-spacing shadownot alredy-member no-border border-radius-8 height-30 w-50 m-auto ion-text-lowercase"><ion-text class="font-weigth-800 size-15 jostHeavy">
+                Upload Avatar
+              </ion-text>
+            </ion-button>  -->
+           </ion-text>
+          </ion-col>
+        </ion-row> 
+      </ion-item>
+        <ion-row>
+          <ion-col class="ion-text-center">
+            <div class="m-l-10 m-r-10 m-t-10">
+              <h4 class="m-t-15 m-b-15 size-18 font-weight-600 text-white display-block jostDemi">Preferred Language</h4>
+              <ion-select class="itemclass height-60 w-100" interface="action-sheet" [(ngModel)]="item" [ngModelOptions]="{standalone: true}">
+                <ion-select-option *ngFor="let item of languages" [value]="item">
+                  {{item}} 
+                 </ion-select-option>
+              </ion-select>
+             </div>
+          </ion-col>
+        </ion-row>
+        <ion-button expand="block" size="large" (click)="updateProfile()" class=" shadownot size-16 primary-color-background no-border border-radius-8 m-t-40p height-60 jostDemi letter-spacing ion-activatable ripple-parent box-shadow font-weight-600 m-l-10 m-r-10">UPDATE PROFILE<ion-spinner name="lines" class="validatespinner1" *ngIf="ShowSpinner"></ion-spinner></ion-button>
+  
+    </ion-list>
+    </form>
+</ion-content>

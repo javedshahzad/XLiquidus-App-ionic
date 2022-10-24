@@ -1,0 +1,106 @@
+<ion-content class="backgroundimage-login">
+
+  <ion-grid class="topContent m-t-20">
+    <ion-row class="justify-center">
+      <div class="p-t-20p ion-text-center">
+        <h1 class="size-48 welcome-color font-weight-600 jostDemi letter-spacing">WELCOME</h1>
+        <h5 class="size-48 welcome-color font-weight-400 jostBook m-t--10 display-block letter-spacing">BACK</h5>
+      </div>
+    </ion-row>
+    <ion-row class="p-t-10p p-h-25 ion-text-center memBtn">
+      <ion-button expand="block" size="large"
+        class="height-60 shadownot primary-color-background no-border border-radius-8 p-t-5p letter-spacing ion-activatable ripple-parent box-shadow"
+        (click)="Login(_B2C_config.B2CloginUrl)">
+        <h4 class="size-19 font-weight-600 joshDemi m-t-15 ">MEMBER LOGIN </h4>
+      </ion-button>
+    </ion-row>
+    <ion-row class="ordiv futuraFontsBook">
+      <ion-text class="size-22 orclass">- or -</ion-text>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="bottom-Content">
+    <div class="bottom-touch">
+      <ion-row>
+        <ion-col>
+          <div class="btn-grp p-8 bottom-0 w-100 left-0">
+            <ion-button expand="block" fill="outline" size="large"
+              class="joshDemi shadownot m-b-10 size-16 social-login no-border border-radius-8 height-60 ion-activatable ripple-parent"
+              (click)="Login(_B2C_config.GoogleloginUrl)">
+              <div class="iconCss">
+                <img src="assets/images/google.png">
+              </div>
+              <ion-text class="m-l-25 size-16">
+                LOG IN WITH GOOGLE
+              </ion-text>
+            </ion-button>
+
+            <ion-button expand="block" fill="outline" size="large"
+              class="joshDemi size-16 social-login no-border border-radius-8 height-60 ion-activatable ripple-parent"
+              (click)="Login(_B2C_config.MicrosoftloginUrl)">
+              <div class="iconCss">
+                <img src="assets/images/microsoft.png">
+              </div>
+              <ion-text class="m-l-50 size-16">LOG IN WITH MICROSOFT</ion-text>
+            </ion-button>
+
+            <ion-button expand="block" fill="outline" size="large"
+              class="joshDemi size-16 social-login no-border border-radius-8 height-60 ion-activatable ripple-parent"
+              (click)="Login(_B2C_config.AppleloginUrl)">
+              <div class="iconCss">
+                <img src="assets/images/Mac Client.png">
+              </div>
+              <ion-text class="m-l-10 size-16">LOG IN WITH APPLE</ion-text>
+            </ion-button>
+
+            <ion-row class="space-between">
+              <ion-button expand="block" fill="outline" size="large" fill="clear"
+                class="size-14 shadownot m-t-30 ion-text-inherit ion-float-left p-0-srart text-white futuraFontsMedium"
+                (click)="goToCreateAccount()">
+                Create an Account
+              </ion-button>
+              <ion-button expand="block" fill="outline" size="large" fill="clear"
+                class="size-14 shadownot m-t-30 ion-text-inherit ion-float-left p-0-srart text-white futuraFontsMedium"
+                (click)="gotoForgotPassword()">
+                Forgot Password?
+              </ion-button>
+            </ion-row>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+    <!-- <ion-row >
+      <ion-col>
+        <ion-toolbar class="general-pages-toolbar p-t-15p">
+         <div class="ion-text-center p-4">
+           <h1 class="size-48 welcome-color font-weight-600 jostDemi letter-spacing">WELCOME</h1>  
+           <h5 class="size-48 welcome-color font-weight-400 jostBook m-t--10 display-block letter-spacing">BACK</h5>
+          
+           <ion-button expand="block" size="large" class="size-20 font-weight-600 height-60 primary-color-background no-border border-radius-8 p-t-20p futuraFontsBold letter-spacing ion-activatable ripple-parent box-shadow" (click)="Login(_B2C_config.B2CloginUrl)">MEMBER LOGIN </ion-button>
+           <div class="ordiv futuraFontsBook"><ion-text class="size-22 orclass">- or -</ion-text></div>
+          </div>
+          </ion-toolbar>
+           <div class="btn-grp p-8 bottom-0 w-100 position-fixed left-0">
+            <ion-button expand="block" fill="outline" size="large" class="futuraFontsMedium m-b-10 size-16 social-login no-border border-radius-8 height-60 ion-activatable ripple-parent" (click)="Login(_B2C_config.GoogleloginUrl)" >
+              <div class="iconCss">
+                <img src="assets/images/google.png">
+              </div>
+              <ion-text class="m-l-25 size-16">
+                LOG IN WITH GOOGLE
+              </ion-text>
+            </ion-button>
+
+              <ion-button expand="block" fill="outline" size="large" class="futuraFontsMedium size-16 social-login no-border border-radius-8 height-60 ion-activatable ripple-parent" (click)="Login(_B2C_config.MicrosoftloginUrl)">
+                <div class="iconCss">
+                  <img src="assets/images/microsoft.png" >
+                </div>
+                  <ion-text class="m-l-50 size-16">LOG IN WITH MICROSOFT</ion-text>
+              </ion-button>
+              <ion-button expand="block" fill="outline" size="large" fill="clear" class="size-14 ion-text-inherit ion-float-left p-0-srart text-white futuraFontsMedium" (click)="goToCreateAccount()">
+                Create an Account
+              </ion-button>
+          </div>
+      </ion-col>
+    </ion-row> -->
+  </ion-grid>
+</ion-content>

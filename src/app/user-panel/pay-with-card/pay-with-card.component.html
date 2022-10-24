@@ -1,0 +1,52 @@
+<app-user-panel-header></app-user-panel-header>
+
+<ion-content>
+  <ion-progress-bar type="indeterminate" *ngIf="isDataLoad"></ion-progress-bar>
+  <div>
+    <ion-item-divider class="height-30 removeborder background-subheader">
+      <ion-button slot="start" fill="clear" class="p-0-srart m-0 m-t-30" (click)="_appServices?.goBack()">
+        <ion-icon name="chevron-back" class="color-tertiary-dark size-32"></ion-icon>
+      </ion-button>
+    </ion-item-divider>
+
+    <ion-grid class="position-relative z-index-10">
+      <ion-row>
+        <ion-col>
+          <ion-toolbar class="general-pages-toolbar">
+            <div class="ion-text-center">
+              <!-- <img src="assets/images/logo.png" class="w-40"> -->
+              <h2 class="customcolor size-23 m-b-0 font-weight-600 jostDemi text-center">PAY WITH CARD</h2>
+            </div>
+          </ion-toolbar>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <div class="paywithcryptocard">
+      <ion-row class="p-t-20">
+        <ion-col>
+          <h2 class="jostDemi color-blue size-24 font-weight-600 text-center">Checkout Code <br> Required</h2>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="text-center">
+          <img src="../../../assets/images/visapayBG.png" class="paylogo" />
+        </ion-col>
+      </ion-row>
+
+      <ol>
+        <li><p class="black font-15 statictext jostBook font-weight-400 text-left m-b-10">Your unique Payment Code has been sent to {{email}}</p></li>
+        <li><p class="black font-15 statictext jostBook font-weight-400 text-left">Once you have received you payment code via email, click the button below to enter your code and complete your transaction.</p></li>
+      </ol>
+
+      <ion-row>
+        <ion-button (click)="process()"
+          class="primary-color-background no-border border-radius-8 shadownot height-50 letter-spacing btnMargin">
+          <p text-wrap class="fontDemi size-15 m-t-15 font-weight-600">ENTER CODE & <br>PROCESS PAYMENT</p>
+        </ion-button>
+      </ion-row>
+    </div>
+    <div class="backgroundimage-footer-productpage z-index-0">
+    </div>
+  </div>
+</ion-content>

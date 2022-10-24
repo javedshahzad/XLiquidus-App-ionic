@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar class="background-header">
+    <ion-buttons slot="start">
+      <ion-menu-button color="light"></ion-menu-button>
+    </ion-buttons>
+    <ion-title *ngIf="Pagetitle" class="ion-text-center size-16 text-white futuraFontsBold letter-spacing">{{Pagetitle}}
+    </ion-title>
+
+    <div slot="end" class="cartbutton" *ngIf="showicons">
+      <ion-buttons class="m-r-20" (click)="gotoWallet()">
+        <ion-text
+          class="primary-tertiary-color-background p-6 font-weight-500 border-radius-8 walletcss size-16 futuraFontsBold">
+          <img src="../../../assets/images/wallet-icon.png" class="walletstyle">
+          <h5 class="size-18  jostMedium font-weight-500 size-15 m-t-2 m-l-10">${{historyWalletBalance}}</h5>
+        </ion-text>
+      </ion-buttons>
+
+      <ion-buttons class="m-r-10" (click)="gotoShopingCart()">
+        <ion-text class="p-6 font-weight-500 border-radius-8 carticon size-16 futuraFontsBold">
+          <img src="../../../assets/images/shopingcarticon.png" class="carticonimg">
+          <h4 class="text-white jostBook size-14 cartbadge" *ngIf="CartItemCount > 100">
+            99+</h4>
+          <h4 class="text-white jostBook size-14 cartbadge" *ngIf="CartItemCount > 0 && CartItemCount < 100">
+            {{CartItemCount}}</h4>
+        </ion-text>
+      </ion-buttons>
+    </div>
+
+  </ion-toolbar>
+</ion-header>

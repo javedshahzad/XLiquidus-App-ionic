@@ -1,0 +1,60 @@
+iframe {
+  .navbar {
+    display: none !important;
+  }
+  .card.box-shadow.p-3 {
+    display: none !important;
+  }
+}
+
+.m-t-20p {
+  margin-top: 20%;
+}
+.spinnerstyle {
+  zoom: 4.5;
+  color: orange;
+}
+
+.background-subheader {
+  background: url("../../../assets/images/subheader.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100px;
+}
+
+.process {
+  position: absolute;
+  left: 40px;
+  text-transform: capitalize;
+}
+.correct {
+  position: absolute;
+  left: 0;
+}
+.backcolor {
+  background-color: #37ae8b !important;
+  --background: #37ae8b !important;
+  width: 100%;
+}
+
+.backcolornotsuccess {
+  background-color: #c70000 !important;
+  --background: #c70000 !important;
+  width: 100%;
+}
+.errorcolor {
+  color: #c70000;
+}
+.shadownot {
+  --box-shadow: none;
+}
+.thdBadge {
+  display: flex;
+  flex-direction: row;
+  height: 55px;
+  img {
+    width: 28px;
+    object-fit: contain;
+    margin-right: 20px;
+  }
+}

@@ -1,0 +1,127 @@
+/* Progress Bar */
+.progress-wrap {
+    margin: auto;
+    display: table;
+}
+.line-progress-bar {
+    display: flex;
+    margin: auto;
+    width: 100%;
+}
+.line {
+    height: 1px;
+    width: 250px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(217, 217, 217);
+    position: absolute;
+    margin-top: 8px;
+}
+.progress-wrap div ul {
+    display: flex;
+    width: 250px;
+    list-style: none;
+    padding: 0px;
+    margin: initial;
+    justify-content: space-between;
+    z-index: 1;
+    position: relative;
+}
+.progressbar-dots {
+    display: inline-flex;
+    border: #8c8c8c solid 4px;
+    background: #333333;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #d4d4d4;
+    font-size: 20px;
+    margin-left: 0px;
+    color: #d4d4d4;
+    border: 1px solid #8c8c8c;
+    background: #fff;
+}
+.progressbar-dots span {
+    font-size: 10px;
+    line-height: 12px;
+    position: absolute;
+    /* float: left; */
+    /* bottom: 0; */
+    bottom: -31px;
+    color: #8f8f8f;
+    width: 100%;
+    font-weight: 400;
+}
+.progressbar-dots.active {
+    color: #fff;
+    border: 0px solid #37ae8b;
+    background: #37ae8b;
+}
+
+/*  Tab */
+.tab-pane {
+    display: none;
+}
+.tab-pane:first-child {
+  display: block;
+}
+
+/* Error */
+span.error {
+  font-size: 12px;
+  font-family: "helvetica neue", arial, sans-serif;
+  color: #D6041D;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.field_set{
+    border-color: #dadada;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+  }
+  img.paylogo{
+      width: 80%;
+      height: auto;  
+  }
+  img.bitlogo{
+      width: 30%;
+      height: auto;
+  }
+  .customdesign{
+    width: 30px;
+    height: 30px;
+    border: 2px solid #60CCF0;
+    border-radius: 100%;
+  }
+
+  .staticcolor{
+      color: #60CCF0;
+  }
+
+  .shadownot{
+    --box-shadow: none;
+  }
+
+  .backgroundimage-footer-productpage{
+    background: url('../../../assets/images/signu1-background.png') 0 0/100% 100% no-repeat;;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100px;
+    width: 100%;
+    bottom: 0; 
+}
+
+.background-subheader-40{
+    background: url('../../../assets/images/subheader.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100px;
+    margin-top: -40px;   
+}

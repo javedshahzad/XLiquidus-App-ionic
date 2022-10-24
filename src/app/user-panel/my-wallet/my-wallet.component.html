@@ -1,0 +1,96 @@
+<app-user-panel-header [isCartOpen]="true"></app-user-panel-header>
+<ion-content>
+  <ion-progress-bar type="indeterminate" *ngIf="isDataLoad"></ion-progress-bar>
+  <!-- *ngIf="isWallet"-->
+  <ion-grid *ngIf="isWallet">
+    <ion-row class="p-l-10 p-r-10">
+      <ion-col size="8">
+        <h2 class="size-23 jostDemi font-weight-600 m-t-30 color-tertiary-dark">MY WALLET</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="walletcardbackground">
+            <ion-row class="wallet-card-top-content">
+              <ion-col size="9" class="ion-padding-start">
+                <h2 class="text-white p-t-10 size-23">{{(_appServices?.loggedInUserAccountDetails?.firstName)== ' ' ? _appServices?.loggedInUserAccountDetails?.preferredName : _appServices?.loggedInUserAccountDetails?.firstName}}</h2>
+                <!-- <h2 class="text-white size-24 jostDemi font-weight-600 m-t-20">Cree Finnikin</h2>  -->
+              </ion-col>
+            </ion-row>
+            <ion-row class="wallet-card-bottom-content">
+              <ion-col size="8" class="ion-padding-start">
+                <p class="text-white size-14 m-b--5 jostBook font-weight-400">Account Balance (USD)</p>
+                <!-- <h2 class="text-white m-t-0 m-b-30 jostDemi font-weight-600 size-23">$850
+                </h2>  -->
+                <h2 class="text-white m-t-0 m-b-30 jostDemi font-weight-600 size-23">${{totalMrktPrice}}
+                </h2>
+              </ion-col>
+              <ion-col size="4" class="ion-text-end ion-padding-end">
+                <p class="text-white size-14 jostBook m-b--5 font-weight-400">Assets/Coins</p>
+                <!-- <h2 class="text-white jostDemi m-b-30  m-t-0 font-weight-600 size-23 ">8
+                </h2> -->
+                <h2 class="text-white jostDemi m-b-30 m-t-0 font-weight-600 size-23 ">{{totalcoin}}
+                </h2>
+              </ion-col>
+            </ion-row>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="m-b--10">
+      <ion-col size="6" class="ion-text-center">
+        <h5 class="size-15 m-b-0 jostMedium font-weight-500">BREAKDOWN</h5>
+      </ion-col>
+      <ion-col size="6" class="ion-text-center">
+      </ion-col>
+    </ion-row>
+    <ion-row class="m-l-15 m-r-15">
+      <ion-col size="12">
+        <table class="wallet-table w-100">
+          <tr class="thead grey-bottom-border">
+            <th>
+              <h1 class="size-13 m-t-25  color-blue font-weight-600 jostDemi">ASSET</h1>
+            </th>
+            <th class="ion-text-center">
+              <h1 class="size-13 m-t-25  color-blue font-weight-600 jostDemi">QTY</h1>
+            </th>
+            <th class="ion-text-center">
+              <h1 class="size-13 m-t-25 color-blue font-weight-600 jostDemi">USD</h1>
+            </th>
+          </tr>
+          <!-- -->
+          <tr class ="grey-bottom-border" *ngFor="let item of userCoinMetricsList"  >
+            <td>
+              <ion-text class="display-block">
+                <img src="assets/images/wfse.png" class="currencyIcon ion-float-left">
+                 <h5 class="p-t-20 jostDemi size-14  m-t-5 font-weight-600">{{item.teamName}}</h5>
+              </ion-text>
+            </td>
+            <td class="ion-text-center">
+              <h5 class="jostDemi size-14  m-t-5 font-weight-600">{{item.price.currentPrice}} {{item.price.fxRate.payoutCurrency}}</h5>
+            </td>
+            <td class="ion-text-end">
+              <h5 class="jostDemi size-14 m-r-10  m-t-5 font-weight-600">{{item.amount | currency}}</h5>
+            </td>
+          </tr>
+          <tr class="thik-grey-bottom-border">
+            <td>
+              <h5 class="size-19 font-weight-600  m-b-5 m-t-5 jostDemi">TOTAL:</h5>
+            </td>
+            <td class="ion-text-center">
+              <h5 class="size-15 font-weight-600 m-b-5 m-t-5 color-blue jostDemi">{{totalMrktPrice}}</h5>
+            </td>
+            <td class="ion-text-end">
+              <h5 class="size-15 font-weight-600 m-r-10  m-b-5 m-t-5 color-blue jostDemi">{{totalcoin | currency}}</h5>
+            </td>
+          </tr>
+        </table>
+      </ion-col>
+    </ion-row>
+     
+    <ion-row class="m-l-15 m-r-15">
+      <ion-col size="6" class="ion-text-center">
+        <h1 class="size-18 color-primary futuraFontsBold" (click)="gotoTransaction()">View Transactions</h1>
+      </ion-col>
+    </ion-row>
+  </ion-grid> 
+</ion-content>

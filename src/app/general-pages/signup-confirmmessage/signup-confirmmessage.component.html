@@ -1,0 +1,24 @@
+<ion-content class="backgroundimage-signupconfirm" >
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-toolbar class="general-pages-toolbar p-t-5p">
+          <div class="ion-text-center">
+            <h1 class="color-secondary size-34 jostDemi letter-spacing font-weight-600">WELCOME TO <br> XLIQUIDUS</h1>
+             <p class="text-white size-52 m-0 jostDemi font-weight-600">{{prefName}}!</p>
+          </div>
+        </ion-toolbar>
+        
+        <div class="show-message">
+          <ion-icon name="mail"></ion-icon>
+           <p class="size-21 m-b-0 color-secondary jostBook">Your temporary password has been emailed to</p>
+          <p class="size-21 m-0 color-secondary jostBook text-overflow">{{maskemailId}}</p>
+        </div>
+        <h2 class="text-white ion-text-center size-13 font-weight-400 jostDemi">Didn't get your password?</h2>    
+          <ion-button expand="block" fill="clear" class="color-primary shadownot ion-text-capitalize m-l-a m-r-a w-165p size-12 font-weight-600 jostDemi"><ion-text class="resendbtn"> RESEND PASSWORD </ion-text></ion-button>       
+        <ion-button expand="block" fill="clear"  class="size-19 m-l-a m-r-a w-80 shadownot primary-color-background m-t-20 no-border border-radius-8 m-b-20 height-60 jostDemi letter-spacing ion-activatable ripple-parent box-shadow font-weight-600" [class.background-blue-light]="checkbackground" (click)="goToSignUp2()">PERSONALIZE MY PROFILE</ion-button>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

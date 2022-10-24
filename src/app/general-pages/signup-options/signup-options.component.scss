@@ -1,0 +1,52 @@
+.backgroundimage-login {
+  position: relative;
+  height: 100%;
+}
+.topContent {
+  position: relative;
+  height: 56%;
+}
+.bottom-Content {
+  position: relative;
+  height: 25%;
+}
+.bottom-touch {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+}
+.welcome-color {
+  color: #001b47;
+}
+.ordiv {
+  position: relative;
+  min-height: 100px;
+  color: #ffffff;
+}
+.orclass {
+  position: absolute;
+  top: 50%;
+  left: 44%;
+}
+.iconCss {
+  background: white;
+  position: absolute;
+  width: 42px;
+  padding: 11px;
+  left: -8px;
+  border-radius: 16%;
+}
+.loginbtn {
+  border: 1px solid;
+  padding: 8px;
+  margin-left: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.memBtn {
+  justify-content: center;
+  ion-button {
+    min-width: 86%;
+  }
+}

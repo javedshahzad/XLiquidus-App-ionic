@@ -1,6 +1,27 @@
 {
-	"appId": "io.ionic.starter",
-	"appName": "javed-app",
+	"appId": "com.usscyber.xliquiduss.app",
+	"appName": "XLiquidus",
 	"webDir": "www",
-	"bundledWebRuntime": false
+	"bundledWebRuntime": false,
+	"version": "1.0.0",
+	"plugins": {
+		"SplashScreen": {
+		  "showSpinner": true,
+		  "launchShowDuration": 6000,
+		  "launchAutoHide": true,
+		  "spinnerColor": "#001b47",
+		  "splashFullScreen": true
+		}
+	  },
+	  "cordova": {
+		"preferences": {
+		  "ScrollEnabled": "false",
+		  "BackupWebStorage": "none",
+		  "loadUrlTimeoutValue":"8000",
+		  "StatusBarStyle":"lightcontent",
+		  "OverrideUserAgent":"Mozilla/5.0 Google",
+		  "StatusBarBackgroundColor":"#3A9BD0",
+		  "StatusBarOverlaysWebView":"false"
+		}
+	  }
 }

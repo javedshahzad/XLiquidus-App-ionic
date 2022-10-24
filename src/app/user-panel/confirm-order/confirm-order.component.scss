@@ -1,0 +1,69 @@
+.background-subheader-30{
+    background: url('../../../assets/images/subheader.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100px;
+    margin-top: -40px;
+}
+.backgroundimage-footer-productpage{
+    background: url('../../../assets/images/signu1-background.png') 0 0/100% 100% no-repeat;;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100px;
+    width: 100%;
+    position:absolute;
+    bottom: 0; 
+}
+.custome-color-gray{
+    color: #999999;
+}
+
+.color-light-gray{
+    color: #7D7D7D;
+}
+.changecolor{
+    color: #2985C2;
+}
+
+.text-maroon{
+    color: maroon;
+}
+
+.staticcolor{
+    color: #60CCF0;
+}
+.m-b-40{
+    margin-bottom: 40px;
+}
+.shadownot{
+    --box-shadow: none;
+}
+.min-h  {
+    min-height: 120px;
+  }
+  .grid-minheight {
+    min-height: calc(100% - 250px);
+  }
+
+  
+.backgroundimage-footer-shopingcart{
+    background: url('../../../assets/images/signu1-background.png') 0 0/100% 100% no-repeat;;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 250px;
+    width: 100%;
+    bottom: 0; 
+    position:absolute;
+  }
+  .static-butto-color{
+    --background: #9c9c9c;
+  }
+
+  .row-design{
+    background: #D9EBED;
+    padding: 5px;
+    border-radius: 10px;
+  }
+  .text-light-gray{
+      color: #666666;
+  }

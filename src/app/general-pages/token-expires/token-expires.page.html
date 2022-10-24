@@ -1,0 +1,32 @@
+<ion-content class="backgroundimage">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-toolbar class="general-pages-toolbar h-40v p-t-20pp">
+          <div class="ion-text-center">
+            <img src="assets/images/logo.png" class="w-50">
+          </div>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+    <br>
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-center">
+          <h3 class="size-30 font-weight-600 text-white jostBook">Token Expires/Error!</h3>
+          <p class="text-white jostBook">{{message}}</p>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-center">
+          <ion-button class="login-btn" (click)="login()" size="default" fill="outline" color="tertiary-contrast"
+            expand="block">
+            <ion-text class="size-15">LOG-IN</ion-text>
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

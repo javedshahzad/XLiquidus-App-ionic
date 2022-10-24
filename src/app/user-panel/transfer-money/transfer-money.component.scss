@@ -1,0 +1,98 @@
+.background-buynow {
+  background: url("../../../assets/images/signu1-background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 380px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  z-index: -1;
+}
+.m-l-10p {
+  margin-left: 10%;
+}
+.height-70 {
+  height: 70%;
+}
+.m-t-25 {
+  margin-top: 25px;
+}
+.color-black {
+  color: black;
+}
+.font-weight-600 {
+  font-weight: 600;
+}
+.coincss {
+  font-size: 18px;
+  margin-top: 30px;
+  font-weight: 700;
+  margin-left: -7px;
+}
+.totalamt {
+  font-size: 20px;
+  font-weight: 800;
+  /* margin-bottom: 0px; */
+  margin-top: 0px;
+}
+.totalqty {
+  margin-bottom: 0px;
+  margin-top: 0px;
+  font-size: 18px;
+}
+.investcolor {
+  color: #2985c2;
+}
+.lineheight {
+  line-height: 20px;
+}
+
+.carticonimg {
+  width: 25px;
+  height: 25px;
+}
+.custom-color-blue {
+  color: #001b47;
+}
+.backgroundimage-footer-buynow {
+  background: url("../../../assets/images/signu1-background.png") 0 0/100% 100%
+    no-repeat;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 190px;
+  width: 100%;
+  bottom: 0;
+}
+
+.b-t-0 {
+  border-top: 0px;
+}
+.b-r-0 {
+  border-right: 0px;
+}
+.b-l-0 {
+  border-left: 0px;
+}
+.b-rd-0 {
+  border-radius: 0px;
+}
+
+.child {
+  // width: 90%;
+  height: auto;
+  background: #D9EBED;
+  border-radius: 8px;
+  z-index: 999999;
+}
+.color-charcoal {
+  color: #636363;
+}
+.grid-minheight {
+  min-height: calc(100vh - 315px);
+}
+.dropImg {
+  width: 50px;
+}
+.dropImgBank {
+  width: 25px;
+}

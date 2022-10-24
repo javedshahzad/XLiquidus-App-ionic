@@ -1,0 +1,172 @@
+<app-user-panel-header></app-user-panel-header>
+<ion-content class="h-100 no-scroll">
+  <div class="overfolow-y h-100">
+    <ion-item-divider class="height-30 removeborder background-subheader"></ion-item-divider>
+    <ion-grid class="position-relative z-index-10">
+      <ion-row>
+        <ion-col>
+          <ion-toolbar class="general-pages-toolbar p-t-5p">
+            <div class="ion-text-center">
+              <h2 class="color-tertiary-dark size-23 font-weight-600 jostDemi">
+                ADD BANK ACCOUNT
+              </h2>
+            </div>
+
+          </ion-toolbar>
+          <!-- (ngSubmit)="addBankDetail()" -->
+          <form class="p-5" [formGroup]="bankDetailForm">
+
+            <!-- COUNTRY -->
+            <div class="position-relative">
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">COUNTRY</ion-label>
+              <ion-select class="itemclass height-60 " interface="popover" formControlName="country">
+                <ion-select-option>
+                  CHOOSE COUNTRY
+                </ion-select-option>
+                <!-- *ngFor="let item of countries" [value]="item" -->
+                <ion-select-option>
+                  <!-- {{item.name}} -->
+                  comming soon
+                </ion-select-option>
+              </ion-select>
+              <div *ngFor="let error of errorMessages.country" class="errormsg">
+                <ng-container *ngIf="country.hasError(error.type) && (country.dirty || country.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+
+            </div>
+
+            <!-- BANK NAME -->
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 color-secondary display-block font-weight-600 jostDemi">BANK NAME
+              </ion-label>
+              <ion-input class="itemclass height-60" formControlName="BankName"></ion-input>
+              <div *ngFor="let error of errorMessages.BankName" class="errormsg">
+                <ng-container *ngIf="BankName.hasError(error.type) && (BankName.dirty || BankName.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- TYPE OF ACCOUNT -->
+            <div class="position-relative">
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">Type Of Account</ion-label>
+              <ion-select class="itemclass height-60 " interface="action-sheet" formControlName="accountType">
+                <ion-select-option>
+                  CHOOSE ACCOUNT TYPE
+                </ion-select-option>
+                <!-- *ngFor="let item of countries" -->
+                <!-- [value]="item" -->
+                <ion-select-option>
+                  comming soon
+                  <!-- {{item.name}} -->
+                </ion-select-option>
+              </ion-select>
+              <div *ngFor="let error of errorMessages.accountType" class="errormsg">
+                <ng-container *ngIf="accountType.hasError(error.type) && (accountType.dirty || accountType.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+
+            <!-- Account Holder Name -->
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-blue display-block ">Account Holder NAME</ion-label>
+              <ion-input class="itemclass height-60" formControlName="AccountHolderName"></ion-input>
+              <div *ngFor="let error of errorMessages.AccountHolderName" class="errormsg">
+                <ng-container
+                  *ngIf="AccountHolderName.hasError(error.type) && (AccountHolderName.dirty || AccountHolderName.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- Account Number -->
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">Account Number</ion-label>
+              <ion-input class="itemclass height-60" inputmode="numeric" placeholder='XXXX-XXXX-XXXX-XXXX'
+                [brmasker]="{mask:'0000-0000-0000-0000', len:19}" maxlength="19" autocomplete="off"
+                formControlName="accountNumber" autocomplete="new-password" type="tel"></ion-input>
+              <div *ngFor="let error of errorMessages.accountNumber" class="errormsg">
+                <ng-container
+                  *ngIf="accountNumber.hasError(error.type) && (accountNumber.dirty || accountNumber.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- Routing Number -->
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">Routing Number</ion-label>
+              <ion-input class="itemclass height-60" inputmode="numeric" maxlength="20" autocomplete="off"
+                formControlName="routingNumber" autocomplete="new-password" type="tel"></ion-input>
+              <div *ngFor="let error of errorMessages.routingNumber" class="errormsg">
+                <ng-container
+                  *ngIf="routingNumber.hasError(error.type) && (routingNumber.dirty || routingNumber.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+
+            <!-- Confirm Routing Number -->
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">Confirm Routing Number
+              </ion-label>
+              <ion-input class="itemclass height-60" inputmode="numeric" maxlength="20" autocomplete="off"
+                formControlName="confitmRoutingNumber" autocomplete="new-password" type="tel"></ion-input>
+              <div *ngFor="let error of errorMessages.confitmRoutingNumber" class="errormsg">
+                <ng-container
+                  *ngIf="confitmRoutingNumber.hasError(error.type) && (confitmRoutingNumber.dirty || confitmRoutingNumber.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+              <div class="errormsg">
+                <ng-container
+                  *ngIf="bankDetailForm.hasError('mismatch') && (confitmRoutingNumber.dirty || confitmRoutingNumber.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{errorMessages.mismatch}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- [disabled]="!bankDetailForm.valid" -->
+            <!-- [class.background-blue-light]="checkbackground" (click)="submitStep2()"  *ngIf="ShowSpinner"-->
+            <ion-button expand="block" size="large"
+              class="shadownot size-18 primary-color-background no-border border-radius-8 m-t-15 height-60 jostDemi letter-spacing ion-activatable ripple-parent box-shadow font-weight-600">
+              SAVE<ion-spinner name="lines" class="validatespinner1"></ion-spinner>
+            </ion-button>
+          </form>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <p class="size-13 font-weight-400 jostBook p-h-15 text-center">Add your account for easy liquidation directly to
+            your bank. XLiquidus takes <span class="color-tertiary">privacy</span> seriously and use the highest
+            standard encryption and compliance controls.</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div class="backgroundimage-footer-bankdetail z-index-0">
+    </div>
+
+  </div>
+</ion-content>

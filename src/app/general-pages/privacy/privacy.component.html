@@ -1,0 +1,66 @@
+<!-- <ion-header>
+  <ion-toolbar class="background-header">
+    <ion-buttons slot="start" (click)="_appservices?.goBack()" class="p-0-srart m-t-20" >
+      <ion-icon name="chevron-back" color="light" class="staticcolor size-32"></ion-icon>
+    </ion-buttons>
+    <ion-title class="size-16 font-weight-800 text-white futuraFontsBold letter-spacing">About XLiquidus</ion-title> 
+  </ion-toolbar>
+</ion-header> -->
+<ion-content class="h-100 no-scroll">
+  <div class="overfolow-y h-100 ">
+    <ion-item-divider class="height-30 removeborder background-subheader">
+    </ion-item-divider> 
+    <ion-grid class="position-relative z-index-10 p-h-25">
+      <ion-row>
+        <ion-col class="text-center">
+          <ion-button class="w-60 m-a" (click)="_appservices?.goBack()" size="small" fill="outline" color="tertiary" expand="block">
+            <ion-text class="size-10">X CLOSE</ion-text>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <!-- <ion-toolbar class="general-pages-toolbar p-t-5p">
+            <div class="ion-text-center">
+              <h1 class="color-secondary size-32 m-0 m-l-10 font-weight-600 jostDemi">TERMS AND <br> CONDITIONS</h1>
+               <h2 class="text-left size-19 font-weight-600 color-tertiary-dark jostDemi">ACCEPTANCE OF THE<br>TERMS OF
+                USE</h2>
+            </div>
+          </ion-toolbar> -->
+
+          <div>
+            <div class="ion-text-center">
+              <h1 class="color-secondary size-32 m-0 m-l-10 font-weight-600 jostDemi">PRIVACY POLICY</h1> 
+            </div>
+            <!-- <div class="ion-text-center">
+              <p class="size-19 font-weight-600 color-tertiary-dark p-l-10 jostDemi">ACCEPTANCE OF THE<br>TERMS OF USE</p>
+            </div> -->
+
+            <div *ngFor="let pp of PolicyData">
+              <p class="size-15 jostBook font-weight-600 p-l-10 p-r-10 text-justify">
+                {{pp.title}}
+              </p>
+  
+              <p class="size-13 jostBook font-weight-500 p-l-10 p-r-10 text-justify">
+                {{pp.content}}
+              </p>
+            </div>
+          </div>
+
+          <ion-row>
+            <ion-col class="text-center">
+              <ion-button class="w-60 m-a" (click)="_appservices?.goBack()" size="small" fill="outline" color="tertiary"
+                expand="block">
+                <ion-text class="size-10">X CLOSE</ion-text>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+ 
+    </ion-grid>
+    <div class="backgroundimage-footer position-relative z-index-0 min-h">
+    </div>
+  </div>
+
+</ion-content>

@@ -1,0 +1,78 @@
+.app-logo {
+  background-image: url(https://www.freakyjolly.com/wp-content/uploads/2020/04/fj-logo-1.png);
+  height: 150px;
+  width: 150px;
+  background-repeat: no-repeat;
+  border-radius: 320px;
+  background-position: center;
+  background-size: contain;
+  background-color: #e3f8ff;
+  margin: 30px auto;
+}
+
+.logoutbtn {
+  border: 2px solid #60ccf0;
+  padding: 10px;
+  padding-left: 70px;
+  padding-right: 70px;
+  color: #60ccf0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+.logutbtncstmcss {
+  position: absolute;
+  bottom: 30px;
+  height: auto;
+  left: 6%;
+}
+
+.customtabs {
+  height: 76px;
+  padding: 0px;
+  --background: #f5f0e9;
+}
+.tabLabel_color {
+  color: #2f2f2f !important;
+  padding-top: 6px;
+}
+.selected {
+  color: red !important;
+}
+
+.customModal1 {
+  position: fixed;
+  top: 0;
+  background: #2f2f2fa8;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  z-index: 1;
+
+  .modalGrid {
+    background-color: white;
+    margin: 15px;
+    border-radius: 20px;
+    padding: 10px;
+    margin-top: 100px;
+
+    .cross {
+      color: #ccc;
+      position: absolute;
+      right: 30px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+  }
+}
+
+.child {
+  // width: 90%;
+  height: auto;
+  background: #D9EBED;
+  border-radius: 8px;
+  z-index: 999999;
+  padding: 20px 10px;
+}

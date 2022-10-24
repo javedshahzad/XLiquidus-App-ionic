@@ -1,0 +1,41 @@
+.background-transaction-status{
+  --background: url('../../../assets/images/email-confirm-background.png');
+  --background-repeat: no-repeat;
+  background-size: cover; 
+  width: 100%;
+  position: absolute;
+}
+.m-t-20p{
+    margin-top: 20%;
+}
+.size-28{
+    font-size: 28px;
+}
+.color-black{
+    color: #000;
+}
+.m-t-0{
+    margin-top: 0px;
+}
+
+.p-b-10p{
+    margin-bottom: 10%;
+}
+.m-t-15p{
+    margin-top: 15%;
+}
+.circle{
+    background: orange;
+    position: absolute;
+    right: 150px;
+    width: 25%;
+    z-index: 9999;
+    height: 15%;
+    border: 10px solid white;
+    border-radius: 100%;
+    top: 16%;
+}
+.iconstyle{
+    zoom: 5;
+    color: white;
+}

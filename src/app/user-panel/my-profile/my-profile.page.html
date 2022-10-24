@@ -1,0 +1,201 @@
+<!-- <app-user-panel-header [title]="'PROFILE & SETTINGS'"></app-user-panel-header> -->
+<ion-header>
+  <ion-toolbar class="background-header">
+    <ion-buttons slot="start" (click)="_appServices?.goBack()">
+      <ion-icon name="chevron-back" color="light" class="size-32"></ion-icon>
+    </ion-buttons>
+    <ion-title class="size-16 text-white font-weight-800 futuraFontsBold letter-spacing">PROFILE & SETTINGS</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="primary-second-color-background" (click)="closeTooltips()">
+  <ion-grid class="p-3">
+    <ion-row>
+      <ion-col size="12">
+        <ion-list class="no-background ion-no-padding ">
+          <ion-item lines="none" class="no-background m-l--20 color-tertiary font-weight-800 p-l-10 jostHeavy"
+            [routerLink]="['../about']">
+            <ion-label class="ion-text-wrap">
+              <ion-text class="text-white size-23 font-weight-600 jostDemi">
+                <h3 class="text-white customtext jostDemi">{{(userDetails?.firstName)== '' ? userDetails?.preferredName
+                  : userDetails?.firstName}}</h3>
+              </ion-text>
+              <p class="text-white size-13 font-weight-400 jostBook">{{userDetails?.email}}
+            </ion-label>
+            <ion-button slot="end" class="color-tertiary" fill="clear">
+              <ion-icon name="chevron-forward" class="zoom-1-3" slot="end"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-list class="no-background">
+    <ion-item lines="none" class="no-background  text-white size-18 jostDemi font-weight-600">
+      <h4 class="m-0 p-l-10 size-18 jostDemi font-weight-600">
+        Settings
+      </h4>
+    </ion-item>
+
+    <ion-item lines="none" class="no-background color-tertiary size-15 font-weight-800 p-l-10 jostHeavy">
+      <h5 class="size-15 font-weight-800 jostHeavy m-l-15">Notification Settings</h5>
+    </ion-item>
+    <ion-item lines="none" class="no-background color-tertiary size-15 font-weight-800 p-l-10 jostHeavy">
+      <h5 class="size-15 font-weight-800 jostHeavy m-l-15">Native Currency</h5>
+    </ion-item>
+    <ion-item lines="none" class="no-background color-tertiary size-15 font-weight-800 p-l-10 jostHeavy">
+      <h5 class="size-15 font-weight-800 jostHeavy m-l-15">Preferred Language</h5>
+    </ion-item>
+    <ion-item lines="none" class="no-background color-tertiary size-15 font-weight-800 p-l-10 jostHeavy"
+      [routerLink]="['/user-panel/limits']">
+      <h5 class="size-15 font-weight-800 jostHeavy m-l-15">Limits</h5>
+    </ion-item>
+    <!-- <ion-item lines="none" class="no-background color-tertiary size-15 font-weight-800 p-l-10 jostHeavy"
+      (click)="changePassword(_B2C_config.B2CResetPasswordUrl)"> -->
+      <ion-item lines="none" class="no-background color-tertiary size-15 font-weight-800 p-l-10 jostHeavy"
+        (click)="changePasswordPage()">
+      <h5 class="size-15 font-weight-800 jostHeavy m-l-15">Reset Password </h5>
+    </ion-item>
+
+    <ion-item lines="none" class="no-background p-l-10 text-white size-18 futuraFontsBold">
+      <ion-label class="m-0">
+        Security
+      </ion-label>
+    </ion-item>
+
+    <ion-item lines="none" class="no-background color-tertiary size-14 p-l-10 futuraFontsBook">
+      <ion-row class="verifyRow">
+        <h5 class="size-15 font-weight-800 jostHeavy m-l-15">Multi-Factor Authentication</h5>
+        <div class="d-fl-vhc" *ngIf="userDetails?.enableMultiFactorAuthentication">
+          <img src="assets/images/tick-green.png">
+          <p class="size-13 color-success font-weight-400 jostBook m-0 text-left p-l-20">Verified</p>
+        </div>
+        <div class="d-fl-vhc" *ngIf="!userDetails?.enableMultiFactorAuthentication">
+          <ion-button color="primary-contrast" (click)="gotoVerifyMFA()"
+            class="size-10 tertiary-custom-button noShadow shadownot no-border border-radius-8 jostDemi letter-spacing">
+            Verify Now</ion-button>
+        </div>
+      </ion-row>
+      <!-- <ion-button slot=" end" fill="clear" class="p-0-end m-0">
+            <ion-toggle color="success"></ion-toggle>
+          </ion-button> -->
+    </ion-item>
+
+    <ion-item lines="none" class="no-background m-t-10 text-white size-19 font-weight-600 jostDemi overflow-visible">
+      <div class="showtipMFA showtipMFA-top" *ngIf="showProfileTooltip">
+        <p class="m-t-15 size-15 font-weight-400 ion-text-center text-black display-block jostBook">You will need
+          to enter your MFA Key at check out when doing a transaction.</p>
+        <h2 class="text-black m-b-0 text-center jostBook font-weight-800">Forgot your MFA Key?</h2>
+        <p class="m-b-5 m-t-0 size-15 font-weight-400 ion-text-center text-black display-block jostBook">Contact us
+          here:</p>
+        <a class="m-t-15 m-b-5 size-15 font-weight-400 ion-text-center color-primary display-block jostBook">Support.Xliquidus.com/help
+        </a>
+      </div>
+      <h4 class="m-0 size-18 jostDemi p-l-10 font-weight-600">
+        My Transaction Profile
+        <ion-icon name="information-circle" class="size-18 color-tertiary v-lign-m" (click)="toggleProfileFlag()"></ion-icon>
+      </h4>
+    </ion-item>
+
+
+    <!--With Transaction Profile-->
+    <ion-list
+      *ngIf="!(userDetails?.firstName == '' || userDetails?.lastName == '' || userDetails?.gender == '' ||  userDetails?.dob == '' || userDetails?.addressCountryName == '')"
+      lines="none" class="p-t-20p p-b-20p background-success-light border-radius-8 p-2p m-15 overflow-visible">
+      <ion-item class="background-success-light">
+        <ion-row>
+          <ion-col>
+            <p class="size-13 font-weight-400 text-gray m-0 jostDemi ion-float-left w-100">
+              This information can not be changed. If this information is inaccurate please
+              <ion-text class="color-primary m-0 size-13 jostDemi">contact support.</ion-text>
+              <!-- <ion-button fill="clear" class=" p-0-srart"><ion-text class="color-primary m-0 size-13 jostDemi">contact support.</ion-text></ion-button> -->
+            </p>
+            <!-- <ion-icon name="lock-closed" class="size-16 text-gray m-0 ion-float-right"></ion-icon> -->
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item class="background-success-light">
+        <ion-row class="w-100">
+          <ion-col size="6">
+            <ion-label class=" white-space color-secondary display-block size-13 jostDemi font-weight-600">FIRST NAME
+            </ion-label>
+            <ion-label class="text-gray jostDemi size-13 text-gray font-weight-400">(Legal Name)</ion-label>
+            <h3 class="size-15 m-0 m-t-5 white-space custom-color-sky display-block font-weight-400 jostBook">
+              {{userDetails?.firstName}}</h3>
+          </ion-col>
+          <ion-col size="6">
+            <ion-label class="white-space color-secondary display-block size-13 jostDemi font-weight-600">LAST NAME
+            </ion-label>
+            <ion-label class="text-gray jostDemi size-13 text-gray font-weight-400">(Legal Name)</ion-label>
+            <h3 class="size-15 m-0 m-t-5 white-space custom-color-sky display-block font-weight-400 jostBook">
+              {{userDetails?.lastName}}</h3>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item class="background-success-light">
+        <ion-row class="w-100">
+          <ion-col size="6">
+            <ion-label class="white-space color-secondary display-block size-13 jostDemi font-weight-600">GENDER
+            </ion-label>
+            <h3 class="size-15 m-0 m-t-5 white-space custom-color-sky display-block font-weight-400 jostBook">
+              {{userDetails?.gender}}</h3>
+          </ion-col>
+          <ion-col size="6">
+            <ion-label class="white-space color-secondary display-block size-13 jostDemi font-weight-600">BIRTH DATE
+            </ion-label>
+            <h3 class="size-15 m-0 m-t-5 white-space custom-color-sky display-block font-weight-400 jostBook">
+              {{userDetails?.dob | date:'medium'}}</h3>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item class="background-success-light overflow-visible">
+        <ion-row class="w-100">
+          <ion-col>
+            <div class="showtipMFA showtipMFA-top" *ngIf="showCountryTooltip">
+              <!-- <p class="m-t-15 size-15 font-weight-400 ion-text-center text-black display-block jostBook">You will need
+                to enter your MFA Key at check out when doing a transaction.</p> -->
+              <h2 class="text-black m-b-0 text-center jostBook font-weight-800">Forgot your MFA Key?</h2>
+              <p class="m-b-5 m-t-0 size-15 font-weight-400 ion-text-center text-black display-block jostBook">Contact us
+                here:</p>
+              <a class="m-t-15 m-b-5 size-15 font-weight-400 ion-text-center color-primary display-block jostBook">Support.Xliquidus.com/help
+              </a>
+            </div>
+            <ion-label class="white-space color-secondary display-block size-13 jostDemi font-weight-600">COUNTRY <span
+                class="text-gray font-weight-400">(As shown on Legal ID )
+                <ion-icon name="information-circle" class="size-18 color-tertiary v-lign-m" (click)="toggleCountryFlag()"></ion-icon>
+              </span></ion-label>
+            <h3 class="size-15 m-0 m-t-5 white-space custom-color-sky display-block font-weight-400 jostBook">
+              {{userDetails?.addressCountryName}}</h3>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-list>
+
+
+    <!--With No Transaction Profile-->
+    <ion-list
+      *ngIf="userDetails?.firstName == '' || userDetails?.lastName == '' || userDetails?.gender == '' ||  userDetails?.dob == '' || userDetails?.addressCountryName == ''"
+      lines="none" class="no-background">
+      <ion-item lines="none" class="no-background">
+        <ion-row>
+          <ion-col size="2">
+            <img src="assets/images/alert-icon.png" class="ion-float-left">
+          </ion-col>
+          <ion-col size="10">
+            <ion-text>
+              <p class="size-15 text-white m-t-0 jostDemi font-weight-400">You need to complete your Transaction Profile
+                to make a transaction on XLiquidus
+              </p>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item lines="none" class="no-background">
+        <ion-button expand="block" size="large" (click)="createmyprofile()"
+          class="shadownot size-19 primary-color-background no-border border-radius-8 m-a m-b-50 m-t-20 w-80 height-60 jostDemi font-weight-600 letter-spacing">
+          COMPLETE PROFILE</ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-list>
+</ion-content>

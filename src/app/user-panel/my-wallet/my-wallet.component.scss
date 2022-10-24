@@ -1,0 +1,48 @@
+.walletcardbackground {
+  background: url("../../../assets/images/XL_Wallet_Card.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  min-height: 235px;
+}
+.line-height-0 {
+  line-height: 0;
+}
+
+.wallet-card-top-content {
+  position: absolute;
+  top: 5%;
+  width: 97%;
+}
+
+.wallet-card-bottom-content {
+  position: absolute;
+  bottom: 5%;
+  width: 97%;
+}
+
+.wallet-table {
+  .thead th {
+    text-align: left;
+    padding-left: 10px;
+    color: #001b47;
+  }
+  td {
+    padding-left: 10px;
+    img.currencyIcon {
+      width: 50px;
+      margin-left: -12px;
+    }
+  }
+}
+.thik-grey-bottom-border {
+  border-top: 5px solid #c4c4c4;
+}
+.m-b--20 {
+  margin-bottom: -20px;
+}
+.m-b--5 {
+  margin-bottom: -2px;
+}
+.m-b-30 {
+  margin-bottom: 30px;
+}

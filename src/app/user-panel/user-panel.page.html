@@ -1,0 +1,219 @@
+<ion-split-pane contentId="main-content">
+  <ion-menu contentId="main-content" type="overlay">
+    <ion-content class="primary-second-color-background ion-padding-top">
+      <ion-list id="inbox-list" class="no-background">
+        <div class="ion-text-center m-b-20">
+          <!-- <img src="assets/images/user.png" > -->
+          <ion-avatar class="background-success border-white m-l-a m-r-a">
+            <h3 class="text-white size-32 m-t-15 ion-text-center font-weight-500 line-height-30">
+              {{((userDetails?.firstName)== '' ? userDetails?.preferredName : userDetails?.firstName)?.substring(0,1)}}
+            </h3>
+          </ion-avatar>
+          <h5 class="color-primary display-block size-15 m-t-15 m-b-15 jostHeavy">{{userDetails?.firstName}}
+            {{userDetails?.lastName}}</h5>
+          <ion-button expand="block" fill="outline" size="large"
+            class="jostHeavy shadownot letter-spacing size-15 alredy-member no-border border-radius-8 height-50 w-80 m-auto m-b-15"
+            (click)="closeMenu()" [routerLink]="['/user-panel/myprofile']">PROFILE & SETTINGS</ion-button>
+
+        </div>
+        <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index" class="no-background">
+          <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false"
+            routerLinkActive="selected" class="no-background">
+            <h5 class="text-white size-15 jostHeavy p-l-6p">{{ p.title }}</h5>
+          </ion-item>
+        </ion-menu-toggle>
+        <!-- <ion-menu-toggle auto-hide="false" class="no-background">
+          <ion-item (click)="logout()" lines="none" detail="false" routerLinkActive="selected" class="no-background">
+            <ion-label class="text-white futuraFontsMedium p-l-6p">logout</ion-label>
+          </ion-item>
+        </ion-menu-toggle>  -->
+      </ion-list>
+      <ion-button expand="block" fill="clear" class="logutbtncstmcss shadownot ion-text-inherit" (click)="logout()">
+        <ion-text class="logoutbtn jostHeavy size-15">LOG OUT</ion-text>
+      </ion-button>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="main-content"></ion-router-outlet>
+  <ion-tabs #bottomTabBar (ionTabsDidChange)="setCurrentTab()">
+    <ion-tab-bar slot="bottom" class="customtabs">
+      <ion-tab-button tab="notification">
+        <ng-container *ngIf="selectedTab == 'notification'; else notificationNotActive">
+          <img src="../../assets/images/bottomBar-icons/blue_icons/Notifications-icon.png">
+        </ng-container>
+        <ng-template #notificationNotActive>
+          <img src="../../assets/images/bottomBar-icons/gray_icons/Notifications-icon.png">
+        </ng-template>
+        <ion-label class="tabLabel_color size-9 font-weight-400">Notifications</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="transaction-history">
+        <ng-container *ngIf="selectedTab == 'transaction-history'; else transactionActive">
+          <img src="../../assets/images/bottomBar-icons/blue_icons/Transaction-icon.png">
+        </ng-container>
+        <ng-template #transactionActive>
+          <img src="../../assets/images/bottomBar-icons/gray_icons/Transaction-icon.png">
+        </ng-template>
+        <ion-label class="tabLabel_color size-9 font-weight-400">Transaction</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="liquidate" *ngIf="allowLiquidate">
+        <ng-container *ngIf="selectedTab == 'liquidate'; else liquidateNotActive">
+          <img src="../../assets/images/bottomBar-icons/blue_icons/XL-icon.png" class="m-t--10">
+        </ng-container>
+        <ng-template #liquidateNotActive>
+          <img src="../../assets/images/bottomBar-icons/gray_icons/XL-icon.png" class="m-t--10">
+        </ng-template>
+        <ion-label class="tabLabel_color size-9 font-weight-400">Liquidate</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="lets-liquidate" *ngIf="!allowLiquidate">
+        <ng-container *ngIf="selectedTab == 'lets-liquidate'; else LetsliquidateNotActive">
+          <img src="../../assets/images/bottomBar-icons/blue_icons/XL-icon.png" class="m-t--10">
+        </ng-container>
+        <ng-template #LetsliquidateNotActive>
+          <img src="../../assets/images/bottomBar-icons/gray_icons/XL-icon.png" class="m-t--10">
+        </ng-template>
+        <ion-label class="tabLabel_color size-9 font-weight-400">Liquidate</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="watchlist">
+        <ng-container *ngIf="selectedTab == 'watchlist'; else watchlistNotActive">
+          <img src="../../assets/images/bottomBar-icons/blue_icons/Watchlist.png">
+        </ng-container>
+        <ng-template #watchlistNotActive>
+          <img src="../../assets/images/bottomBar-icons/gray_icons/Watchlist.png">
+        </ng-template>
+        <ion-label class="tabLabel_color size-9 font-weight-400">Watchlist</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="dashboard">
+        <ng-container *ngIf="selectedTab == 'dashboard'; else dashboardNotActive">
+          <img src="../../assets/images/bottomBar-icons/blue_icons/Marketplace-icon.png">
+        </ng-container>
+        <ng-template #dashboardNotActive>
+          <img src="../../assets/images/bottomBar-icons/gray_icons/Marketplace-icon.png">
+        </ng-template>
+        <ion-label class="tabLabel_color size-9 font-weight-400">Marketplace</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-split-pane>
+
+
+
+
+<div class="customModal1" *ngIf="showModal">
+  <ion-grid class="modalGrid">
+    <span class="cross" (click)="hideModal()">x</span>
+    <ion-row>
+      <h1 class="size-32 jostDemi color-main font-weight-600 text-center line-height-50 m-a">REGISTER</h1>
+    </ion-row>
+    <ion-row>
+      <h2 class="size-34 jostDemi color-main font-weight-600 text-center line-height-30 m-a">
+        Multi-Factor<br>Authentication (MFA)</h2>
+    </ion-row>
+    <ion-row>
+      <img src="assets/images/shield.png" class="w-30 m-a p-t-20">
+    </ion-row>
+    <ion-row>
+      <h2 class="size-28 jostDemi color-main font-weight-600 text-center line-height-30 m-a">
+        For Added Security</h2>
+    </ion-row>
+    <ion-row>
+      <p class="size-16 font-weight-500 jostBook m-a p-t-20 p-b-20 text-center color-black">For your security, XLiquidus
+        requires a unique Multi-Factor Authentication Key (MFA) at time of check out.
+        <b>Create and verify your key now.</b>
+      </p>
+    </ion-row>
+    <ion-row class="nowrap baseline">
+      <ion-col>
+        <ion-button expand="block" size="large" color="primary-contrast" (click)="hideModal()"
+          class="size-15 tertiary-custom-button noShadow shadownot no-border border-radius-8 p-t-10p height-60 jostDemi font-weight-800 letter-spacing">
+          DO LATER</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="block" size="large" (click)="showVerifyPage()"
+          class="size-15 primary-color-background noShadow shadownot no-border border-radius-8 p-t-10p height-60 jostDemi font-weight-800 letter-spacing">
+          CREATE MY KEY</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+
+
+
+<div class="customModal1" *ngIf="showVerifyModal">
+  <ion-grid class="modalGrid m-t-20">
+    <span class="cross" (click)="hideModal()">x</span>
+    <ion-row>
+      <h1 class="size-32 jostDemi color-main font-weight-600 text-center line-height-50 m-a">VERIFY YOUR KEY</h1>
+    </ion-row>
+    <ion-row>
+      <h2 class="size-21 jostDemi color-main font-weight-600 text-center line-height-30 m-a">1. Copy Your Code</h2>
+    </ion-row>
+    <ion-row class="m-15">
+      <ion-input class="height-20 size-14 font-weight-300 jostDemi ion-text-center grey-bottom-border color-black"
+        [(ngModel)]="code" placeholder="DSKJHSDFL:IHLKSJDF" type="text"></ion-input>
+      <ion-icon class="color-tertiary size-20" (click)="copy()" name="copy-outline"></ion-icon>
+    </ion-row>
+    <ion-row>
+      <h2 class="size-21 jostDemi color-main font-weight-600 text-center line-height-30 m-a">2. Get Your MFA Key</h2>
+    </ion-row>
+
+    <ion-row>
+      <p class="size-14 font-normal jostBook m-a p-t-10 p-b-10 text-center text-charcoal">Copy and paste the above
+        code into one of these two free trusted MFA Authentication apps to get your secure authentication key.</p>
+    </ion-row>
+
+    <ion-row class="nowrap baseline">
+      <ion-col>
+        <ion-button expand="block" size="large" color="primary-contrast"
+          class="size-15 tertiary-custom-button noShadow shadownot no-border border-radius-8 p-t-10p height-60 jostDemi font-weight-800 letter-spacing">
+          <img src="assets/images/microsoft-auth.png" class="height-40">
+          <p class="size-13 font-weight-500 jostBook m-a text-left color-black capitalize">Microsoft<br>Authentication
+          </p>
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="block" size="large" color="primary-contrast"
+          class="size-15 tertiary-custom-button noShadow shadownot no-border border-radius-8 p-t-10p height-60 jostDemi font-weight-800 letter-spacing">
+          <img src="assets/images/google-auth.png" class="height-40">
+          <p class="size-13 font-weight-500 jostBook m-a text-left color-black capitalize">Google<br>Authentication</p>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <p class="size-14 font-normal jostBook m-a p-t-20 text-center text-charcoal">Once you received your key,
+        return here and enter below.</p>
+    </ion-row>
+
+    <ion-row class="w-90 m-a m-t-10 m-b-20">
+      <div class="child">
+        <ion-row>
+          <h2 class="size-21 jostDemi color-main font-weight-600 text-center line-height-30 m-a">3. Enter Your MFA Key
+          </h2>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <p class="size-14 font-normal jostBook m-a text-center text-charcoal">Copy your code provided by the
+              Authentication here to verify your authentication.
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="w-90 m-a">
+          <ion-col>
+            <ion-input [(ngModel)]="mfaKey" type="text"
+              class="itemclass m-l-10p height-60 size-23 font-weight-400 b-t-0 b-r-0 b-l-0 b-rd-0 jostDemi ion-text-center color-black">
+            </ion-input>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="m-t-10">
+          <ion-button expand="block" size="large" (click)="verify()"
+            class="jostDemi noShadow shadownot letter-spacing size-15 cartbtnstyle primary-color-background no-border border-radius-8 height-50 ion-activatable ripple-parent box-shadow w-60 m-a">
+            <ion-text class="m-l-10">VERIFY</ion-text>
+          </ion-button>
+        </ion-row>
+      </div>
+    </ion-row>
+
+  </ion-grid>
+</div>

@@ -1,0 +1,310 @@
+<app-user-panel-header></app-user-panel-header>
+<ion-content>
+  <!-- *ngIf="isDataLoad" -->
+  <ion-progress-bar type="indeterminate"></ion-progress-bar>
+  <div class="position-relative h-100">
+    <ion-item-divider class="height-30 removeborder background-subheader">
+      <ion-button slot="start" fill="clear" class="p-0-srart m-t-30"  (click)="_appServices?.goBack()">
+        <ion-icon name="chevron-back" class="color-tertiary size-32"></ion-icon>
+      </ion-button>
+    </ion-item-divider>
+    <ion-grid class="grid-minheight">
+      <ion-row class="p-l-10 p-r-10">
+        <ion-col class="ion-text-center">
+          <h2 class="size-23 jostDemi investcolor">{{typeMsg | uppercase}}</h2>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <p class="m-t-15 m-b-5 size-13 font-weight-400 ion-text-center text-black  display-block jostBook">AMOUNT IN
+            USD</p>
+          <ion-input
+            class="itemclass w-80 m-l-10p height-70 size-32 font-weight-400 b-t-0 b-r-0 b-l-0 b-rd-0 jostDemi ion-text-center"
+            [(ngModel)]="amount" type="number" min="0"></ion-input>
+        </ion-col>
+      </ion-row>
+
+      <div class="m-l-a m-r-a w-70">
+        <ion-row>
+          <ion-col>
+            <p class="m-b-0 m-t-20 jostBook size-13 font-weight-400">From:</p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="4">
+            <img src="../../../assets/images/walletcard.PNG" class="w-100" />
+          </ion-col>
+          <ion-col size="8">
+            <h2 class="jostDemi size-16 font-weight-600 m-t-10 color-charcoal">XLiquidus Wallet</h2>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <p class="m-b-0 m-t-0 jostBook size-13 font-weight-400">Sent to:</p>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <div class="m-l-a m-r-a w-70" *ngIf="type == 'CryptoWallet'">
+        <ion-row *ngIf="wallets.length == 0">
+          <ion-col>
+            <ion-button expand="block" size="large" (click)="gotoAddWallet()" color="tertiary"
+              class="jostDemi shadownot letter-spacing size-16 no-border border-radius-8 m-b-20 height-60 ion-activatable ripple-parent box-shadow">
+              <ion-text class="m-l-10">LINK A WALLET</ion-text>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="wallets.length > 0">
+          <ion-col class="text-center">
+            <ng-select class="ngSelectcontrolBorder w-100" placeholder="Select a wallet" [searchable]="false"
+              [clearable]="false" [(ngModel)]="selectedWallet" (ngModelChange)="walletChangeFunc()">
+              <ng-option *ngFor="let wal of wallets" [value]="wal">
+                <ion-row>
+                  <ion-col size="3" class="p-0 m-0 h-50p d-fl-vc">
+                    <img [src]="wal.imgsrc" class="dropImg">
+                  </ion-col>
+                  <ion-col size="9" class="p-0 m-0">
+                    <p class="size-16 color-charcoal font-weight-600 jostBook m-0 text-left p-l-20">{{wal.name}}</p>
+                    <p class="size-14 color-charcoal font-weight-400 jostBook m-0 text-left p-l-20">{{wal.token}}</p>
+                  </ion-col>
+                </ion-row>
+              </ng-option>
+              <ng-option value="new">
+                <ion-row>
+                  <ion-col class="p-0 m-0">
+                    <p class="size-15 color-primary font-weight-400 jostBook m-0 text-left p-l-20 p-b-10">+ Add another
+                      wallet</p>
+                  </ion-col>
+                </ion-row>
+              </ng-option>
+            </ng-select>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <div class="w-90 m-a p-t-20" *ngIf="selectedWallet && selectedWallet != 'new' && type == 'CryptoWallet'">
+        <div class="child">
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <h4 class="jostDemi size-23 font-weight-600 m-b-0 m-t-20">
+                CONFIRM TRANSACTION
+              </h4>
+              <p class="color-charcoal size-13 font-weight-400 jostBook">Price As of
+                {{curDT | date: "dd-MMM-YYYY HH:mm a"}}</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <p class="size-13 font-weight-400 color-secondary jostBook p-l-20 m-0 d-fl-vc">Transfer Total: ${{amount}} USD
+                <ion-icon class="p-h-25 size-22 color-main" name="arrow-forward-outline"></ion-icon>
+                <b>0.00983 ({{selectedWallet?.shortName}})</b>
+              </p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <p class="size-13 font-weight-400 color-secondary jostBook p-l-20 m-0">Processing Fee: $3.50</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="p-t-20 p-b-20">
+            <ion-col>
+              <ion-button expand="block" size="large" (click)="cnt()"
+                class="jostDemi noShadow shadownot letter-spacing size-16 cartbtnstyle primary-color-background no-border border-radius-8 height-50 ion-activatable ripple-parent box-shadow w-90 m-a">
+                <ion-text class="m-l-10">CONFIRM AND TRANSFER</ion-text>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+
+      <ion-row *ngIf="selectedWallet && selectedWallet != 'new' && type == 'CryptoWallet'">
+        <ion-col>
+          <p class="size-13 font-weight-400 jostBook p-15 text-center">Add your account for easy liquidation directly to
+            your bank. XLiquidus takes <span class="color-tertiary">privacy</span> seriously and use the highest
+            standard encryption and
+            compliance
+            controls.</p>
+        </ion-col>
+      </ion-row>
+
+
+
+
+
+      <div class="m-l-a m-r-a w-70" *ngIf="type == 'Bank'">
+        <ion-row *ngIf="bankAccounts.length == 0">
+          <ion-col>
+            <ion-button expand="block" size="large" (click)="gotoAddBankAccount()"
+              class="jostDemi shadownot letter-spacing size-16 no-border border-radius-8 m-b-20 height-60 ion-activatable ripple-parent box-shadow">
+              <ion-text class="m-l-10">ADD BANK ACCOUNT</ion-text>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="bankAccounts.length > 0">
+          <ion-col class="text-center">
+            <ion-row>
+              <ion-col size="3" class="p-0 m-0 d-fl-vhc">
+                <img [src]="bankAccounts[0].imgsrc" class="dropImgBank">
+              </ion-col>
+              <ion-col size="9" class="p-0 m-0">
+                <p class="size-16 color-charcoal font-weight-600 jostBook m-0 text-left p-l-10">{{bankAccounts[0].name}}
+                </p>
+                <p class="size-14 color-charcoal font-weight-400 jostBook m-0 text-left p-l-10">Checking Acct
+                  {{bankAccounts[0].accNo}}</p>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <div class="w-90 m-a p-t-20" *ngIf="bankAccounts.length > 0 && type == 'Bank'">
+        <div class="child">
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <h4 class="jostDemi size-23 font-weight-600 m-b-0 m-t-20">
+                CONFIRM TRANSACTION
+              </h4>
+              <p class="color-charcoal size-13 font-weight-400 jostBook">Price As of
+                {{curDT | date: "dd-MMM-YYYY HH:mm a"}}</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <p class="size-13 font-weight-400 color-secondary jostBook p-l-20 m-0 d-fl-vc">Deposit Total:</p>
+            </ion-col>
+            <ion-col>
+              <p class="size-13 font-weight-400 color-secondary jostBook p-l-20 m-0 d-fl-vc">${{amount}} USD</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <p class="size-13 font-weight-400 color-secondary jostBook p-l-20 m-0">Processing Fee:</p>
+            </ion-col>
+            <ion-col>
+              <p class="size-13 font-weight-400 color-secondary jostBook p-l-20 m-0">$3.50</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <p class="size-13 font-weight-400 color-secondary jostBook p-l-20 m-0">Expected Delivery Date:</p>
+            </ion-col>
+            <ion-col>
+              <p class="size-13 font-weight-400 color-secondary jostBook p-l-20 m-0">{{curDT | date: "dd-MMM-YYYY"}}</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="p-t-20 p-b-20">
+            <ion-col>
+              <ion-button expand="block" size="large" (click)="cnt()"
+                class="jostDemi noShadow shadownot letter-spacing size-16 cartbtnstyle primary-color-background no-border border-radius-8 height-50 ion-activatable ripple-parent box-shadow w-90 m-a">
+                <ion-text class="m-l-10">CONFIRM AND TRANSFER</ion-text>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+
+      <ion-row *ngIf="bankAccounts.length > 0 && type == 'Bank'">
+        <ion-col>
+          <p class="size-13 font-weight-400 jostBook p-15 text-center">Add your account for easy liquidation directly to
+            your bank. XLiquidus takes <span class="color-tertiary">privacy</span> seriously and use the highest
+            standard encryption and
+            compliance
+            controls.</p>
+        </ion-col>
+      </ion-row>
+
+
+
+
+
+      <div class="m-l-a m-r-a w-70" *ngIf="type == 'Exchange'">
+        <ion-row>
+          <ion-col class="text-center">
+            <ion-row>
+              <ion-col size="3" class="p-0 m-0 d-fl-vhc">
+                <img [src]="exchangeWallet[0].imgsrc" class="dropImg">
+              </ion-col>
+              <ion-col size="9" class="p-0 m-0">
+                <p class="size-16 color-charcoal font-weight-600 jostBook m-0 text-left p-l-10">
+                  {{exchangeWallet[0].name}}
+                </p>
+                <p class="size-14 color-charcoal font-weight-400 jostBook m-0 text-left p-l-10">Coming Soon: More
+                  Exchanges!</p>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <ion-row *ngIf="continueExchange && type == 'Exchange'" class="w-90 m-a p-t-20">
+        <ion-col>
+          <ion-button expand="block" size="large" (click)="continueExchangeFunc()"
+            class="jostDemi shadownot letter-spacing size-16 no-border border-radius-8 m-b-20 height-60 ion-activatable ripple-parent box-shadow">
+            <ion-text class="m-l-10">CONTINUE</ion-text>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <div class="w-90 m-a p-t-20" *ngIf="!continueExchange && type == 'Exchange'">
+        <div class="child">
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <h4 class="jostDemi size-23 font-weight-600 m-b-0 m-t-20">
+                CONFIRM TRANSACTION
+              </h4>
+              <p class="color-charcoal size-13 font-weight-400 jostBook">Price As of
+                {{curDT | date: "dd-MMM-YYYY HH:mm a"}}</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <p class="size-13 font-weight-400 color-secondary jostBook p-l-20 m-0 d-fl-vc">Transfer Total: ${{amount}} USD
+                <ion-icon class="p-h-25 size-22 color-main" name="arrow-forward-outline"></ion-icon>
+                <b>${{amount}} USD</b>
+              </p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <p class="size-13 font-weight-400 color-secondary jostBook p-l-20 m-0">Processing Fee: $3.50</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="p-t-20 p-b-20">
+            <ion-col>
+              <ion-button expand="block" size="large" (click)="cnt()"
+                class="jostDemi noShadow shadownot letter-spacing size-16 cartbtnstyle primary-color-background no-border border-radius-8 height-50 ion-activatable ripple-parent box-shadow w-90 m-a">
+                <ion-text class="m-l-10">CONFIRM AND TRANSFER</ion-text>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+
+      <ion-row *ngIf="!continueExchange && type == 'Exchange'">
+        <ion-col>
+          <p class="size-13 font-weight-400 jostBook p-15 text-center">Add your account for easy liquidation directly to
+            your bank. XLiquidus takes <span class="color-tertiary">privacy</span> seriously and use the highest
+            standard encryption and
+            compliance
+            controls.</p>
+        </ion-col>
+      </ion-row>
+
+
+
+
+    </ion-grid>
+    <div class="backgroundimage-footer-buynow">
+    </div>
+  </div>
+</ion-content>

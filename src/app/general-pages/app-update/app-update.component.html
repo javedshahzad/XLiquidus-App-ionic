@@ -1,0 +1,36 @@
+<ion-content class="backgroundimage">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-toolbar class="general-pages-toolbar h-33v p-t-10pp">
+          <div class="ion-text-center">
+            <img src="assets/images/logo.png" class="w-50">
+          </div>
+        </ion-toolbar>
+        <ion-row class="justify-center">
+          <div class="d-fl-vc">
+            <img src="assets/images/partypopper.png" class="popper">
+            <h1 class="size-32 font-weight-600 text-white jostBook">GOOD NEWS!</h1>
+          </div>
+          <h2 class="uppercase color-primary size-23 font-weight-600 jostBook">New Version Available</h2>
+          <p class="color-white size-15 font-weight-400 text-center jostBook">Update your app to take advantage of cool<br> new features, faster performance and<br> more XLiquidus goodness!</p>
+          <!-- <a href="#"> -->
+            <img src="assets/images/App Store.png" class="w-200 p-t-20 p-b-20">
+          <!-- </a> -->
+          <a href="https://play.google.com/store/apps/details?id=com.usscyber.xll" target="_blank">
+            <img src="assets/images/Google Play.png" class="w-200 p-b-20">
+          </a>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-center" *ngIf="force == 'false'">
+          <ion-button class="close-btn" (click)="skip()" size="small" fill="outline" color="tertiary-contrast">
+            <ion-text class="size-10">SKIP</ion-text>
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,56 @@
+<app-user-panel-header></app-user-panel-header>
+<ion-content (click)="closeTooltips()">
+  <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
+  <!---Kyc-->
+  <div>
+    <ion-item-divider class="height-30 removeborder background-subheader">
+      <ion-button slot="start" fill="clear" class="p-0-srart m-t-30"  (click)="_appServices?.goBack()">
+        <ion-icon name="chevron-back" class="color-tertiary size-32"></ion-icon>
+      </ion-button>
+    </ion-item-divider>
+    <ion-grid class="position-relative z-index-10">
+      <ion-row>
+        <ion-col>
+          <ion-toolbar class="general-pages-toolbar">
+            <div class="ion-text-center">
+              <h2 class="customcolor size-24 m-b-0 font-weight-600 futuraFontsBold">CONFIRM YOUR IDENTITY</h2>
+              <p class="futuraFontsBold custome-color-gray m-b-0 size-16 font-weight-400">To complete your transaction
+                you need to enter your Multi-Factor Authentication Key.</p>
+            </div>
+          </ion-toolbar>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div class="ordertotal">
+    <ion-row>
+      <ion-col class="ion-text-left" size="12">
+        <ion-label
+          class="m-t-15 m-b-5 size-14 m-l-40 m-r-40 font-weight-600  color-blue display-block futuraFontsMedium">ENTER
+          YOUR MFA KEY</ion-label>
+        <ion-input class="itemclass w-80 height-60 m-l-a m-r-a height-70" [(ngModel)]="mfaKey"></ion-input>
+      </ion-col>
+      <ion-col class="ion-text-right">
+        <div class="showtipMFA showtipMFA-top" *ngIf="tooltipFlag">
+          <p class="m-t-15 m-b- size-15 font-weight-400 ion-text-center text-black display-block jostBook">You will need
+            to enter your MFA Key at check out when doing a transaction.</p>
+          <h2 class="text-black m-b-0 text-center jostBook font-weight-800">Forgot your MFA Key?</h2>
+          <p class="m-b-5 m-t-0 size-15 font-weight-400 ion-text-center text-black display-block jostBook">Contact us
+            here:</p>
+          <a class="m-t-15 m-b-5 size-15 font-weight-400 ion-text-center color-primary display-block jostBook">Support.Xliquidus.com/help
+          </a>
+        </div>
+        <p class="forgotkeycss color-sky" (click)="toggleTooltip()">Forgot your MFA Key?</p>
+      </ion-col>
+    </ion-row>
+  </div>
+  <div class="total">
+    <ion-col>
+      <ion-button expand="block" size="large" (click)="verify()"
+        class="shadownot size-16 m-t-0 primary-color-background no-border border-radius-8 p-t-10p  height-60 futuraFontsBold font-weight-600 letter-spacing">
+        CONTINUE</ion-button>
+    </ion-col>
+  </div>
+  <div class="background-liquidate"></div>
+</ion-content>

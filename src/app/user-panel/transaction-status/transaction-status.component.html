@@ -1,0 +1,50 @@
+<app-user-panel-header></app-user-panel-header>
+<ion-content class="background-transaction-status">
+  <ion-grid>
+    <ion-row class="p-l-10 p-r-10 m-t-20p">
+      <ion-col class="ion-text-center">
+        <h1 class="size-28 text-white jostBook">TRANSACTION STATUS</h1>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="p-l-10 p-r-10 m-t-20p" *ngIf="!isComplete">
+      <ion-col class="ion-text-center">
+        <h1 class="size-28 text-white jostBook">PROCESSING</h1>
+        <ion-spinner class="spinnerstyle"></ion-spinner>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="p-t-50" *ngIf="!isComplete">
+      <ion-col>
+        <h3 class="size-19 text-white text-center jostBook font-weight-800">While You Wait...</h3>
+        <p class="size-14 text-white text-center jostBook">You will received an email confirmation when <br> your
+          transaction is complete</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="isComplete">
+      <ion-col>
+        Complete
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="nowrap baseline">
+      <ion-col *ngIf="!isComplete">
+        <ion-button expand="block" size="large" color="primary-contrast"
+          class="size-15 light-custom-button noShadow shadownot no-border border-radius-8 p-t-10p height-60 jostDemi font-weight-800 letter-spacing">
+          BROWSE MARKET</ion-button>
+      </ion-col>
+      <ion-col *ngIf="isComplete">
+        <ion-button expand="block" size="large" color="primary-contrast"
+          class="size-15 light-custom-button noShadow shadownot no-border border-radius-8 p-t-10p height-60 jostDemi font-weight-800 letter-spacing">
+          VIEW RECEIPT</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="block" size="large"
+          class="size-15 primary-color-background noShadow shadownot no-border border-radius-8 p-t-10p height-60 jostDemi font-weight-800 letter-spacing">
+          GO TO WALLET</ion-button>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

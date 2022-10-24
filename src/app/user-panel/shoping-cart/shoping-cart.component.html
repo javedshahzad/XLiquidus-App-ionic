@@ -1,0 +1,141 @@
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/assets/css/bootstrap-icons.css">
+<app-user-panel-header [isCartOpen]="true"></app-user-panel-header>
+<ion-content>
+  <div class="overfolow-y h-100 ">
+    <ion-progress-bar type="indeterminate" *ngIf="isDataLoad"></ion-progress-bar>
+    <!--   *ngIf="cartDetail?.items.length >= 1 && showCart"-->
+    <ion-grid *ngIf="cartDetail?.items.length >= 1 && showCart"
+      class="position-relative z-index-10 grid-minheight p-h-25">
+      <!-- <ion-grid> -->
+      <ion-row class="m-t-15">
+        <ion-col size="7">
+          <h2 class="jostDemi size-24 color-tertiary-dark font-weight-600 p-0 ion-text-left">YOUR CART
+            <img src="../../../assets/images/buynowshopingcart.png" class="carticonimg">
+          </h2>
+
+        </ion-col>
+        <ion-col size="5" class="ion-text-right">
+          <ion-title (click)="gotomarketplace()" class="jostDemi size-13 m-t-10 keepshopingcolor font-weight-600 p-0">
+            KEEP SHOPPING
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <!--  -->
+    <ion-list *ngIf="cartDetail?.items.length == 0 && showCart">
+      <ion-item-divider class="height-30 removeborder">
+        <ion-title class="jostDemi size-24 color-tertiary-dark font-weight-600 p-0">NO ITEM IN CART
+        </ion-title>
+      </ion-item-divider>
+    </ion-list>
+    <!-- -->
+    <ion-list class="w-100 p-0" *ngFor="let item of cartDetail?.items" [hidden]="!showCart">
+      <!-- <ion-item-sliding #item> -->
+      <div class="white-background p-r-20 p-l-10">
+        <!-- <ion-ripple-effect type="unbounded"></ion-ripple-effect> -->
+        <ion-row>
+          <ion-col size="11" class="m-b--10">
+            <ion-text class="display-block">
+              <img [src]="item?.flag" onerror="this.src='assets/images/wfse.png'" class="w-15 m-t--10 ion-float-left">
+              <div ion-float-right>
+                <h4 class="jostDemi size-20 m-b-0 m-t-5 font-weight-600">
+                  {{item.name}}
+                </h4>
+              </div>
+            </ion-text>
+          </ion-col>
+          <ion-col size="1">
+            <ion-icon name="close-outline" class="zoom-1-3 text-gray" (click)="delete(item)"></ion-icon>
+          </ion-col>
+          <ion-col size="0.5"></ion-col>
+          <ion-col size="5.5">
+            <ion-text class="display-block">
+              <div ion-float-right>
+                <p class="changecolor jostBook size-12 font-weight-400 m-t-0 m-b-0">PRICE</p>
+                <h4 class="color-secondary jostBook size-15 m-b-0 m-t-0 font-weight-400">
+                  ${{item.price}} USD
+
+                </h4>
+              </div>
+            </ion-text>
+          </ion-col>
+          <ion-col size="3">
+            <ion-text class="display-block">
+              <p class="changecolor jostBook size-12 font-weight-400 m-t-0 m-b-0">QTY</p>
+              <ion-input class="color-secondary jostBook size-15 m-b-0 m-t--10 font-weight-400" inputmode="numeric"
+                type="tel" [value]="item.amount" (ionBlur)="updateqty(item,$event.target.value)">
+
+              </ion-input>
+            </ion-text>
+          </ion-col>
+          <ion-col size="3">
+            <ion-text class="ion-float-right">
+              <p class="changecolor jostBook size-12  font-weight-400 m-t-0 m-b-0">TOTAL</p>
+              <h4 class="color-secondary jostBook size-18 m-b-0 m-t-0 font-weight-500">
+                ${{item.totalPrice}}
+              </h4>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </div>
+      <!-- <ion-item-options side="end" class="red-background">
+            <ion-icon name="trash-outline" class="zoom-2-5 m-t-10 color-white" (click)="delete(item)"></ion-icon>
+          </ion-item-options> -->
+      <!-- </ion-item-sliding> -->
+    </ion-list>
+    <div class="border-top-blue" *ngIf="cartDetail?.items.length >= 1 && showCart">
+      <ion-row class="m-t-10">
+        <ion-col size="1"></ion-col>
+        <ion-col size="5">
+          <h4 class="size-19 font-weight-400 jostBook">TOTAL:</h4>
+        </ion-col>
+        <ion-col size="2"></ion-col>
+        <ion-col size="4">
+          <h2 class="size-19 font-weight-400 jostBook ">${{cartDetail?.totalPrice}} USD</h2>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="1" class="ion-text-center">
+          <p class="font-weight-800 size-10">.</p>
+        </ion-col>
+        <ion-col size="10">
+          <p class="size-15 m-t-0 m-b-0 text-gray jostBook font-weight-400 font-weight-500">Pricing is current as of
+            {{currentDateTime | date:'EEEE, MMMM d, y, h:mm a'}} PST and is subject to change at time of checkout</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="1" class="ion-text-center">
+          <p class="font-weight-800 size-10">.</p>
+        </ion-col>
+        <ion-col size="10">
+          <p class="size-15 m-t-0 m-b-0 text-gray jostBook font-weight-400">Transaction fees apply at time of checkout
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="cartDetail?.totalPrice >=250">
+        <ion-col size="1" class="ion-text-center">
+          <p class="font-weight-800 size-10">.</p>
+        </ion-col>
+        <ion-col size="10">
+          <p class="size-15 m-t-0 m-b-0 text-gray jostBook font-weight-400">Your transaction is over the normal safety
+            limit. We will be required to provide an MFA key to complete your transaction.</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="1"></ion-col>
+        <ion-col size="10">
+          <ion-button expand="block" size="large"
+            class="primary-color-background shadownot no-border border-radius-8 p-t-10p  height-60 letter-spacing p-a z-index-10 w-100"
+            (click)="checkout()">
+            <h4 class="jostDemi font-weight-600 size-19 m-t-10">CHECKOUT</h4>
+          </ion-button>
+        </ion-col>
+        <ion-col size="1"></ion-col>
+      </ion-row>
+    </div>
+    <!-- <div class="backgroundimage-footer-shopingcart z-index-0 min-h position-relative" *ngIf="cartDetail?.items.length >= 1 && showCart">
+  </div> -->
+  </div>
+</ion-content>

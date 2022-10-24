@@ -1,0 +1,121 @@
+.background-buynow {
+  background: url("../../../assets/images/signu1-background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 380px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  z-index: -1;
+}
+.m-l-10p {
+  margin-left: 10%;
+}
+.height-70 {
+  height: 70%;
+}
+.m-t-25 {
+  margin-top: 25px;
+}
+.color-black {
+  color: black;
+}
+.font-weight-600 {
+  font-weight: 600;
+}
+
+.parent {
+  // height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // margin-top: 60px;
+}
+.child {
+  width: 75%;
+  height: auto;
+  background: #d9ebed;
+  border-radius: 8px;
+
+  // position: absolute;
+  z-index: 999999;
+  bottom: 10px;
+}
+.coincss {
+  font-size: 18px;
+  margin-top: 20px;
+  font-weight: 700;
+  margin-left: 0px;
+}
+.totalamt {
+  font-size: 20px;
+  font-weight: 800;
+  /* margin-bottom: 0px; */
+  margin-top: 0px;
+}
+.totalqty {
+  margin-bottom: 0px;
+  margin-top: 0px;
+  font-size: 18px;
+}
+.investcolor {
+  color: #2985c2;
+}
+.lineheight {
+  line-height: 20px;
+}
+.cartbtnstyle {
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.carticonimg {
+  width: 25px;
+  height: 25px;
+}
+.custom-color-blue {
+  color: #001b47;
+}
+.backgroundimage-footer-buynow {
+  background: url("../../../assets/images/signu1-background.png") 0 0/100% 100%
+    no-repeat;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 250px;
+  width: 100%;
+  bottom: 0;
+  position: absolute;
+}
+input[type="number"]::-webkit-inner-spin-button {
+  opacity: 1;
+}
+
+.m-a {
+  margin: auto;
+}
+.mybtn {
+  position: absolute;
+  z-index: 9999;
+  width: 100%;
+  bottom: 10px;
+
+  ion-text {
+    padding: 100px;
+  }
+}
+.m-l--15 {
+  margin-left: -15px;
+}
+.min-h {
+  min-height: 120px;
+}
+.grid-minheight {
+  min-height: calc(100% - 290px);
+}
+img.wfseimg {
+  width: 15%;
+  position: absolute;
+  z-index: 9999;
+  left: 50px;
+  bottom: 6px;
+}

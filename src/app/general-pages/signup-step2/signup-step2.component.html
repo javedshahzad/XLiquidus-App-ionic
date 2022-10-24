@@ -1,0 +1,160 @@
+<ion-content class="h-100 no-scroll">
+  <div class="overfolow-y h-100">
+    <ion-item-divider class="height-30 removeborder background-subheader"></ion-item-divider>
+    <ion-grid class="position-relative z-index-10">
+      <ion-row>
+        <ion-col>
+          <ion-toolbar class="general-pages-toolbar p-t-5p">
+            <div class="ion-text-center">
+              <h1 class="color-secondary size-32 font-weight-600 jostDemi">
+                CREATE YOUR
+              </h1>
+              <h2 class="size-23 transaction-color m-t-0 jostDemi letter-spacing font-weight-600">TRANSACTION PROFILE
+              </h2>
+              <div class="showtip size-15 jostBook font-weight-400" *ngIf="isshowtip==true">
+                A Transaction Profile is needed to do transactions under $250. This information is kept private per our
+                privacy policy and used ONLY to verify and authorize transactions.
+              </div>
+              <p class="m-0 color-secondary size-15 jostBook p-l-6p p-r-6p  font-weight-400">To authorize, expedite and
+                get the
+                most out of your XLiquidus Account you need to create a <span class="transaction-color"
+                  (click)="toggleshowtip()">Transaction Profile. </span></p>
+            </div>
+
+          </ion-toolbar>
+          <form class="p-5" [formGroup]="signupForm2" (ngSubmit)="submitStep2()">
+            <div>
+              <ion-label class="m-t-13 m-b-5 size-13 color-secondary display-block font-weight-600 jostDemi">FIRST NAME
+                <span class="text-gray jostDemi">(AS SHOWN ON LEGAL ID)</span>
+              </ion-label>
+              <ion-input class="itemclass height-60" formControlName="FirstName"></ion-input>
+              <div *ngFor="let error of errorMessages.FirstName" class="errormsg">
+                <ng-container *ngIf="FirstName.hasError(error.type) && (FirstName.dirty || FirstName.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block ">LAST NAME <span
+                  class="text-gray jostDemi">(AS SHOWN ON LEGAL ID)</span></ion-label>
+              <ion-input class="itemclass height-60" formControlName="LastName"></ion-input>
+              <div *ngFor="let error of errorMessages.LastName" class="errormsg">
+                <ng-container *ngIf="LastName.hasError(error.type) && (LastName.dirty || LastName.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">ADDRESS <span
+                  class="text-gray jostDemi">(STREET AND CITY)</span></ion-label>
+              <ion-input class="itemclass height-60" formControlName="streetAddr"></ion-input>
+              <div *ngFor="let error of errorMessages.streetAddr" class="errormsg">
+                <ng-container *ngIf="streetAddr.hasError(error.type) && (streetAddr.dirty || streetAddr.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">MOBILE NUMBER</ion-label>
+              <ion-input class="itemclass height-60" inputmode="numeric" placeholder='+XX (XXX) XXX-XXXX'
+                [brmasker]="{mask:'+00 (000) 000-0000', len:18}" maxlength="18" autocomplete="off"
+                formControlName="mobile" autocomplete="new-password" type="tel"></ion-input>
+              <div *ngFor="let error of errorMessages.mobile" class="errormsg">
+                <ng-container *ngIf="mobile.hasError(error.type) && (mobile.dirty || mobile.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <div class="position-relative">
+              <div class="showtip showtip-top size-14" *ngIf="isshowtipc==true">
+                <p class="m-t-0">Select the Country in which you have current Legal Identification for.
+                  <br>
+                  If you don't see your country in this list, XLiquidus may not be available in your country.
+                </p>
+              </div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">COUNTRY
+                <span class="text-gray">(AS SHOWN ON LEGAL ID )
+                  <ion-icon name="information-circle" class="color-tertiary iconsize v-lign-m"
+                    (click)="toggleshowtipc()"></ion-icon>
+                </span>
+              </ion-label>
+              <ion-select class="itemclass height-60 " interface="action-sheet" formControlName="country">
+                <ion-select-option>
+                  CHOOSE COUNTRY
+                </ion-select-option>
+                <ion-select-option *ngFor="let item of countries" [value]="item">
+                  {{item.name}}
+                </ion-select-option>
+              </ion-select>
+              <div *ngFor="let error of errorMessages.country" class="errormsg">
+                <ng-container *ngIf="country.hasError(error.type) && (country.dirty || country.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+
+            </div>
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">DATE OF BIRTH
+              </ion-label>
+              <ion-datetime class="itemclass height-60" min="1960" max={{maxDate}} displayFormat="MMM DD, YYYY"
+                placeholder="MM / DD / YYYY" formControlName="dob"></ion-datetime>
+              <div *ngFor="let error of errorMessages.dob" class="errormsg">
+                <ng-container *ngIf="dob.hasError(error.type) && (dob.dirty || dob.touched) ">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">GENDER
+                PREFERENCE:</ion-label>
+              <ion-select class="itemclass height-60" interface="action-sheet" formControlName="gender">
+                <ion-select-option *ngFor="let item of genders" [value]="item">
+                  {{item}}
+                </ion-select-option>
+              </ion-select>
+              <div *ngFor="let error of errorMessages.gender" class="errormsg">
+                <ng-container *ngIf="gender.hasError(error.type) && (gender.dirty || gender.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <ion-button expand="block" size="large" *ngIf="signupForm2.valid"
+              class="shadownot size-18 primary-color-background no-border border-radius-8 m-b-20 m-t-15 height-60 jostDemi letter-spacing ion-activatable ripple-parent box-shadow font-weight-600"
+              [class.background-blue-light]="checkbackground" (click)="submitStep2()">SUBMIT<ion-spinner name="lines"
+                class="validatespinner1" *ngIf="ShowSpinner"></ion-spinner>
+            </ion-button>
+
+            <ion-button expand="block" size="large" *ngIf="!signupForm2.valid" [disabled]="true"
+              class="shadownot size-18 static-button-color no-border border-radius-8 m-b-20 m-t-15 height-60 jostDemi letter-spacing ion-activatable ripple-parent box-shadow font-weight-600"
+              [class.background-blue-light]="checkbackground">SUBMIT<ion-spinner name="lines" class="validatespinner1"
+                *ngIf="ShowSpinner"></ion-spinner>
+            </ion-button>
+          </form>
+          <ion-button expand="block" size="large" fill="clear" (click)="skipthisstep()" *ngIf="createProfile != 1"
+            class="text-white shadownot white-space ion-text-inherit size-12 no-border border-radius-8 m-b-20 height-50 jostDemi">
+            <ion-text class="skipcss">SKIP THIS STEP</ion-text>
+          </ion-button>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div class="backgroundimage-footer z-index-0">
+    </div>
+
+  </div>
+</ion-content>

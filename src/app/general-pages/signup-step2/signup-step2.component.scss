@@ -1,0 +1,32 @@
+.background-subheader {
+  background: url("../../../assets/images/subheader.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100px;
+}
+
+.transaction-color {
+  color: #3a9bd0;
+}
+.error-message {
+  color: #c70000 !important;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 15px;
+}
+
+.skipcss {
+  border: 1px solid;
+  padding: 10px;
+}
+.iconsize {
+  zoom: 1.5;
+}
+
+.static-button-color {
+  --background: #9c9c9c;
+}
+
+.shadownot{
+  box-shadow: none;
+}

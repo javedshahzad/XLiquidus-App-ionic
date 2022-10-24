@@ -1,0 +1,84 @@
+<app-user-panel-header></app-user-panel-header>
+<ion-content>
+  <div class="position-relative h-100">
+    <ion-item-divider class="height-30 removeborder background-subheader"></ion-item-divider>
+    <ion-grid class="position-relative z-index-10 custom-height-liquidate">
+      <ion-row class="p-l-10 p-r-10">
+        <ion-col class="ion-text-center">
+          <h1 class="size-23 color-main font-weight-600 jostDemi">LET'S LIQUIDATE!</h1>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <img src="assets/images/XL.PNG" class="w-30 m-a">
+      </ion-row>
+      <ion-row class="p-l-10 p-r-10">
+        <ion-col class="ion-text-center">
+          <h1 class="size-19 jostDemi font-weight-600 color-secondary">TRANSFER. DEPOSIT. EXCHANGE.</h1>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="text-center">
+          <ion-label
+            class="m-t-15 m-b-15 ion-text-center size-16 display-block jostDemi font-weight-600 color-secondary">I WANT
+            TO...</ion-label>
+
+          <ng-select class="ngSelectcontrolBorder liqTypeSelect w-80 m-l-10p m-r-10p" placeholder="Choose one"
+            [searchable]="false" [clearable]="false" [(ngModel)]="type">
+            <ng-option value="Bank">
+              <ion-row>
+                <ion-col class="p-0 m-0">
+                  <p class="size-16 font-weight-400 jostBook m-0 text-left p-l-10">Deposit Money to Bank
+                    Account</p>
+                </ion-col>
+              </ion-row>
+            </ng-option>
+            <ng-option value="CryptoWallet">
+              <ion-row>
+                <ion-col class="p-0 m-0">
+                  <p class="size-15 font-weight-400 jostBook m-0 text-left p-l-10">Transfers to
+                    another Crypto Wallet</p>
+                </ion-col>
+              </ion-row>
+            </ng-option>
+            <ng-option value="Exchange">
+              <ion-row>
+                <ion-col class="p-0 m-0">
+                  <p class="size-15 font-weight-400 jostBook m-0 text-left p-l-10">Send Money to an
+                    Exchange</p>
+                </ion-col>
+              </ion-row>
+            </ng-option>
+          </ng-select>
+
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-label
+            class="m-t-15 m-b-15 ion-text-center size-16 display-block jostDemi font-weight-600 color-secondary">AMOUNT
+            IN USD:
+          </ion-label>
+          <ion-input class="itemclass inputWithDollar ion-text-center w-80 m-l-10p height-60 size-21" placeholder="00.00"
+            [(ngModel)]="amount" type="number" min="0"><span class="p-l-20">$</span></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="1"></ion-col>
+        <ion-col size="10">
+          <ion-button (click)="next()" expand="block" size="large"
+            class="size-16 primary-color-background no-border border-radius-8 p-t-10p height-60 jostDemi font-weight-600 letter-spacing">
+            NEXT</ion-button>
+        </ion-col>
+        <ion-col size="1"></ion-col>
+      </ion-row>
+    </ion-grid>
+    <div class="background-liquidate"></div>
+  </div>
+</ion-content>
+
+
+
+
+<!-- <ion-content>
+  <h2 class="ion-text-center jostDemi size-30 p-t-70 p-b-70 font-weight-600 custom-color">Check back soon and often for more cool features!</h2>
+</ion-content> -->

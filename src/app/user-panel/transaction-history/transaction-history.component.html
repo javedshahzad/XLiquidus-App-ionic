@@ -1,0 +1,93 @@
+<app-user-panel-header></app-user-panel-header>
+<ion-content>
+  <!-- <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="currentUserTransaction($event)">
+    <ion-refresher-content pullingIcon="refresh"></ion-refresher-content>
+  </ion-refresher>  -->
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <h2 class="jostDemi size-23 font-weight-600 m-t-15 custom-color">TRANSACTION HISTORY</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="8">
+        <ion-item lines="none" class="itemclass ion-custom-searchbar height-50">
+          <ion-input [(ngModel)]="searchTerm" name="searchTerm" placeholder="Search"></ion-input>
+          <ion-icon name="search-outline" slot="end"></ion-icon>
+        </ion-item>
+      </ion-col>
+      <ion-col size="4">
+        <ion-select placeholder="Sort by" [(ngModel)]="SortByValue" (ngModelChange)="sortValueChange(SortByValue)"
+          class="itemclass text-black height-50" interface="action-sheet">
+          <ion-select-option value="dateAsc">Oldest</ion-select-option>
+          <ion-select-option value="dateDesc">Most Recent</ion-select-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-no-padding">
+      <ion-col class="ion-no-padding">
+        <table class="transaction_history w-100">
+          <thead class="background-blue-gradient">
+            <tr class="text-white jostDemi size-13 font-weight-600">
+              <th> DATE & ID</th>
+              <th> STATUS</th>
+              <th> AMOUNT</th>
+              <td></td>
+            </tr>
+          </thead>
+          <tr *ngFor="let td of CurrentUserTransactionsDetails | fullObjectFilter:searchTerm"
+            (click)="goToTransactionDetails(td)">
+            <td>
+              <h2 class="color-blue jostDemi m-b-5 m-t-5 font-weight-600 size-14">{{td.type}}</h2>
+              <h6 class="color-blue jostMedium  m-b-5 m-t-5 font-weight-400 size-14">
+                {{td.customDate}}
+              </h6>
+              <p class="text-gray jostBook font-weight-500 size-12 m-t-0 m-b-0">#{{td.receiptTxId.substring(0,30)}}...
+              </p>
+            </td>
+            <td>
+              <ion-icon *ngIf="td.status != 0" class="size-24 custom-tick-color" name="checkmark-circle"></ion-icon>
+              <ion-icon *ngIf="td.status == 0" class="size-24 custom-tick-color-danger" name="checkmark-circle">
+              </ion-icon>
+            </td>
+            <td>
+              <ion-text class="jostHeavy size-15 color-blue font-weight-800">{{ td.amount | currency}}</ion-text>
+            </td>
+            <td>
+              <ion-icon name="chevron-forward" class="jostDemi size-12 text-gray opacity-07 iconcss"></ion-icon>
+            </td>
+          </tr>
+          <tr class="ion-text-center" *ngIf="!CurrentUserTransactionsDetails">
+            <td colspan="4">
+              <div class="w-100">
+                <ion-button fill="clear" expand="block" class="color-primary" class="ion-activatable ripple-parent">
+                  <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+                  loading <ion-spinner></ion-spinner>
+                </ion-button>
+              </div>
+            </td>
+          </tr>
+          <tr class="ion-text-center" *ngIf="CurrentUserTransactionsDetails">
+            <td colspan="4">
+              <div class="w-100">
+                <ion-button *ngIf="CurrentUserTransactionsDetails.length == 0" fill="clear" expand="block"
+                  class="color-primary" class="ion-activatable ripple-parent">
+                  <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+                  Data not found
+                </ion-button>
+                <ion-button *ngIf="CurrentUserTransactionsDetails.length >= transactionPageSettings.itemlength"
+                  fill="clear" expand="block" class="color-primary" class="ion-activatable ripple-parent"
+                  (click)="fetchUserTransaction()">
+                  <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+                  Load more
+                </ion-button>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

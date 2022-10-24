@@ -1,0 +1,127 @@
+<app-user-panel-header [isWalletOpen]="true" [isCartOpen]="true"></app-user-panel-header>
+<ion-content> 
+  <ion-progress-bar type="indeterminate" *ngIf="isDataLoad"></ion-progress-bar>
+  <div class="position-relative h-100">
+    <ion-grid class="grid-minheight">
+      <ion-row class="p-l-10 p-r-10">
+        <ion-col class="ion-text-center">
+          <h1 class="size-32 jostDemi font-weight-600 investcolor ">INVEST TODAY</h1>
+          <p class="font-weight-400 jostBook size-15 lineheight">Choose the asset you wish to purchase then enter the amount you wish to invest to add to your cart.</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>  
+        <ion-col class="m-t-25">
+          <h5 class="m-t-15 m-b-5 color-black size-16 ion-text-center font-weight-800  custom-color-blue display-block jostHeavy">SELECT AN ASSET TYPE</h5>
+          <img [src]="productDetailtobuy?.flag" onerror="this.src='assets/images/wfse.png'" alt="" class="wfseimg"/>
+          <ion-input [value]="productDetailtobuy?.name" readonly="true" class="itemclass height-60 w-80 m-l-10p ion-searchbar ion-text-center"></ion-input>  
+          <!-- <ion-searchbar showCancelButton="focus" value="{{productDetailtobuy?.name}}" readonly="true" class="itemclass height-70 w-80 m-l-10p ion-searchbar height-50 ion-text-center"></ion-searchbar> -->
+        </ion-col>  
+      </ion-row>
+      <ion-row class="m-t-15">
+        <ion-col>
+          <h5 class="m-t-15 m-b-5 size-16 font-weight-800 ion-text-center custom-color-blue  display-block jostHeavy">AMOUNT (USD)</h5>
+          <!-- <ion-item lines="none" class="itemclass w-80 m-l-10p  ion-text-center height-0"> -->
+            <ion-input [value]="productuantity" class="itemclass height-60 w-80 m-l-10p ion-text-center" (ionChange)='changevalue($event.target.value)'  inputmode="numeric"  type="tel"></ion-input>  
+          <!-- </ion-item> -->
+        </ion-col>
+      </ion-row>
+      
+    </ion-grid>
+    <!-- <div class="parent" >
+        <div class="child">
+            <ion-row>
+              <ion-col size="6" class="ion-text-right">
+                  <img src="assets/images/bitcoin.png" width="80%">  
+              </ion-col>
+              <ion-col size="6" class="ion-text-left">
+                <ion-label>
+                  <h4 class="color-secondary jostDemi size-19 font-weight-600 coincss m-b-0 m-t-20 m-l--7" >
+                    {{productDetailtobuy?.name}}
+                  </h4>
+                </ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="ion-text-center">
+                <p class="totalqty jostBook size-13" >{{productuantity}}  {{productDetailtobuy?.name}}
+                </p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="ion-text-center">
+                <p class="totalamt jostBook size-19"> 
+                  ${{total}}
+                </p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-button expand="block" size="large"
+                class="jostDemi letter-spacing size-16 cartbtnstyle primary-color-background no-border border-radius-8 m-b-20 height-50 ion-activatable ripple-parent box-shadow"
+                (click)="addtocart()">  <img src="../../../assets/images/shopingcarticon.png" class="carticonimg" ><ion-text class="m-l-10">ADD TO CART </ion-text></ion-button>
+              </ion-col>
+            </ion-row>
+        </div>
+    </div> -->
+
+
+    <div class="parent">
+      <div class="child">
+        <ion-row>
+          <ion-col size="5" class="ion-text-center">
+            <img [src]="productDetailtobuy?.flag" onerror="this.src='assets/images/wfse.png'" width="80%">
+          </ion-col>
+          <ion-col size="7" class="ion-text-left">
+              <h4 class="color-secondary jostDemi size-20 m-l--15 font-weight-600 coincss m-b-0 m-t-20">
+                {{productDetailtobuy?.name}}
+              </h4>
+              <p class="totalqty size-15 font-weight-400 m-l--15 jostBook">{{productDetailtobuy?.shortName}}</p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="2" class="p-0"></ion-col>
+          <ion-col size="4" class="p-0">
+            <p class="totalqty jostBook size-21 font-weight-600">{{productuantity}}</p>
+          </ion-col>
+          <ion-col size="5" class="p-0">
+            <p class="totalqty jostBook size-21 font-weight-600">{{total}}</p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="2" class="p-0"></ion-col>
+          <ion-col size="4" class="p-0">
+            <p class="totalqty jostBook size-13 font-weight-400">QTY</p>
+          </ion-col>
+          <ion-col size="5" class="p-0">
+            <p class="totalqty jostBook size-13 font-weight-400">{{productDetailtobuy?.shortName}}</p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" size="large"
+              class="jostDemi shadownot letter-spacing size-16 cartbtnstyle primary-color-background no-border border-radius-8 m-b-20 height-50 ion-activatable ripple-parent box-shadow"
+              (click)="addtocart()"><img src="../../../assets/images/shopingcarticon.png" class="carticonimg">
+              <ion-text class="m-l-10">ADD TO CART </ion-text>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+
+    <!-- <ion-grid class="mybtn">
+      <ion-row>
+        <ion-col class="text-center">
+          <ion-button class="w-40 m-a" (click)="clear()" size="small" fill="outline" color="light"
+            expand="block">
+            <p class="size-10 joshDemi font-weight-400">CLEAR FORM</p>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid> -->
+    <!-- <div class="backgroundimage-footer-buynow">
+    </div> -->
+    <div class="backgroundimage-footer z-index-0 min-h position-relative">
+    </div>
+  </div>  
+</ion-content>

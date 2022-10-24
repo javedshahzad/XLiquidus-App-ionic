@@ -1,0 +1,146 @@
+<app-user-panel-header></app-user-panel-header>
+
+<ion-content>
+  <div class="overfolow-y h-100 ">
+    <ion-progress-bar type="indeterminate" *ngIf="isDataLoad"></ion-progress-bar>
+    <ion-list class="p-t-0">
+      <ion-item-divider class="height-30 removeborder background-subheader-30">
+        <ion-button slot="start" fill="clear" class="p-0-srart m-t-30" (click)="_appServices?.goBack()">
+          <ion-icon name="chevron-back" class="staticcolor size-32"></ion-icon>
+        </ion-button>
+        <!-- <ion-title class="futuraFontsMedium size-20 text-white font-weight-600 p-0 ion-text-left">BACK TO CART</ion-title> -->
+      </ion-item-divider>
+      <ion-item class="m-l-20 m-r-20 m-t-10" lines="none">
+        <div class="ion-text-center">
+          <h2 class="color-tertiary-dark ion-text-center font-weight-600 size-23 jostDemi">
+            REVIEW & CONFIRM YOUR ORDER
+          </h2>
+          <p class="size-15 text-black jostBook font-weight-400 ">Pricing is current as of {{currentDateTime |
+            date:'EEEE, MMMM d, y, h:mm a'}} and is subject to change at the time of processing.</p>
+        </div>
+      </ion-item>
+    </ion-list>
+    <!--  -->
+    <ion-list class="w-100 p-0" *ngFor="let item of cartDetail?.items">
+      <ion-item class="white-background p-r-12 ion-activatable ripple-parent">
+        <!-- <ion-ripple-effect type="unbounded"></ion-ripple-effect> -->
+        <ion-row>
+          <ion-col size="12" class="m-b--10">
+            <ion-text class="display-block">
+              <img [src]="item?.flag" onerror="this.src='assets/images/wfse.png'" class="w-15 m-t--10 ion-float-left">
+              <div ion-float-right>
+                <h4 class="jostDemi size-19 m-b-0 m-t-5 font-weight-600">
+                  {{item.name}}
+                </h4>
+              </div>
+            </ion-text>
+          </ion-col>
+          <ion-col size="0.5"></ion-col>
+          <ion-col size="5.5">
+            <ion-text class="display-block">
+              <!-- <img src="assets/images/bitcoin.png" class="w-30 m-t--5 ion-float-left"> -->
+              <div ion-float-right>
+                <!-- <h4 class="jostDemi size-19 m-b-0 m-t-5 font-weight-600">
+                  Zcash
+                 
+                </h4> -->
+                <p class="changecolor jostBook font-weight-400 size-12 m-t-0 m-b-0">PRICE</p>
+                <h4 class="color-secondary jostBook size-15 m-b-0 m-t-0 p-t-4 font-weight-400">
+                  ${{item.price}} USD
+                </h4>
+              </div>
+            </ion-text>
+          </ion-col>
+          <ion-col size="3">
+            <ion-text class="display-block ">
+              <p class="changecolor jostBook font-weight-400 size-12 m-t-0 m-b-0">QTY</p>
+              <h4 class="color-secondary jostBook size-15 m-b-0 m-t-5 font-weight-400">
+
+                {{item.amount}}
+              </h4>
+            </ion-text>
+          </ion-col>
+          <ion-col size="3">
+            <ion-text class="ion-float-right">
+              <p class="changecolor jostBook font-weight-400 size-12 m-t-0 m-b-0">TOTAL</p>
+              <h4 class="color-secondary jostBook size-18 m-b-0 m-t-5 font-weight-400">
+                ${{item.totalPrice}}
+              </h4>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-list>
+    <!--  -->
+    <ion-grid class="m-l-30 m-r-15" class="position-relative z-index-10 grid-minheight p-h-25">
+      <ion-row>
+        <ion-col class="ion-text-left" size="6">
+          <h5 class="jostMedium color-blue size-15 m-b-0 m-t-5 font-weight-500">
+            SUBTOTAL:
+          </h5>
+        </ion-col>
+        <ion-col class="ion-text-right" size="6">
+          <h5 class="jostMedium size-15 m-b-0 m-t-5 font-weight-500 text-black">
+            ${{cartDetail?.totalPrice}} <span class="font-weight-500  jostMedium size-15">USD</span>
+          </h5>
+        </ion-col>
+      </ion-row>
+      <ion-row class="m-t-10 border-bottom-5">
+        <ion-col class="ion-text-left" size="6">
+          <h5 class="jostHeavy color-blue size-15 m-b-0 m-t-5 font-weight-800">
+            ORDER TOTAL:
+          </h5>
+        </ion-col>
+        <ion-col class="ion-text-right" size="6">
+          <h5 class="jostHeavy color-blue size-15 m-b-0 m-t-5 font-weight-800">
+            ${{cartDetail?.totalPrice}} USD
+          </h5>
+        </ion-col>
+      </ion-row>
+
+      <div class="m-t-20 m-b-20">
+        <table>
+          <tr>
+            <td>
+              <ion-checkbox color="tertiary" slot="start" class="zoom-1-2 m-b-40 m-r-8 m-t--10" [(ngModel)]="ischeck">
+              </ion-checkbox>
+            </td>
+            <td>
+              <ion-label class="size-13 jostBook font-weight-400 white-space text-overflow">
+                <span class="text-black p-r-2 color-light-gray font-weight-400 size-15 jostBook">I agree to the
+                  Purchase</span>
+                <span class="text-black p-r-2 font-weight-400 color-light-gray size-15 jostBook"
+                  [routerLink]="['../../tnc']"><u>Terms and Conditions</u></span>
+                <span class="text-black p-r-2 font-weight-400 color-light-gray size-15 jostBook"> and authorize this
+                  transaction. I acknowledge that my transaction may be subject to the completion of KYC
+                  verification.</span>
+              </ion-label>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!--  -->
+      <ion-row class="row-design" *ngIf="cartDetail?.totalPrice >=250">
+        <ion-col size="1.5">
+          <img src="../../../assets/images/alerticon.png" class="w-90" />
+        </ion-col>
+        <ion-col size="10.5" class="ion-text-left">
+          <p class="size-16 m-t-0 m-b-0 jostMedium font-weight-500 ion-text-left text-light-gray">Your transaction is
+            over the normal safety limit. <b>We will be required to provide an MFA key to complete your transaction.</b>
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-button expand="block" size="large" *ngIf="ischeck"
+        class="m-l-15 shadownot m-r-15 w-80 primary-color-background no-border border-radius-8 p-t-10p  height-60 letter-spacing p-a z-index-10"
+        (click)="makePayment()">
+        <h4 class="font-weight-600 size-19 jostDemi m-t-10">CHECKOUT</h4>
+      </ion-button>
+      <ion-button expand="block" size="large" [hidden]="ischeck" [disabled]="true"
+        class="m-l-15 shadownot static-butto-color m-r-15 w-80 no-border border-radius-8 p-t-10p  height-60 letter-spacing p-a z-index-10">
+        <h4 class="font-weight-600 size-19 jostDemi m-t-10">CHECKOUT</h4>
+      </ion-button>
+    </ion-grid>
+    <div class="backgroundimage-footer-shopingcart z-index-0 min-h position-relative">
+    </div>
+  </div>
+</ion-content>

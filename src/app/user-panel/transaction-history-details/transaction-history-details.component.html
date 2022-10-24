@@ -1,0 +1,98 @@
+<app-user-panel-header></app-user-panel-header>
+<ion-content>
+  <ion-list class="p-t-0">
+    <ion-item-divider class="height-30 removeborder background-subheader">
+      <ion-button slot="start" fill="clear" class="p-0-srart m-t-30" (click)="goToTransactionHistory()">
+        <ion-icon name="chevron-back" class="color-tertiary-dark size-32"></ion-icon>
+      </ion-button>
+    </ion-item-divider>
+    <ion-item class="m-l-20 m-r-20 m-t-10" lines="none">
+      <div class="ion-text-center m-l-a m-r-a">
+        <h2 class="color-tertiary-dark ion-text-center font-weight-600 size-25 jostDemi">
+          TRANSACTION DETAILS
+          </h2>
+      </div>
+    </ion-item>
+    <ion-item *ngIf="transactionDetails?.status != 0">
+      <ion-button expand="block" size="large" class="m-l-a m-r-a shadownot backcolor no-border border-radius-8 m-t-10 b-r-10 height-60  letter-spacing">
+        <ion-icon name="checkmark-circle-sharp" class="correct zoom-1-5 m-t-5 m-l--7"></ion-icon>
+        <h5 class="size-15 jostHeavy font-weight-800 process">Proccessed successfully</h5>
+      </ion-button>
+    </ion-item>
+    <ion-item *ngIf="transactionDetails?.status == 0">
+      <ion-button expand="block" size="large" class="shadownot m-l-a m-r-a backcolornotsuccess no-border border-radius-8 p-t-10p  height-60 b-r-10 letter-spacing">
+        <ion-icon name="close-sharp"  class="correct zoom-1-5 m-t-5 m-l--7"></ion-icon>
+        <h5 class="size-15 jostHeavy font-weight-800 process">Transaction Failed</h5>
+      </ion-button>
+      <p class="errorcolor size-14 jostBook font-weight-400">Your transaction did not processess. Error code: 404 Account Non Respsonsive.</p>
+    </ion-item>
+    
+    <ion-item class="height-30 p-r-10 p-l-10">
+      <h5 class="size-15 jostMedium font-weight-500 color-blue">DATE:</h5>
+      <p slot="end" class="size-15 font-weight-400 color-blue jostBook">{{transactionDetails?.date | date:'medium'}}</p>
+    </ion-item>
+    <ion-item class="height-30 p-r-10 p-l-10">
+      <h5 class="size-15 jostMedium font-weight-500 color-blue">TYPE:</h5>
+      <p slot="end" class="size-15 font-weight-400  color-blue jostBook">Exchange-to-Exchange</p>
+    </ion-item> 
+    <ion-item class="height-30 p-r-10 p-l-10">
+      <h3 class="size-15 jostMedium font-weight-500 color-blue">TRANSACTION ID:</h3>
+      <p slot="end" class="size-15 font-weight-400 color-blue jostBook">#{{(transactionDetails?.tid).substring(0,20)}}...  </p>
+    </ion-item>
+    <!-- <ion-item class="height-30 m-r-15 m-l-10 very-light-gray-background last no-border">
+      <h3 class="size-16 font-weight-600 color-secondary text-transform-uppercase jostDemi">
+        <span>AMOUNT (USD):</span><span class="color-danger font-weight-600 jostDemi"> {{ transactionDetails?.amount | currency}}</span>
+      </h3>
+    </ion-item> -->
+
+  <!-- <ion-item-divider class="height-30 removeborder p-t-10">
+      <ion-title class="futuraFontsMedium size-16 font-weight-600 p-0 m-l-10 ion-text-left color-tertiary-dark">FROM:</ion-title>
+    </ion-item-divider>
+  
+   <ion-item class="height-30 p-r-10 p-l-10">
+      <h3 class="size-12 font-weight-600 color-secondary">SEND NAME:</h3>
+      <ion-label slot="end" class="size-14">Jessica Abel Modarelli</ion-label>
+    </ion-item>
+    <ion-item class="height-30 p-r-10 p-l-10">
+      <h3 class="size-12 font-weight-600 color-secondary">SENDER ACCOUNT ID:</h3>
+      <ion-label slot="end" class="size-14">****-****-29384</ion-label>
+    </ion-item>
+    <ion-item class="height-30 p-r-10 p-l-10">
+      <h3 class="size-12 font-weight-600 color-secondary">ACCOUNT NAME:</h3>
+      <ion-label slot="end" class="size-14">XLiquidus Wallet</ion-label>
+    </ion-item>
+    
+    <ion-item-divider class="height-30 removeborder p-t-10">
+      <ion-title class="futuraFontsMedium size-16 font-weight-600 p-0 m-l-10 ion-text-left color-tertiary-dark">TO:</ion-title>
+    </ion-item-divider>
+  
+    <ion-item class="height-30 p-r-10 p-l-10">
+      <h3 class="size-12 font-weight-600 color-secondary">RECIPIENT NAME:</h3>
+      <ion-label slot="end" class="size-14">Jessica Abel Modarelli</ion-label>
+    </ion-item>
+    <ion-item class="height-30 p-r-10 p-l-10">
+      <h3 class="size-12 font-weight-600 color-secondary">RECIPIENT ACCOUNT ID:</h3>
+      <ion-label slot="end" class="size-14">****-****-29384</ion-label>
+    </ion-item>
+    <ion-item class="height-30 p-r-10 p-l-10 no-border">
+      <h3 class="size-12 font-weight-600 color-secondary">ACCOUNT NAME:</h3>
+      <ion-label slot="end" class="size-14">Coinbase</ion-label>
+    </ion-item>
+    <ion-item class="height-30 m-r-15 m-l-10 very-light-gray-background last no-border">
+      <h3 class="size-14 font-weight-600 color-secondary ion-text-uppercase">Status:</h3>
+      <h3 slot="end"><span class="color-success font-weight-600 ion-text-uppercase"><ion-icon name="checkmark-circle" class="size-32 v-lign-m"></ion-icon></span><span class="futuraFontsMedium color-success size-20 font-weight-600 ion-text-uppercase">Complete</span></h3>
+    </ion-item>-->
+    <!-- <ion-row class="p-l-10 p-r-10 m-t-20p" *ngIf="hideloader">
+      <ion-col class="ion-text-center">
+        <h1 class="size-28  text-white futuraFontsBold">PROCESSING
+          
+        </h1>
+        <ion-spinner name="crescent" class="spinnerstyle"></ion-spinner>
+      </ion-col>
+    </ion-row> -->
+  </ion-list> 
+ 
+  <!-- <div *ngIf="transactionDetailsUrl">
+    <iframe [src]="transactionDetailsUrl" height="500" width="100%"></iframe>
+  </div> -->
+</ion-content>

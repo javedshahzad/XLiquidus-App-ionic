@@ -1,0 +1,198 @@
+<app-user-panel-header></app-user-panel-header>
+<ion-content>
+  <ion-progress-bar type="indeterminate" *ngIf="isDataLoad"></ion-progress-bar>
+  <!---Kyc-->
+  <div>
+    <ion-list lines="none" class="p-t-0">
+      <ion-item-divider class="height-30 removeborder background-subheader-40">
+        <ion-button slot="start" fill="clear" class="shadownot p-0-srart m-t-30" (click)="goToPrev()">
+          <ion-icon name="chevron-back" class="staticcolor size-32"></ion-icon>
+        </ion-button>
+        <!-- <ion-title class="futuraFontsMedium size-16 color-tertiary-dark font-weight-600 p-0 ion-text-left">BACK TO CART
+      </ion-title> -->
+        <!-- <ion-button slot="end" fill="clear" class="p-0-srart m-0" (click)="goToPrev()">
+        <ion-icon name="close" class="color-tertiary-dark size-32"></ion-icon>
+      </ion-button> -->
+      </ion-item-divider>
+    </ion-list>
+
+    <!-- Comment Below COde for Temporary -->
+    <!-- <div class="progress-wrap">
+        <div class="line-progress-bar">
+          <div class="line"></div>
+          <ul class="checkout-bar">
+            <li class="progressbar-dots" [ngClass]="{'active': step === 1}"><span>CONFIRM IDENTITY</span></li>
+            <li class="progressbar-dots" [ngClass]="{'active': step === 2}"><span>PAYMENT METHOD</span></li>
+            <li class="progressbar-dots" [ngClass]="{'active': step === 3}"><span>CONFIRM</span></li>
+          </ul>
+        </div>
+      </div> -->
+  </div>
+  <!-- <form (ngSubmit)="doKyc()">
+        <div>
+             <ion-grid>
+               <ion-row>
+                 <ion-col>
+                  <div class="ion-text-center">
+                    <h1 class="color-secondary size-28 futuraFontsMedium font-weight-500 m-t-50">
+                      PAYMENT METHOD
+                      </h1>
+                  </div>
+                      <ion-select class="itemclass height-60 " interface="action-sheet" [(ngModel)]="cardvalue" (ionChange)="onChange($event)" [ngModelOptions]="{standalone: true}">
+                        <ion-select-option value="my-wallet">
+                          My Wallet    
+                        </ion-select-option>
+                        <ion-select-option value="credit-card">
+                          Credit Card
+                         </ion-select-option>
+                         <ion-select-option value="crypto">
+                          Crypto
+                         </ion-select-option>
+                      </ion-select>
+                      <div [hidden]="iscardshow!='my-wallet'">
+                        <ion-list class="w-100 p-0">
+                          <ion-item class="white-background p-r-12 ion-activatable ripple-parent" *ngFor="let item of userCoinMetricsList">
+                            <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+                            <ion-row>
+                              <ion-col size="1">
+                                <ion-checkbox class="zoom-1-5"></ion-checkbox>
+                              </ion-col>
+                              <ion-col size="6">
+                                <ion-text class="display-block">
+                                  <img src="assets/images/bitcoin.png" class="w-30 ion-float-left">
+                                  <div ion-float-right>
+                                    <h5 class="color-tertiary-dark futuraFontsBold size-16 font-weight-600">
+                                      {{item.teamName}}
+                                    </h5>
+                                  </div>
+                                </ion-text>
+                              </ion-col>
+                              <ion-col size="3">
+                                <ion-text class="p-t-25 display-block">
+                                  <p class="color-secondary futuraFontsBook size-16 m-t-0 m-b-0">{{item.payoutCurrency}}</p>
+                                 </ion-text>
+                              </ion-col>
+                              <ion-col size="2">
+                                <ion-text class="ion-float-right p-t-25">
+                                  <p class="color-secondary futuraFontsBook size-16 m-t-0 m-b-0">${{item.amount}}</p>
+                                 </ion-text>
+                              </ion-col>
+                            </ion-row>
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                      <div [hidden]="iscardshow!='credit-card'">
+                        <form>
+                          <div>
+                            <ion-label class="m-t-15 m-b-15 size-15 color-secondary display-block futuraFontsMedium">NAME ON CARD:</ion-label>
+                            <ion-input class="itemclass height-60"></ion-input>
+                           </div>
+                           <div>
+                            <ion-label class="m-t-15 m-b-15 size-15 color-secondary display-block futuraFontsMedium ion-float-left">CARD NUMBER: <ion-icon name="alert-circle" class="text-green v-lign-t"></ion-icon> </ion-label><span class="ion-float-right m-t-5"><img src="assets/images/card-images.png"></span>
+                            <ion-input class="itemclass height-60"></ion-input>
+                           </div>
+                           <div>
+                             <ion-row>
+                               <ion-col size="6">
+                                <ion-label class="m-t-15 m-b-15 size-15 color-secondary display-block futuraFontsMedium">EXP. DATE: </ion-label>
+                                <ion-datetime class="itemclass height-60" min={{date}} max={{maxDate}} displayFormat="MMM, YYYY" placeholder="MM / yy "></ion-datetime>  
+        
+                               </ion-col>
+                               <ion-col size="6">
+                                <ion-label class="m-t-15 m-b-15 size-15 color-secondary display-block futuraFontsMedium" placeholder="CSV">CSV: <ion-icon name="alert-circle" class="text-green v-lign-t"></ion-icon> </ion-label>
+                                <ion-input class="itemclass height-60"></ion-input>
+                               </ion-col>
+                             </ion-row>
+                           </div>
+                           <div>
+                            <ion-label class="m-t-15 m-b-15 size-15 color-secondary display-block futuraFontsMedium ion-float-left">ZIP CODE: </ion-label>
+                            <ion-input class="itemclass height-60"></ion-input>
+                           </div>
+                           <div class="ion-text-center">
+                             <h4 class="size-16 color-tertiary-dark futuraFontsbold font-weight-600">FOR YOUR SAFETY</h4>
+                             <p class="futuraFontsbold m-0 size-14 text-black">We never save your credit card information!</p>
+                             <p class="futuraFontsbold size-14 text-black m-0"><a href="#" class="futuraFontsbold size-14 color-tertiary text-decoration-none">Read </a> about our credit card processing partner. </p>
+                           </div>
+                           <ion-button expand="block" size="large" class=" size-16 primary-color-background no-border border-radius-8 m-b-20 m-t-15 height-50 futuraFontsBold letter-spacing ion-activatable ripple-parent box-shadow font-weight-600" >CONTINUE</ion-button>
+        
+                        </form>
+                      </div>  
+                      <div [hidden]="iscardshow!='crypto'">
+                        <div class="ion-text-center">
+                          <h1 class=" color-secondary size-20 futuraFontsMedium font-weight-600 m-t-50">
+                            PAY WITH CRYPTO
+                          </h1>
+                          <ion-select placeholder="COINBASE" (ionChange)="onChangeCurrency($event)" class="background-blue-dark size-32 primary-color-background no-border border-radius-8 m-b-20 m-t-50 height-70 futuraFontsBold letter-spacing ion-activatable ripple-parent box-shadow font-weight-600 ion-text-capitalize itemclass height-60" interface="action-sheet">
+                            <ion-select-option *ngFor="let item of cryptoCoins"  [value]="item" >
+                              {{item}} 
+                             </ion-select-option>
+                          </ion-select>
+                        </div>
+                      </div>
+                 </ion-col>
+               </ion-row>
+             </ion-grid>
+        </div>
+  </form> -->
+  <div>
+    <ion-grid class="m-l-30 m-r-30">
+      <ion-row>
+        <ion-col>
+          <div class="ion-text-center">
+            <h2 class="color-tertiary-dark ion-text-center font-weight-600 size-23 jostDemi">
+              CHOOSE A PAYMENT METHOD
+            </h2>
+            <p class="text-black jostBook font-weight-400 size-16">Processing Fees vary based on payment method</p>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-radio-group [(ngModel)]="case">
+        <ion-row>
+          <ion-col size="12">
+            <ion-item lines="none">
+              <!-- <img src="../../../assets/images/applepay.png" class="paylogo m-l-30" />
+              <img src="../../../assets/images/googlepay.png" class="paylogo m-l-10"/> -->
+
+              <img src="../../../assets/images/gpay.png" class="paylogo m-l-10" />
+              <ion-radio mode="md" slot="start" class="m-r-0 customdesign" item-left value="paybycard"></ion-radio>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-item lines="none">
+              <img src="../../../assets/images/bitcoin.png" class="bitlogo m-l-10" />
+              <h5 class="font-weight-600 jostBook size-15 m-t-0">Bitcoin</h5>
+              <ion-radio mode="md" slot="start" class="m-r-0 customdesign" value="BTC"></ion-radio>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-item lines="none">
+              <img src="../../../assets/images/litecoin.png" class="bitlogo m-l-10" />
+              <h5 class="font-weight-600 jostBook size-15 m-t-0">Litcoin</h5>
+              <ion-radio mode="md" slot="start" class="m-r-0 customdesign" value="LTC"></ion-radio>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-item lines="none">
+              <img src="../../../assets/images/ethereum.png" class="bitlogo m-l-10" />
+              <h5 class="font-weight-600 jostBook size-15 m-t-0">Ethereum</h5>
+              <ion-radio mode="md" slot="start" class="m-r-0 customdesign" value="ETH"></ion-radio>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="block" size="large"
+              class="primary-color-background shadownot no-border border-radius-8 height-60 letter-spacing"
+              (click)="doPayment()">
+              <h2 class="jostDemi font-weight-600 size-19 m-t-10">CONTINUE</h2>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-radio-group>
+    </ion-grid>
+    <div class="backgroundimage-footer-productpage z-index-0">
+    </div>
+  </div>
+
+</ion-content>

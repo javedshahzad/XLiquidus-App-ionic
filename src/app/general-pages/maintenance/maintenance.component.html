@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar class="background-header">
+    <!-- <ion-title class="size-16 text-white font-weight-800 futuraFontsBold letter-spacing">PROFILE & SETTINGS</ion-title> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="position-relative h-100">
+    <ion-grid class="position-relative z-index-10 custom-height-liquidate gridBG">
+      <ion-row class="m-t-30">
+        <img src="assets/images/XL.PNG" class="w-30 m-a">
+      </ion-row>
+      <ion-row class="p-l-10 p-r-10">
+        <ion-col class="ion-text-center">
+          <h1 class="size-32 jostDemi font-weight-600 uppercase">Don’t Worry</h1>
+        </ion-col>
+      </ion-row>
+      <ion-row class="p-l-10 p-r-10">
+        <ion-col class="ion-text-center">
+          <h1 class="size-23 color-main font-weight-600 jostDemi uppercase m-0">We will be right back.</h1>
+        </ion-col>
+      </ion-row>
+      <ion-row class="p-l-10 p-r-10">
+        <ion-col class="ion-text-center">
+          <p class="size-15 font-weight-400 jostBook">We are currently doing routine <br>
+            maintenance but promise to be back <br> better than ever shortly!</p>
+          <p class="size-15 font-weight-400 jostBook">Thanks for your patience</p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="1"></ion-col>
+        <ion-col size="10">
+          <ion-button (click)="close()" expand="block" size="large"
+            class="size-16 primary-color-background no-border border-radius-8 p-t-10p height-60 jostDemi font-weight-600 letter-spacing">
+            CLOSE</ion-button>
+        </ion-col>
+        <ion-col size="1"></ion-col>
+      </ion-row>
+    </ion-grid>
+    <div class="background-maintenance"></div>
+  </div>
+</ion-content>

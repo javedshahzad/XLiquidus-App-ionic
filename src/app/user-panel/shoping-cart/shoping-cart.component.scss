@@ -1,0 +1,103 @@
+.background-subheader{
+    background: url('../../../assets/images/subheader.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100px;
+}
+.custome-model.modal-header{
+    border-bottom: 0px !important;
+    margin-top: 12px !important;
+  }
+  .custom-footer-model{
+    border-top: 0px !important;
+  }
+  .custome-model-border{
+    border-radius: 23px !important;
+  }
+  .my-modal-scdate{
+    display: none;
+}
+  .custom-text-area{
+    border-radius: 16px !important;
+  }
+.modal-header .close {
+    padding: 0px 15px !important;
+    font-size: 28px;
+}
+.fontsizeclass{
+    color: black !important;
+    font-size: 16px;
+}
+
+.my-modal-scdate.show {
+    display: block !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+.modelpopup{
+    margin-top: 50% !important;
+}
+.m-t-2{
+    margin-top: 2px;
+}
+.color-gray{
+    color: gray;
+}
+.border-right{
+    border-right: 0.9px solid gray !important;
+}
+.background-light-gray{
+    background-color: lightgray;
+}
+.white-space{
+    white-space: nowrap !important;
+}
+.color-dark-gray{
+    color: darkgray;
+}
+.color-black{
+    color: black !important;
+}
+.font-weight-700{
+    font-weight: 700;
+}
+.customicon{
+    background: #F7F7F7;
+    padding: 2px;
+    border: 0.5px solid #F7F7F7;
+    border-radius: 4px;
+}
+.height-70{
+    height: 70% !important;
+}
+
+.carticonimg{
+    width: 25px;
+    height: 25px;
+}
+.keepshopingcolor{
+    color: #60CCF0;
+}
+
+.changecolor{
+    color: #2985C2;
+}
+
+.backgroundimage-footer-shopingcart{
+    background: url('../../../assets/images/signu1-background.png') 0 0/100% 100% no-repeat;;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 250px;
+    width: 100%;
+    bottom: 0; 
+    position:absolute;
+  }
+
+  .shadownot{
+      --box-shadow: none;
+  }
+  .min-h  {
+    min-height: 120px;
+  }
+  .grid-minheight {
+    min-height: calc(25% - 190px);
+  }

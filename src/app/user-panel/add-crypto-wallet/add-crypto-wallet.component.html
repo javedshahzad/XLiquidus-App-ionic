@@ -1,0 +1,96 @@
+<app-user-panel-header></app-user-panel-header>
+<ion-content class="h-100 no-scroll">
+  <div class="overfolow-y h-100">
+    <ion-item-divider class="height-30 removeborder background-subheader">
+      <ion-button slot="start" fill="clear" class="p-0-srart m-t-30" (click)="_appServices?.goBack()">
+        <ion-icon name="chevron-back" class="color-tertiary size-32"></ion-icon>
+      </ion-button>
+    </ion-item-divider>
+    <ion-grid class="position-relative z-index-10 custom-height-addCrypto">
+      <ion-row>
+        <ion-col>
+          <ion-toolbar class="general-pages-toolbar p-t-5p">
+            <div class="ion-text-center">
+              <h2 class="color-tertiary-dark size-23 font-weight-600 jostDemi">
+                ADD A CRYPTO WALLET
+              </h2>
+            </div>
+
+          </ion-toolbar>
+          <!-- (ngSubmit)="addWalletDetail()" -->
+          <form class="p-5" [formGroup]="WalletDetailForm">
+
+            <!-- Wallet NAME -->
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 color-blue display-block font-weight-600 jostDemi">Enter Wallet
+                Name</ion-label>
+              <ion-input class="itemclass height-60" formControlName="walletName"></ion-input>
+              <div *ngFor="let error of errorMessages.walletName" class="errormsg">
+                <ng-container *ngIf="walletName.hasError(error.type) && (walletName.dirty || walletName.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+
+            <!-- Wallet Address -->
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-blue display-block">Wallet Address</ion-label>
+              <ion-input class="itemclass height-60" maxlength="30" autocomplete="off" formControlName="walletAddress"
+                autocomplete="new-password" type="password"></ion-input>
+              <div *ngFor="let error of errorMessages.walletAddress" class="errormsg">
+                <ng-container
+                  *ngIf="walletAddress.hasError(error.type) && (walletAddress.dirty || walletAddress.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- Confirm wallet Address -->
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-blue display-block">Confirm Address</ion-label>
+              <ion-input class="itemclass height-60" maxlength="30" autocomplete="off" formControlName="confirmWallet"
+                autocomplete="new-password" type="password"></ion-input>
+              <div *ngFor="let error of errorMessages.confirmWallet" class="errormsg">
+                <ng-container
+                  *ngIf="confirmWallet.hasError(error.type) && (confirmWallet.dirty || confirmWallet.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+              <div class="errormsg">
+                <ng-container
+                  *ngIf="WalletDetailForm.hasError('mismatch') && (confirmWallet.dirty || confirmWallet.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{errorMessages.mismatch}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <div class="m-l-a m-r-a w-100 size-13 font-weight-500">
+              <p class="size-13 font-weight-400 jostBook p-15 text-center">XLiquidus takes <span (click)="gotoPrivacy()"
+                  class="color-tertiary-dark">privacy</span> seriously and use the highest standard encryption and
+                compliance
+                controls. </p>
+            </div>
+
+            <!-- [disabled]="!WalletDetailForm.valid"[class.background-blue-light]="checkbackground" (click)="submitStep2()" -->
+            <ion-button expand="block" size="large" (click)="saveWallet()"
+              class="shadownot size-18 primary-color-background no-border border-radius-8 m-b-20 m-t-15 height-60 jostDemi letter-spacing ion-activatable ripple-parent font-weight-600">
+              SAVE
+              <ion-spinner *ngIf="showSpinner" name="lines" class="validatespinner1"></ion-spinner>
+            </ion-button>
+          </form>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div class="backgroundimage-footer-addCrypto z-index-0">
+    </div>
+
+  </div>
+</ion-content>

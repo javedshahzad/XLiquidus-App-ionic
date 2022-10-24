@@ -1,0 +1,58 @@
+.text-center {
+  text-align: center !important;
+}
+.text-left {
+  text-align: left !important;
+}
+.customcolor {
+  color: #2985c2;
+}
+.custome-color-gray {
+  color: #636363;
+}
+.paywithcryptocard {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  background: #d9ebed;
+  border-radius: 8px;
+  // height: 126px;
+}
+.statictext {
+  font-size: 14px;
+  text-align: center;
+  margin-top: 0px;
+  color: gray;
+  margin-bottom: 0px;
+}
+
+.btnMargin {
+  margin: 20px auto;
+}
+.font-15 {
+  font-size: 15px !important;
+}
+.color-blue {
+  color: #001b47;
+}
+.black {
+  color: black;
+}
+
+.shadownot{
+  --box-shadow: none;
+}
+
+li::marker {
+  font-weight: bold;
+}
+
+.backgroundimage-footer-productpage{
+  background: url('../../../assets/images/signu1-background.png') 0 0/100% 100% no-repeat;;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 150px;
+  width: 100%;
+  // position:absolute;
+  bottom: 0; 
+}

@@ -1,0 +1,35 @@
+.background-subheader{
+    background: url('../../../assets/images/subheader.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100px;
+    
+}
+.level-color{
+    color: #001B47;
+}
+.loginbtn{
+    border: 1px solid;
+    padding: 8px;
+    margin-left: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.error-message{
+    color: #C70000 !important;
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: 15px;
+}
+
+.checkcolor{
+    background-color: #60CCF0 ;
+    color: #60CCF0;
+}
+
+.customecolor{
+    color: #3A9BD0;
+}
+.m-t-60{
+    margin-top: 60px;
+}

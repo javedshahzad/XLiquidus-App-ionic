@@ -1,0 +1,32 @@
+.backgroundimage-footer-productpage{
+    background: url('../../../assets/images/signu1-background.png') 0 0/100% 100% no-repeat;;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 250px;
+    width: 100%;
+    // position:absolute;
+    bottom: 0; 
+}
+.shadownot{
+    --box-shadow: none;
+}
+.custom-color-background{
+    --background: #2985C2;
+}
+
+.background-subheader-30{
+    background: url('../../../assets/images/subheader.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100px;
+    margin-top: -40px;
+}
+.custome-icon-info{
+    position: absolute;
+    zoom: 1.2;
+    margin-left: 5px;
+}
+
+.static-butto-color{
+    --background: #D3D3D3;
+  }
