@@ -23,4 +23,4 @@ keytool -list -v -keystore xliquidus.keystore -alias xliquidus -storepass xliqui
 * keystore=xliquidus.keystore
 * keypass=xliquidus
 * alias=xliquidus
-* keypass=xliquidus
+* password=xliquidus
