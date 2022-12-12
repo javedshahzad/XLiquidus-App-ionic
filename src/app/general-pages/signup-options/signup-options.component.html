@@ -24,7 +24,7 @@
       <ion-row>
         <ion-col>
           <div class="btn-grp p-8 bottom-0 w-100 left-0">
-            <ion-button expand="block" fill="outline" size="large"
+            <!-- <ion-button expand="block" fill="outline" size="large"
               class="joshDemi shadownot m-b-10 size-16 social-login no-border border-radius-8 height-60 ion-activatable ripple-parent"
               (click)="Login(_B2C_config.GoogleSignupUrl)">
               <div class="iconCss">
@@ -51,12 +51,21 @@
                 <img src="assets/images/Mac Client.png">
               </div>
               <ion-text class="m-l-10 size-16">SIGN UP WITH APPLE</ion-text>
-            </ion-button>
-
-            <ion-button expand="block" size="medium" fill="clear"
+            </ion-button> -->
+            <!-- <ion-button class="login-btn" (click)="goToLogin()" size="default" fill="outline" color="tertiary-contrast"
+            expand="block"> -->
+            <div class="ion-text-center account">
+              <ion-text class="size-15 already"> Already have an Account?</ion-text>
+            </div>
+          <!-- </ion-button> -->
+          <ion-button class="login-btn" (click)="goToLogin()" size="default" fill="outline" color="tertiary-contrast"
+          expand="block">
+          <ion-text class="size-15">LOG IN</ion-text>
+        </ion-button>
+            <!-- <ion-button expand="block" size="medium" fill="clear"
               class="text-white m-t-30 shadownot  size-15 no-border jostdemi ion-text-inherit" (click)="goToLogin()">
-              Already have an Account? <ion-text class="loginbtn size-14 jostdemi">LOG IN</ion-text>
-            </ion-button>
+              Already have an Account?<ion-text class="loginbtn size-14 jostdemi">LOG IN</ion-text>
+            </ion-button> -->
           </div>
         </ion-col>
       </ion-row>
