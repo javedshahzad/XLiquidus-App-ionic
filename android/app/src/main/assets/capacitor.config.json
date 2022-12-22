@@ -23,5 +23,8 @@
 			"StatusBarBackgroundColor": "#3A9BD0",
 			"StatusBarOverlaysWebView": "false"
 		}
+	},
+	"server": {
+		"url": "http://192.168.80.1:8100"
 	}
 }
