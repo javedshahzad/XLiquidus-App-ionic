@@ -28,6 +28,7 @@ export class B2C_config_setting {
     public AuthorityAppleSignUp = `${this.AuthorityBase}${this.AuthorizeVersion}?p=${this.AppleSignUpPolicy}`;
 
     public redirect_uri = `msal${this.ClientId}${encodeURIComponent('://auth')}`;
+    public appleRedirect_uri ='msauth.com.usscyber.xl://auth';
     public responseType = `${encodeURIComponent('id_token token')}`;
     public loginPrompt = 'login';
 
@@ -41,6 +42,6 @@ export class B2C_config_setting {
 
     public MicrosoftSignupUrl = `${this.AuthorityMircoSoftSignUp}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.redirect_uri}&prompt=${this.loginPrompt}&nonce=defaultNonce`;
     public GoogleSignupUrl = `${this.AuthorityGoogleSignUp}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.redirect_uri}&prompt=${this.loginPrompt}&nonce=defaultNonce`;
-    public AppleSignupUrl = `${this.AuthorityAppleSignUp}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.redirect_uri}&prompt=${this.loginPrompt}&nonce=defaultNonce`;
+    public AppleSignupUrl = `${this.AuthorityAppleSignUp}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.appleRedirect_uri}&prompt=${this.loginPrompt}&nonce=defaultNonce`;
 
 }

@@ -17,6 +17,7 @@ export class DashboardComponent implements OnInit {
   showFilter: boolean = false;
   checkbackground: boolean = false;
   checkbackgroundTransfer: boolean = false;
+  defaultSearchTerm="toppicks";
   public backButtonSubscription;
   public historyWalletBalance;
   public userCoinMetricsList;
@@ -52,7 +53,7 @@ export class DashboardComponent implements OnInit {
     this.isDataLoad = true;
 
     if (this.tokenSearchValue == '') {
-      var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=Top30&lang=EN&take=30&skip=0`
+      var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.defaultSearchTerm}&lang=EN&take=30&skip=0`
     } else {
       var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.tokenSearchValue}&lang=EN&take=30&skip=0`
     }
