@@ -35,7 +35,7 @@ export class B2C_config_setting {
     public B2CloginUrl = `${this.AuthoritySignInSignUp}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.redirect_uri}&prompt=${this.loginPrompt}&nonce=defaultNonce`;
     public GoogleloginUrl = `${this.AuthorityGoogleSignInSignUp}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.redirect_uri}&prompt=${this.loginPrompt}&nonce=defaultNonce`;
     public MicrosoftloginUrl = `${this.AuthorityMircoSoftSignInSignUp}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.redirect_uri}&prompt=${this.loginPrompt}&nonce=defaultNonce`;
-    public AppleloginUrl = `${this.AuthorityAppleSignInSignUp}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.redirect_uri}&prompt=${this.loginPrompt}&nonce=defaultNonce`;
+    public AppleloginUrl = `${this.AuthorityAppleSignInSignUp}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.appleRedirect_uri}&prompt=${this.loginPrompt}&nonce=defaultNonce`;
 
     public B2CResetPasswordUrl = `${this.AuthorityPasswordReset}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.redirect_uri}&response_mode=form_post`;
     public tokenAuthorityBase = `https://${this.TenantName}.b2clogin.com/${this.TenantId}/${this.SignInPolicy}`;
