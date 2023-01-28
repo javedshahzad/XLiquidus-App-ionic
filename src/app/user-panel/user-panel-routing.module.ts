@@ -27,6 +27,7 @@ import { FaqComponent } from './faq/faq.component';
 import { NotificationPageComponent } from './notification-page/notification-page.component';
 import { WatchlistPageComponent } from './watchlist-page/watchlist-page.component';
 import { LetsLiquidateComponent } from './lets-liquidate/lets-liquidate.component';
+import { SalesComponent } from './sales-module/sales/sales.component';
 const routes: Routes = [
   {
     path: '',
@@ -142,6 +143,10 @@ const routes: Routes = [
       {
         path: 'lets-liquidate',
         component: LetsLiquidateComponent,
+      },
+      {
+        path:'sales',
+        component:SalesComponent
       },
       {
         path: 'myprofile',

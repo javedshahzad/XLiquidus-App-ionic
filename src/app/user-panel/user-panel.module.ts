@@ -40,6 +40,7 @@ import { NotificationPageComponent } from './notification-page/notification-page
 import { LetsLiquidateComponent } from './lets-liquidate/lets-liquidate.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { SalesComponent } from './sales-module/sales/sales.component';
 
 @NgModule({
   imports: [
@@ -80,7 +81,8 @@ import { Clipboard } from '@ionic-native/clipboard/ngx';
     PayWithCardComponent,
     AboutXliquidusComponent,
     FaqComponent,
-    LetsLiquidateComponent
+    LetsLiquidateComponent,
+    SalesComponent
   ],
   providers: [
     InAppBrowser,

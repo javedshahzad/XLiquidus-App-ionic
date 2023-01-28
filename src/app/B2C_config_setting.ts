@@ -1,3 +1,5 @@
+import {OAuth2AuthenticateOptions, OAuth2Client} from "@byteowls/capacitor-oauth2";
+
 export class B2C_config_setting {
     public TenantName = "uatwsceusscybercom";
     public TenantId = "uatwsceusscybercom.onmicrosoft.com";
@@ -43,5 +45,26 @@ export class B2C_config_setting {
     public MicrosoftSignupUrl = `${this.AuthorityMircoSoftSignUp}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.redirect_uri}&prompt=${this.loginPrompt}&nonce=defaultNonce`;
     public GoogleSignupUrl = `${this.AuthorityGoogleSignUp}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.redirect_uri}&prompt=${this.loginPrompt}&nonce=defaultNonce`;
     public AppleSignupUrl = `${this.AuthorityAppleSignUp}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.appleRedirect_uri}&prompt=${this.loginPrompt}&nonce=defaultNonce`;
-
+    public getAzureB2cOAuth2Options(): OAuth2AuthenticateOptions {
+        return {
+            appId: this.ClientId,
+            authorizationBaseUrl:`${this.AuthorityBase}${this.AuthorizeVersion}`,
+            scope:this.Scopes, // See Azure Portal -> API permission
+            accessTokenEndpoint:"",
+            resourceUrl: "",
+            responseType: "token id_token",
+            pkceEnabled: true,
+            logsEnabled: true,
+            additionalParameters: {
+                p: this.AppleSignInPolicy,
+                prompt: this.loginPrompt,
+                nonce:"defaultNonce"
+              },
+            ios: {
+                pkceEnabled: true,
+                responseType: "token id_token",
+                redirectUrl: this.appleRedirect_uri,
+                }
+        };
+      }
 }

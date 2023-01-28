@@ -8,6 +8,7 @@ import { EncryptionDecryptionService } from 'src/app/services/encryption.service
 import { AppEnum } from 'src/app/appEnum/appenum';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import {OAuth2Client} from "@byteowls/capacitor-oauth2";
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,8 @@ export class LoginComponent implements OnInit {
   public deviceId;
   public geolocationparam;
   public authtoken: any;
+  refreshToken: any;
+  IsAppleLogin: boolean;
 
   constructor(
     private router: Router,
@@ -44,9 +47,11 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log(this._B2C_config.B2CloginUrl);
-    console.log(this._B2C_config.B2CResetPasswordUrl);
-    console.log(this._B2C_config.MicrosoftloginUrl);
+      if(this.platform.is("ios")){
+        this.IsAppleLogin=true;
+      }else{
+        this.IsAppleLogin=false;
+      }
   }
 
   goToCreateAccount() {
@@ -74,6 +79,23 @@ export class LoginComponent implements OnInit {
     });
   }
 
+ async appleloginwithOauth(url){
+  this._appServices.presentLoading();
+    OAuth2Client.authenticate(
+      this._B2C_config.getAzureB2cOAuth2Options()
+  ).then(async response => {
+    console.log(response);
+      let accessToken = response["access_token"];
+      this.authtoken = response['access_token'];
+      this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token, this.authtoken);
+      await this._appServices.deCodeJwtToken(this.authtoken);
+      this._appServices.loaderDismiss();
+      this.postSyncUserDetails();
+    
+  }).catch(reason => {
+      console.error("OAuth rejected", reason);
+  });
+  }
   async getUserDetails() {
     this._appServices.presentLoading();
     var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`;
@@ -91,7 +113,7 @@ export class LoginComponent implements OnInit {
 
 
   async postSyncUserDetails() {
-
+    this._appServices.presentLoading();
     this.geolocation.getCurrentPosition().then((resp) => {
       this.geolocationparam = resp.coords.latitude + ',' + resp.coords.longitude;
     }).catch((error) => {
