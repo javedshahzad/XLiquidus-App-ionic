@@ -105,8 +105,12 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  gotoProductPage(index) {
-    var jsonData = JSON.stringify(this.getSearchResult[index])
+  gotoProductPage(index,token) {
+    let data=this.getSearchResult[index];
+    if(data.shortName === 'NSA'){
+      data.flag="assets/images/nos.svg";
+    }
+    var jsonData = JSON.stringify(data);
     this.router.navigate(['/user-panel/product-page', { 'productData': this._encServices.encrypt(jsonData) }]);
   }
 
@@ -120,7 +124,6 @@ export class DashboardComponent implements OnInit {
   }
 
   changeval(val) {
-    this._appServices.presentLoading();
     console.log('val', val)
     this.tokenSearchValue = val;
     if (this.tokenSearchValue == '') {
@@ -140,7 +143,6 @@ export class DashboardComponent implements OnInit {
   }
 
   searchresult() {
-    this._appServices.presentLoading();
     this.isDataLoad = true;
     var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.tokenSearchValue}&lang=EN&take=30&skip=0`
     this._appServices.getDataByHttp(`Search/Get?${UrlParameters}`).subscribe(res => {

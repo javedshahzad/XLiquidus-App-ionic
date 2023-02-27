@@ -23,7 +23,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { Network } from '@ionic-native/network/ngx';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
-
+import { FingerprintjsProAngularModule } from '@fingerprintjs/fingerprintjs-pro-angular';
+import { environment } from 'src/environments/environment.prod';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,7 +35,8 @@ import { AppVersion } from '@ionic-native/app-version/ngx';
     AppRoutingModule,
     HttpClientModule,
     NgChartsModule,
-    NgSelectModule
+    NgSelectModule,
+    FingerprintjsProAngularModule.forRoot({loadOptions: {apiKey: environment.FingerprintApiKey}})
   ],
   providers: [
     HTTP,

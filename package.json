@@ -28,6 +28,7 @@
     "@capacitor/keyboard": "4.0.1",
     "@capacitor/splash-screen": "4.0.1",
     "@capacitor/status-bar": "4.0.1",
+    "@fingerprintjs/fingerprintjs-pro-angular": "^1.1.1",
     "@ionic-native/app-version": "^5.36.0",
     "@ionic-native/clipboard": "^5.36.0",
     "@ionic-native/core": "^5.36.0",

@@ -24,7 +24,18 @@ export class ProductPageComponent implements OnInit {
   showTooltip1: boolean;
   showTooltip2: boolean;
   showTooltip3: boolean;
-
+  slideOptsOne = {
+    initialSlide: 0,
+    slidesPerView: 1,
+    autoplay: true,
+    loop: true,
+  };
+  GetTokenProfileData: any="";
+  TokenBenefits: any=[];
+  KeyProjectFeatures: any=[];
+  MileStones: any=[];
+  showDetailsIndex: number;
+  getSearchedData: any="";
   constructor(
     public _nav: NavController,
     public router: Router,
@@ -43,15 +54,19 @@ export class ProductPageComponent implements OnInit {
     this.backButtonSubscription = this.platform.backButton.subscribe(() => {
       this._nav.navigateRoot(['user-panel/']);
     });
-    // this._appservices.presentLoading();
     this.isDataLoad = true;
     var proData = this._encServices.decrypt(this.activatedroute.snapshot.paramMap.get('productData'));
     this.productDataFromDashboardPage = JSON.parse(proData);
-    console.log(this.productDataFromDashboardPage)
+    console.log(this.productDataFromDashboardPage);
+    if(this.productDataFromDashboardPage.type==="VendorToken"){
+      this.getTokenProfile(this.productDataFromDashboardPage.tokenIndexId);
+    }else{
+      this.getDetailsbySearchtoken(this.productDataFromDashboardPage.tokenIndexId);
+    }
 
     // if(this.productDataFromDashboardPage.isSaleAvailable){
     if (this.productDataFromDashboardPage.type == 'Team') {
-      var UrlParameters = `symbol=UCTokens&name=${this.productDataFromDashboardPage.shortName}`
+      var UrlParameters = `symbol=UCTokens&name=${this.productDataFromDashboardPage.name}`
     } else {
       var UrlParameters = `symbol=${this.productDataFromDashboardPage.shortName}`
     }
@@ -93,9 +108,60 @@ export class ProductPageComponent implements OnInit {
   ionViewDidLeave() {
     this.backButtonSubscription.unsubscribe();
   }
+  getTokenProfile(tokenIndexId){
+   // https://mobious-xl.usscyber.com/v3/markets/GetTokenProfile?id=5bac2cb0-c5bc-4dcd-94eb-023ab5e28dbd
+    var UrlParameters = `markets/GetTokenProfile?id=${tokenIndexId}`;
+    console.log(UrlParameters);
+    this._appservices.getDataByHttp(UrlParameters).subscribe(res => {
+      console.log("markets/GetTokenProfile responseeeeeeeeee",res);
+      if(res.status == 200){
+        this.GetTokenProfileData= res.data;
+        this.MileStones=this.GetTokenProfileData.mileStones;
+        let arrdata = this.GetTokenProfileData.keyFeatures;
+        let x = arrdata.filter((a) => a.type === "Token");
+        this.TokenBenefits = x;
+        let y = arrdata.filter((a) => a.type === "Product");
+        this.KeyProjectFeatures = y;
+      }
+      this._appservices.loaderDismiss();
+    }, err => {
+      this._appservices.loaderDismiss();
+      console.log(err);
+      this.isDataLoad = false;
+    });
+  }
+  getDetailsbySearchtoken(tokenIndexId){
+    var UrlParameters = `Search/Get/${tokenIndexId}`;
+    console.log(UrlParameters);
+    this._appservices.getDataByHttp(UrlParameters).subscribe(res => {
+      console.log("Search/Get response",res);
+      if(res.status == 200){
+        this.getSearchedData= res.data;
+      }
+      this._appservices.loaderDismiss();
+    }, err => {
+      this._appservices.loaderDismiss();
+      console.log(err);
+      this.isDataLoad = false;
+    });
+  }
+  getPercentageMilstone(unlockedMeasurement){
+   var num=(this.GetTokenProfileData.maxSupply - this.GetTokenProfileData.available) / unlockedMeasurement;
+   var total = Math.round(num);
+   var decimal= total / 100;
+   return decimal;
 
+  }
+  showPercentage(unlockedMeasurement){
+    var num=(this.GetTokenProfileData.maxSupply - this.GetTokenProfileData.available) / unlockedMeasurement;
+    var total = Math.round(num);
+    return total
+  }
+  showDetails(index :number){
+    this.showDetailsIndex = +index
+    console.log(this.showDetailsIndex);
+  }
   getGraphData(fromDate, toDate) {
-    this._appservices.presentLoading();
     this.isDataLoad = true;
     // if(this.productDataFromDashboardPage.isSaleAvailable){
     if (this.productDataFromDashboardPage.type == 'Team') {
@@ -107,8 +173,7 @@ export class ProductPageComponent implements OnInit {
     // var productGraph = `Markets/GetProductStats?symbol=BTC&name=BTC&skip=0&take=10&from=${fromDate.toISOString()}&to=${toDate.toISOString()}`
     this._appservices.getDataByHttp(productGraph).subscribe(_res => {
       this.isDataLoad = false;
-      console.log(_res.status);
-      console.log(_res);
+      console.log("Graph data",_res);
       if (_res.status == 200) {
         this.GraphData = _res.data.data;
         this.showGraph = true;
@@ -117,6 +182,7 @@ export class ProductPageComponent implements OnInit {
       }
       this._appservices.loaderDismiss();
     }, (err) => {
+      console.log(err)
       this._appservices.loaderDismiss();
     });
     // }else{
@@ -131,7 +197,7 @@ export class ProductPageComponent implements OnInit {
   }
 
   buynow() {
-    this._nav.navigateRoot(['/user-panel/buy-now', { 'buproductData': this._encServices.encrypt(JSON.stringify(this.productDataFromDashboardPage)) }]);
+    this._nav.navigateRoot(['/user-panel/buy-now', { 'buproductData': this._encServices.encrypt(JSON.stringify(this.productDataFromDashboardPage)),'GetTokenProfileData':this._encServices.encrypt(JSON.stringify(this.GetTokenProfileData))}]);
   }
 
   getoneDay() {
@@ -222,21 +288,21 @@ export class ProductPageComponent implements OnInit {
   }
 
   toggleTooltip1() {
-    setTimeout(() => {
-      this.showTooltip1 = !this.showTooltip1;
-    }, 100);
+    // setTimeout(() => {
+    //   this.showTooltip1 = !this.showTooltip1;
+    // }, 100);
   }
 
   toggleTooltip2() {
-    setTimeout(() => {
-      this.showTooltip2 = !this.showTooltip2;
-    }, 200);
+    // setTimeout(() => {
+    //   this.showTooltip2 = !this.showTooltip2;
+    // }, 200);
   }
 
   toggleTooltip3() {
-    setTimeout(() => {
-      this.showTooltip3 = !this.showTooltip3;
-    }, 300);
+    // setTimeout(() => {
+    //   this.showTooltip3 = !this.showTooltip3;
+    // }, 300);
   }
 
   closeTooltips() {

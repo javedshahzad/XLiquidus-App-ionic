@@ -46,17 +46,15 @@
         <ion-label class="tabLabel_color size-9 font-weight-400">Notifications</ion-label>
       </ion-tab-button> -->
 
-
-       <ion-tab-button tab="sales">
-        <ng-container *ngIf="selectedTab == 'sales'; else salesNonActive">
-          <img src="../../assets/images/bottomBar-icons/blue_icons/sales.png" class="sales-icon">
+      <ion-tab-button tab="dashboard">
+        <ng-container *ngIf="selectedTab == 'dashboard'; else dashboardNotActive">
+          <img src="../../assets/images/bottomBar-icons/blue_icons/Marketplace-icon.png">
         </ng-container>
-        <ng-template #salesNonActive>
-          <img src="../../assets/images/bottomBar-icons/gray_icons/sales.png" class="sales-icon">
+        <ng-template #dashboardNotActive>
+          <img src="../../assets/images/bottomBar-icons/gray_icons/Marketplace-icon.png">
         </ng-template>
-        <ion-label class="tabLabel_color size-9 font-weight-400">Sales</ion-label>
+        <ion-label class="tabLabel_color size-9 font-weight-400">Marketplace</ion-label>
       </ion-tab-button>
-
 
       <ion-tab-button tab="transaction-history">
         <ng-container *ngIf="selectedTab == 'transaction-history'; else transactionActive">
@@ -94,15 +92,16 @@
         </ng-template>
         <ion-label class="tabLabel_color size-9 font-weight-400">Watchlist</ion-label>
       </ion-tab-button>
-      <ion-tab-button tab="dashboard">
-        <ng-container *ngIf="selectedTab == 'dashboard'; else dashboardNotActive">
-          <img src="../../assets/images/bottomBar-icons/blue_icons/Marketplace-icon.png">
+      <ion-tab-button tab="sales" [disabled]="true">
+        <ng-container *ngIf="selectedTab == 'sales'; else salesNonActive">
+          <img src="../../assets/images/bottomBar-icons/blue_icons/sales.png" class="sales-icon">
         </ng-container>
-        <ng-template #dashboardNotActive>
-          <img src="../../assets/images/bottomBar-icons/gray_icons/Marketplace-icon.png">
+        <ng-template #salesNonActive>
+          <img src="../../assets/images/bottomBar-icons/gray_icons/sales.png" class="sales-icon">
         </ng-template>
-        <ion-label class="tabLabel_color size-9 font-weight-400">Marketplace</ion-label>
+        <ion-label class="tabLabel_color size-9 font-weight-400">Sales</ion-label>
       </ion-tab-button>
+
     </ion-tab-bar>
   </ion-tabs>
 </ion-split-pane>

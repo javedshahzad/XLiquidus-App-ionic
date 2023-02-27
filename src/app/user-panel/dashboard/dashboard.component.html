@@ -63,7 +63,7 @@
           <ion-col>
             <ion-item lines="none" class="itemclass ion-custom-searchbar height-50">
               <ion-input [(ngModel)]="tokenSearchValue" placeholder="Search"
-                (ngModelChange)="changeval($event.target.value)">
+                (ionChange)="changeval($event.target.value)">
               </ion-input>
               <ion-icon name="search-outline" slot="start"></ion-icon>
               <!-- <ion-icon name="arrow-forward-outline" *ngIf="tokenSearchValue != ''" slot="end" (click)="searchresult()"></ion-icon> -->
@@ -76,9 +76,10 @@
     <ion-list>
       <!-- *ngFor="let token of userCoinMetricsList | fullObjectFilter:tokenSearchValue; let i=index" -->
       <ion-item-sliding *ngFor="let token of getSearchResult | fullObjectFilter:tokenSearchValue; let i=index">
-        <ion-item class="ion-activatable ripple-parent" (click)="gotoProductPage(i)">
+        <ion-item class="ion-activatable ripple-parent" (click)="gotoProductPage(i,token)">
           <ion-thumbnail slot="start">
-            <img [src]="token.flag" onerror="this.src='assets/images/wfse.png'">
+            <img *ngIf="token.shortName !='NSA'" [src]="token.flag ? token.flag : token.logo" onerror="this.src='assets/images/wfse.png'">
+            <img *ngIf="token.shortName ==='NSA'" src="assets/images/nos.svg" onerror="this.src='assets/images/wfse.png'">
             <!-- <img src=" {{token.logo}}" class="w-30 ion-float-left"> -->
           </ion-thumbnail>
           <div>
@@ -98,7 +99,7 @@
             </ng-container>
           </ion-text>
         </ion-item>
-        <ion-item-options side="end" (click)="gotoProductPage(i)">
+        <ion-item-options side="end" (click)="gotoProductPage(i,token)">
           <ion-item-option>View</ion-item-option>
         </ion-item-options>
       </ion-item-sliding>

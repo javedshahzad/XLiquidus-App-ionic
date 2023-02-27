@@ -98,7 +98,7 @@ export class UserPanelPage {
   }
 
   async GetUserCoinMetrics() {
-    this._appServices.presentLoading();
+    // this._appServices.presentLoading();
     var UserDetailsUrl2 = `Wallets/GetUserCoinMetrics?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
     this._appServices.getDataByHttp(UserDetailsUrl2).subscribe(_res => {
       if (_res.status == 200) {
@@ -109,7 +109,7 @@ export class UserPanelPage {
           this.appPages[2].url = '/user-panel/liquidate';
         }
       }
-      this._appServices.loaderDismiss();
+      //this._appServices.loaderDismiss();
     });
   }
 

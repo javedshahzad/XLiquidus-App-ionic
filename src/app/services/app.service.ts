@@ -183,26 +183,42 @@ export class AppService {
   }
 
   async presentLoading(message = "") {
-    if (!this.isLoading) {
-      this.isLoading = true;
-      return await this.loadingController.create({
+    // if (!this.isLoading) {
+    //   this.isLoading = true;
+    //   return await this.loadingController.create({
+    //     message: message == "" ? 'Please wait...' : message,
+    //     duration:10000,
+    //   }).then(a => {
+    //     a.present().then(() => {
+    //       if (!this.isLoading) {
+    //         a.dismiss().then(() => null);
+    //       }
+    //     });
+    //   });
+    // }
+    this.isLoading = true;
+    return await this.loadingController
+      .create({
         message: message == "" ? 'Please wait...' : message,
-        duration:18000,
-      }).then(a => {
+        duration:8000,
+      
+      })
+      .then(a => {
         a.present().then(() => {
           if (!this.isLoading) {
-            a.dismiss().then(() => null);
+            a.dismiss().then(() => {});
           }
         });
       });
-    }
   }
 
   async loaderDismiss() {
-    if (this.isLoading) {
-      this.isLoading = false;
-      return await this.loadingController.dismiss().then(() => null);
-    }
+    // if (this.isLoading) {
+    //   this.isLoading = false;
+    //   return await this.loadingController.dismiss().then(() => null);
+    // }
+    this.isLoading = false;
+    return await this.loadingController.dismiss();
   }
 
   async presentToast(msg) {

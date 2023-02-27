@@ -57,7 +57,7 @@
           <ion-row>
             <ion-col>
               <ion-text class="display-block">
-                <img [src]="productDataFromDashboardPage?.flag" onerror="this.src='assets/images/wfse.png'"
+                <img [src]="productDataFromDashboardPage?.flag ? productDataFromDashboardPage?.flag : productDataFromDashboardPage?.logo" onerror="this.src='assets/images/wfse.png'"
                   class="w-30 ion-float-left">
                 <div ion-float-right>
                   <h5 class="color-tertiary-dark jostDemi size-32 m-b-0 m-t-5 font-weight-600">
@@ -68,15 +68,85 @@
                     {{productDataFromDashboardPage?.shortName}}: <span
                       class="jostBook font-weight-400 size-23">{{productDataFromDashboardPage?.marketPrice}}</span>
                   </h2>
-                  <h2 class="color-secondary jostDemi size-23 m-b-0 m-t-0 p-t-4 font-weight-600">
-                    USD: <span class="jostBook font-weight-400 size-23">${{productDataFromDashboardPage?.rate}}</span>
-                  </h2>
                 </div>
               </ion-text>
             </ion-col>
           </ion-row>
         </ion-item>
       </ion-list>
+      <ion-grid *ngIf="!GetTokenProfileData">
+        <ion-row>
+          <ion-col size="12">
+            <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
+              USD: <span class="jostBook darken-color font-weight-400 size-20">${{productDataFromDashboardPage?.rate}}</span>
+            </h4>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    <ion-grid *ngIf="GetTokenProfileData">
+      <ion-row>
+        <ion-col size="12">
+          <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
+            USD: <span class="jostBook darken-color font-weight-400 size-20">${{GetTokenProfileData?.currentPrice}}</span>
+          </h4>
+          <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
+            {{GetTokenProfileData?.marketSymbol}}: <span class="jostBook darken-color font-weight-400 size-20">${{GetTokenProfileData?.available}}</span>
+          </h4>
+          <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600s">
+            About: <span class="jostBook darken-color font-weight-400 size-20">{{GetTokenProfileData?.type}}</span>
+          </h4>
+          <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
+            Description: 
+          </h4>
+          <p class="jostBook darken-color margins font-weight-400 size-20">{{GetTokenProfileData?.description?.summary}}</p>
+          </ion-col>
+          <ion-col size="12">
+            <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
+              Token Benefits:
+            </h4>
+            <p class="jostBook darken-color margins font-weight-400 size-20" *ngFor="let item of TokenBenefits">{{item?.name}}</p>
+          </ion-col>
+          <ion-col size="12">
+          <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
+            Key Project Features:
+          </h4>
+          <p class="jostBook darken-color margins font-weight-400 size-20" *ngFor="let item of KeyProjectFeatures">{{item?.name}}</p>
+        </ion-col>
+        <ion-col size="12">
+          <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
+            Gallery:
+          </h4>
+          <ion-slides pager="true" [options]="slideOptsOne">
+          <ion-slide *ngFor="let item of GetTokenProfileData?.gallery">
+            <img [src]="item?.url"  onerror="this.src='assets/images/wfse.png'">
+            <span class="slide-text jostDemi" *ngIf="item?.name">{{item?.name}}</span>
+          </ion-slide>
+        </ion-slides>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="GetTokenProfileData?.isMileStoneEnabled">
+        <ion-col size="12">
+          <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600 text-center">
+            Milestones Achievements
+          </h4>
+        </ion-col>
+        <ion-col size="12" *ngFor="let item of MileStones; let i = index">
+          <ion-item lines="none">
+            <h4 class="darken-color center jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">Pahse {{i+1}}:<span class="jostBook darken-color font-weight-400 size-18">{{item?.name}}</span></h4>
+            <ion-icon (click)="showDetails(i)" class="jostBook darken-color font-weight-400 size-24 icon-style" name="caret-forward"></ion-icon>
+          </ion-item>
+          <div class="details" *ngIf="showDetailsIndex === i">
+            <p class="jostBook darken-color font-weight-400 margins size-20 center">{{item?.details}}</p>
+            <p class="jostBook darken-color font-weight-400 margins size-20 center">{{item?.startDate | date:'MMM-d-y, h:mm a'}}</p>
+            <p class="jostBook darken-color font-weight-400 margins size-20 center">{{item?.indexMileStoneMeasurement?.unlockedMeasurement}}</p>
+          </div>
+          <div class="progesss-main">
+            <ion-progress-bar class="progressbar" value="{{getPercentageMilstone(item?.indexMileStoneMeasurement?.unlockedMeasurement) ? getPercentageMilstone(item?.indexMileStoneMeasurement?.unlockedMeasurement) : 0}}"></ion-progress-bar>
+            <span class="percentage jostBook color-secondary font-weight-400 size-20">{{showPercentage(item?.indexMileStoneMeasurement?.unlockedMeasurement) ? showPercentage(item?.indexMileStoneMeasurement?.unlockedMeasurement) : 0}}%</span>
+          </div>
+        </ion-col>        
+      </ion-row>
+    </ion-grid>
 
       <ion-grid [hidden]="isProductData">
         <ion-row>
