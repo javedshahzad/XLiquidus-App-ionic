@@ -62,3 +62,7 @@ Please add these lines in you `Info.plist` files to get working login in ios.
 		</dict>
 	</array>
 ```
+Add this below line in android\app\build.gradle file
+```
+ manifestPlaceholders = [appAuthRedirectScheme: 'com.usscyber.xliquiduss.app']
+```
