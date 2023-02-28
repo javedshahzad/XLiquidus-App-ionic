@@ -89,31 +89,31 @@
           <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
             USD: <span class="jostBook darken-color font-weight-400 size-20">${{GetTokenProfileData?.currentPrice}}</span>
           </h4>
-          <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
+          <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
             {{GetTokenProfileData?.marketSymbol}}: <span class="jostBook darken-color font-weight-400 size-20">${{GetTokenProfileData?.available}}</span>
           </h4>
-          <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600s">
+          <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600s">
             About: <span class="jostBook darken-color font-weight-400 size-20">{{GetTokenProfileData?.type}}</span>
           </h4>
-          <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
+          <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
             Description: 
           </h4>
           <p class="jostBook darken-color margins font-weight-400 size-20">{{GetTokenProfileData?.description?.summary}}</p>
           </ion-col>
           <ion-col size="12">
-            <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
+            <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
               Token Benefits:
             </h4>
-            <p class="jostBook darken-color margins font-weight-400 size-20" *ngFor="let item of TokenBenefits">{{item?.name}}</p>
+            <p class="jostBook darken-color margins font-weight-400 size-20" *ngFor="let item of TokenBenefits"><img src="assets/images/elip3.png" alt=""> {{item?.name}}</p>
           </ion-col>
           <ion-col size="12">
-          <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
+          <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
             Key Project Features:
           </h4>
-          <p class="jostBook darken-color margins font-weight-400 size-20" *ngFor="let item of KeyProjectFeatures">{{item?.name}}</p>
+          <p class="jostBook darken-color margins font-weight-400 size-20" *ngFor="let item of KeyProjectFeatures"><img src="assets/images/elip3.png" alt=""> {{item?.name}}</p>
         </ion-col>
         <ion-col size="12">
-          <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
+          <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
             Gallery:
           </h4>
           <ion-slides pager="true" [options]="slideOptsOne">
@@ -126,7 +126,7 @@
       </ion-row>
       <ion-row *ngIf="GetTokenProfileData?.isMileStoneEnabled">
         <ion-col size="12">
-          <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600 text-center">
+          <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600 text-center">
             Milestones Achievements
           </h4>
         </ion-col>
