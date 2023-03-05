@@ -1,0 +1,96 @@
+<app-user-panel-header></app-user-panel-header>
+<ion-content>
+<ion-progress-bar type="indeterminate" *ngIf="isDataLoad"></ion-progress-bar>
+  <div class="position-relative z-index-10">
+    <ion-list class="p-0">
+      <ion-item-divider class="height-50 removeborder background-subheader-30">
+        <ion-button slot="start" fill="clear" class="p-0-srart m-t-30" (click)="backtomarktplace()">
+          <ion-icon name="chevron-back" class="color-tertiary size-32"></ion-icon>
+        </ion-button>
+      </ion-item-divider>
+    </ion-list>
+  </div>
+  <ion-grid class="ion-padding">
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-center">
+          <h5 class="ion-text-uppercase color-tertiary-dark jostDemi size-28 m-b-0 m-t-5 font-weight-600">
+            Crypto marketplace 
+          </h5>
+          <h5 class="ion-text-uppercase color-tertiary-dark jostDemi size-28 m-b-0 m-t-5 font-weight-600">
+            confirmation 
+          </h5>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-10 font-weight-500">
+          I want to sell
+         </p>
+         <ion-item lines="none">
+          <p class="darken-color size-14 m-b-0 m-t-0" slot="start">0.009898</p>
+          <span class="font-weight-700 size-16 darken-color" slot="end">BTC</span>
+        </ion-item>
+        <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500">
+          asking price
+         </p>
+         <ion-item lines="none">
+          <p class="darken-color size-14 m-b-0 m-t-0" slot="start">20.00</p>
+          <span class="font-weight-700 size-16 darken-color" slot="end">USD</span>
+        </ion-item>
+        <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500">
+          Accapted Payment Types
+         </p>
+         <ion-item lines="none">
+          <p class="darken-color size-14 m-b-0 m-t-0 ion-text-uppercase" slot="end">usp, uc</p>
+        </ion-item>
+        <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500">
+          My offer should expire on
+         </p>
+         <ion-item lines="none">
+          <p class="darken-color size-14 m-b-0 m-t-0 ion-text-capitalize" slot="end">1 march 2023</p>
+        </ion-item>
+        <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500">
+          Pricing Model
+         </p>
+        <p class="darken-color jostDemi size-12 m-b-5 m-t-10 p-t-4 font-weight-500">
+          <span class="font-weight-700 size-16 color-secondary">Bulk Sale</span> -A bulk sale is a type of sale where a quantity of cryptocurrency is sold at a single. predetermined price. This would mean selling the quantity of a specific coin or token at a set price, rather than selling them individually. This type of sale is typically automated and handled by the platform or chosen by customers on the market
+        </p>
+        <ion-item lines="none">
+          <p class="font-weight-700 size-16 color-tertiary-dark" slot="start">Total Fees</p>
+          <span class="darken-color size-14 m-b-0 m-t-0" slot="end">5.55 USD</span>
+        </ion-item>
+        <ion-item lines="none">
+          <p class="font-weight-700 size-16 color-tertiary-dark" slot="start">Total Deposit</p>
+          <span class="darken-color size-14 m-b-0 m-t-0" slot="end">0.55 BTC</span>
+        </ion-item>
+        <ion-item lines="none">
+          <p class="font-weight-700 size-16 color-tertiary-dark" slot="start">Estimated Profit</p>
+          <p class="font-weight-700 size-16 darken-color" slot="end">119.75 USD</p>
+        </ion-item>
+        <div class="m-t-5 m-b-5">
+          <table>
+            <tr>
+              <td>
+                <ion-checkbox color="tertiary" slot="start" class="zoom-1-2 m-r-8 m-t--10" mode="md">
+                </ion-checkbox>
+              </td>
+              <td>
+                <ion-label class="size-14 jostBook font-weight-400 white-space text-overflow">
+                  <span class="text-black p-r-2 font-weight-400 size-15 jostlight">I agree to the offer that 1 have created
+                    above. Also, by checking on this checkbox
+                    and pressing the "Confirm" button, agree
+                    to the</span>
+                  <span class="text-black p-r-2 font-weight-400 size-15 jostlight" [routerLink]="['/tnc']"><u>Terms
+                    terms of use</u></span>
+                </ion-label>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-button expand="full" routerLink="/user-panel/active-seller-profile">Continue</ion-button>
+</ion-content>

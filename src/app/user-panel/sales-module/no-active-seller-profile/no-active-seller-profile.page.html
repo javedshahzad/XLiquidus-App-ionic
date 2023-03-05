@@ -1,0 +1,94 @@
+<app-user-panel-header></app-user-panel-header>
+<ion-content>
+<ion-progress-bar type="indeterminate" *ngIf="isDataLoad"></ion-progress-bar>
+  <div class="position-relative z-index-10">
+    <ion-list class="p-0">
+      <ion-item-divider class="height-50 removeborder background-subheader-30">
+        <ion-button slot="start" fill="clear" class="p-0-srart m-t-30" (click)="backtomarktplace()">
+          <ion-icon name="chevron-back" class="color-tertiary size-32"></ion-icon>
+        </ion-button>
+      </ion-item-divider>
+    </ion-list>
+  </div>
+<ion-grid class="ion-padding">
+  <ion-row>
+    <ion-col>
+      <div class="ion-text-center">
+        <h5 class="ion-text-uppercase color-tertiary-dark jostDemi size-28 m-b-0 m-t-5 font-weight-600">
+          Crypto marketplace 
+        </h5>
+        <h5 class="ion-text-capitalize color-tertiary-dark jostDemi size-28 m-b-0 m-t-5 font-weight-600">
+          profile 
+        </h5>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col routerLink="/user-panel/active-seller-profile">
+      <div class="setup-main">
+        <p class="ion-text-capitalize fontFamilysystemUI size-16 m-b-5 m-t-5 font-weight-500">
+         Setup selling <br> profile
+        </p>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <div class="profit">
+        <p class="color-tertiary-dark ion-text-center ion-text-capitalize fontFamilysystemUI size-16 m-b-10 m-t-10 font-weight-500">
+          Total profit
+         </p>
+         <div class="under-line"></div>
+         <p class="darken-color ion-text-center ion-text-capitalize fontFamilysystemUI size-16 m-b-10 m-t-10 font-weight-500">
+         0 USD
+         </p>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <div class="profit">
+        <p class="color-tertiary-dark ion-text-center ion-text-capitalize fontFamilysystemUI size-16 m-b-10 m-t-10 font-weight-500">
+          Total Crypto sold
+         </p>
+         <div class="under-line"></div>
+         <p class="darken-color ion-text-center ion-text-capitalize fontFamilysystemUI size-16 m-b-10 m-t-10 font-weight-500">
+         0 USD
+         </p>
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+<ion-grid class="ion-padding-start ion-padding-end">
+  <ion-row>
+    <ion-col>
+      <p class="color-tertiary-dark ion-text-center ion-text-capitalize fontFamilysystemUI size-16 m-b-10 m-t-10 font-weight-500">
+        Active your profile now:
+       </p>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <p class="darken-color ion-text-capitalize jostDemi size-16 m-b-0 m-t-0 font-weight-500">
+       KYC screening
+       </p>
+       <p class="color-secondary ion-text-capitalize jostDemi size-10 m-b-0 m-t-0 font-weight-500">
+        (Know-your-customer)
+        </p>
+    </ion-col>
+    <ion-col>
+      <ion-icon name="close-outline" class="size-28 darken-color jostDemi"></ion-icon>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <p class="darken-color ion-text-capitalize jostDemi size-16 m-b-0 m-t-0 font-weight-500">
+       20 dollor deposit
+       </p>
+    </ion-col>
+    <ion-col>
+      <ion-icon name="checkmark" class="size-28 darken-color jostDemi"></ion-icon>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+</ion-content>

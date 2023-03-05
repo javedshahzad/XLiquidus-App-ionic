@@ -1,0 +1,174 @@
+<app-user-panel-header></app-user-panel-header>
+<ion-content>
+<ion-progress-bar type="indeterminate" *ngIf="isDataLoad"></ion-progress-bar>
+  <div class="position-relative z-index-10">
+    <ion-list class="p-0">
+      <ion-item-divider class="height-50 removeborder background-subheader-30">
+        <ion-button slot="start" fill="clear" class="p-0-srart m-t-30" (click)="backtomarktplace()">
+          <ion-icon name="chevron-back" class="color-tertiary size-32"></ion-icon>
+        </ion-button>
+      </ion-item-divider>
+    </ion-list>
+  </div>
+  <ion-grid class="ion-padding">
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-center">
+          <h5 class="ion-text-uppercase color-tertiary-dark jostDemi size-28 m-b-0 m-t-5 font-weight-600">
+            Crypto marketplace 
+          </h5>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+          What are you selling?
+        </p>
+        <ion-select class="selectClass height-50 darken-color" interface="action-sheet" placeholder="Choose Crypto Currency" [(ngModel)]="CryptoCurrency">
+          <ion-select-option *ngFor="let item of [1,2,3,4]" [value]="item">
+               Bitcoin (BTC)
+          </ion-select-option>
+        </ion-select>
+        <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+          How much are you selling?
+        </p>
+        <ion-item lines="none" class="main-border">
+          <ion-input type="number" value="0.0006" slot="start" class="darken-color"></ion-input>
+          <span class="font-weight-700 size-14 darken-color" slot="end">BTC</span>
+        </ion-item>
+        <p class="darken-color ion-text-capitalize ion-text-center jostDemi size-16 m-b-0 m-t-5 font-weight-500">
+          VALUE IN USD
+          </p>
+          <p class="darken-color jostDemi ion-text-center size-10 m-b-0 m-t-0 font-weight-500">
+            (Calculated based on the above)
+           </p>
+
+           <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+            Choose a Pricing Model
+          </p>
+          <ion-list>
+            <ion-radio-group value="Bulk Sale">
+              <ion-item *ngFor="let item of items" lines="none">
+                <ion-label class="darken-label jostDemi size-14 font-weight-500">{{item}}</ion-label>
+                <ion-radio slot="end" [value]="item" mode="md"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-list>
+          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+            Pricing Model Description
+          </p>
+          <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+            Bulk Sale-A bulk sale is a type of sale where a quantity of cryptocurrency is sold at a single predetermined price. This would mean selling the quantity of a specific coin or token at a set
+            price, rather than selling them individually This type of sale is typically automated and handled by the platform or chosen by customers on the market.
+          </p>
+          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+            Asking Price?
+          </p>
+          <ion-item lines="none" class="main-border">
+            <ion-input type="number" value="125.00" slot="start" class="darken-color ion-no-margin"></ion-input>
+            <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
+          </ion-item>
+          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+            Unit Price?
+          </p>
+          <ion-item lines="none" class="main-border">
+            <ion-input type="number" value="125.00" slot="start" class="darken-color ion-no-margin"></ion-input>
+            <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
+          </ion-item>
+          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+            Margin Percentage?
+          </p>
+          <ion-item lines="none" class="main-border">
+            <ion-input type="number" value="7.00" slot="start" class="darken-color ion-no-margin"></ion-input>
+            <span class="font-weight-700 size-14 darken-color" slot="end">%</span>
+          </ion-item>
+          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+            Highest Selling Price?
+          </p>
+          <ion-item lines="none" class="main-border">
+            <ion-input type="number" value="7.00" slot="start" class="darken-color ion-no-margin"></ion-input>
+            <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
+          </ion-item>
+          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+            Lowest Selling Price?
+          </p>
+          <ion-item lines="none" class="main-border">
+            <ion-input type="number" value="7.00" slot="start" class="darken-color ion-no-margin"></ion-input>
+            <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
+          </ion-item>
+          <ion-item lines="none">
+            <span class="font-weight-700 size-14 darken-color" slot="start">22,33212</span>
+            <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
+          </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+          What would like to get paid in?
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="main-border">
+      <ion-col size="10" class="ion-no-padding">
+        <ion-select class="selectClass height-50 darken-color" interface="action-sheet" placeholder="Choose Crypto Currency" [(ngModel)]="CryptoCurrency">
+          <ion-select-option *ngFor="let item of [1,2,3,4]" [value]="item">
+               Bitcoin (BTC)
+          </ion-select-option>
+        </ion-select>
+      </ion-col>
+      <ion-col class="ion-no-padding">
+        <div class="center">
+          <ion-icon name="add-outline" class="font-weight-700 size-24 darken-color"></ion-icon>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+          Accepted Payment Types
+        </p>
+        <p class="darken-color ion-text-uppercase jostDemi size-12 m-b-5 m-t-5 font-weight-600">
+         - USD
+        </p>
+        <p class="darken-color ion-text-uppercase jostDemi size-12 m-b-5 m-t-5 font-weight-600">
+          - LTC
+         </p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+          When should your offer expire?
+        </p>
+        <ion-item lines="none" class="main-border">
+          <ion-input type="date" value="01 March, 2023"class="darken-color ion-no-margin"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+          Total Fees
+        </p>
+        <p class="darken-color ion-text-end jostDemi size-12 m-b-0 m-t-0 font-weight-600">
+          5.25
+        </p>
+        <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+          Total Deposit
+        </p>
+        <p class="darken-color ion-text-end jostDemi size-12 m-b-0 m-t-0 font-weight-600">
+          0.00096 BTC
+        </p>
+        <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+          Estimated profit
+        </p>
+        <p class="darken-color ion-text-end jostDemi size-12 m-b-0 m-t-0 font-weight-600">
+          117.558 USD
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-button expand="full" routerLink="/user-panel/list-crypto-sales">Continue</ion-button>
+</ion-content>

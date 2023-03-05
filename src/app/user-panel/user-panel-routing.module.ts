@@ -164,7 +164,28 @@ const routes: Routes = [
   {
     path: 'my-profile',
     loadChildren: () => import('./my-profile/my-profile.module').then(m => m.MyProfilePageModule)
-  }
+  },
+  {
+    path: 'sales-profile-signup',
+    loadChildren: () => import('./sales-module/sales-profile-signup/sales-profile-signup.module').then( m => m.SalesProfileSignupPageModule)
+  },
+  {
+    path: 'no-active-seller-profile',
+    loadChildren: () => import('./sales-module/no-active-seller-profile/no-active-seller-profile.module').then( m => m.NoActiveSellerProfilePageModule)
+  },
+  {
+    path: 'active-seller-profile',
+    loadChildren: () => import('./sales-module/active-seller-profile/active-seller-profile.module').then( m => m.ActiveSellerProfilePageModule)
+  },
+  {
+    path: 'list-crypto-sales',
+    loadChildren: () => import('./sales-module/list-crypto-sales/list-crypto-sales.module').then( m => m.ListCryptoSalesPageModule)
+  },  {
+    path: 'list-crypto-sales-details',
+    loadChildren: () => import('./sales-module/list-crypto-sales-details/list-crypto-sales-details.module').then( m => m.ListCryptoSalesDetailsPageModule)
+  },
+
+
 ];
 
 
