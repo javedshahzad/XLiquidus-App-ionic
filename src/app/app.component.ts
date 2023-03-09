@@ -45,7 +45,8 @@ export class AppComponent {
   initializeApp() {
 
     this.platform.ready().then(async () => {
-      this.device = await this.platform['win'].device;
+      this.device = await this.platform.platforms();
+      console.log(this.device)
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.backButtonEvent();
@@ -73,11 +74,11 @@ export class AppComponent {
     this._appServices.getDataByNativePromiss(url).then((res: any) => {
       this.appSettings = res.data;
 
-      if ((this.device.platform == 'Android' && this.appSettings["maintenance-android"] == true) || (this.device.platform == 'IOS' && this.appSettings["maintenance-ios"] == true)) {
+      if ((this.platform.is("android") && this.appSettings["maintenance-android"] == true) || (this.platform.is("ios") && this.appSettings["maintenance-ios"] == true && this.appSettings["mandatory"] == true)) {
         this._nav.navigateRoot(['/maintenance']);
-      } else if (this.device.platform == 'Android' && `'${this.appSettings["android-version"]}'` > `'${this.currentAppVersion}'`) {
+      } else if (this.platform.is("android") && `'${this.appSettings["android-version"]}'` > `'${this.currentAppVersion}'` && this.appSettings["mandatory"] == true) {
         this._nav.navigateRoot(['/app-update', { force: this.appSettings.mandatory }]);
-      } else if (this.device.platform == 'IOS' && `'${this.appSettings["ios-version"]}'` > `'${this.currentAppVersion}'`) {
+      } else if (this.platform.is("ios") && `'${this.appSettings["ios-version"]}'` > `'${this.currentAppVersion}'` && this.appSettings["mandatory"] == true) {
         this._nav.navigateRoot(['/app-update', { force: this.appSettings.mandatory }]);
       } else {
         this.checkUserloggedInOrNot();

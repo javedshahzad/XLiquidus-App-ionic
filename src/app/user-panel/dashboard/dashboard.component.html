@@ -78,8 +78,7 @@
       <ion-item-sliding *ngFor="let token of getSearchResult | fullObjectFilter:tokenSearchValue; let i=index">
         <ion-item class="ion-activatable ripple-parent" (click)="gotoProductPage(i,token)">
           <ion-thumbnail slot="start">
-            <img *ngIf="token.shortName !='NSA'" [src]="token.flag ? token.flag : token.logo" onerror="this.src='assets/images/wfse.png'">
-            <img *ngIf="token.shortName ==='NSA'" src="assets/images/nos.svg" onerror="this.src='assets/images/wfse.png'">
+            <img [src]="token.flag ? token.flag : token.logo" onerror="this.src='assets/images/wfse.png'">
             <!-- <img src=" {{token.logo}}" class="w-30 ion-float-left"> -->
           </ion-thumbnail>
           <div>

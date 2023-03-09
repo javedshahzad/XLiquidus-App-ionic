@@ -12,17 +12,22 @@
       <ion-row>  
         <ion-col class="m-t-25">
           <h5 class="m-t-15 m-b-5 color-black size-16 ion-text-center font-weight-800  custom-color-blue display-block jostHeavy">SELECT AN ASSET TYPE</h5>
-          <img [src]="productDetailtobuy?.flag ? productDetailtobuy?.flag : productDetailtobuy?.logo" onerror="this.src='assets/images/wfse.png'" alt="" class="wfseimg"/>
-          <ion-input [value]="productDetailtobuy?.name" readonly="true" class="itemclass height-60 w-80 m-l-10p ion-searchbar ion-text-center"></ion-input>  
+          <ion-item class="itemStyle height-62 w-80 m-l-10p ion-searchbar" lines="none">
+            <ion-thumbnail slot="start" class="thubnil">
+              <img class="imageCdn" [src]="productDetailtobuy?.flag ? productDetailtobuy?.flag : productDetailtobuy?.logo" onerror="this.src='assets/images/wfse.png'" alt=""/>
+            </ion-thumbnail>
+            <ion-input [value]="productDetailtobuy?.name" readonly="true" class="ion-text-center m-t-3"></ion-input>  
+          </ion-item>
+           
+        
           <!-- <ion-searchbar showCancelButton="focus" value="{{productDetailtobuy?.name}}" readonly="true" class="itemclass height-70 w-80 m-l-10p ion-searchbar height-50 ion-text-center"></ion-searchbar> pattern="[0-9]"-->
         </ion-col>  
       </ion-row>
       <ion-row class="m-t-15">
         <ion-col>
           <h5 class="m-t-15 m-b-5 size-16 font-weight-800 ion-text-center custom-color-blue  display-block jostHeavy">AMOUNT (QTY)</h5>
-          <!-- <ion-item lines="none" class="itemclass w-80 m-l-10p  ion-text-center height-0"> -->
-            <input #input1 [(ngModel)]="productuantity" id="productuantity" name="productuantity" class="itemclass height-60 w-80 m-l-10p ion-text-center" (keyup)="numericAndDecimalValidation($event)" pattern="[0-9]" inputmode="numeric" type="number"/>  
-          <!-- </ion-item> -->
+          <input *ngIf="smallestUnit >= 1" [(ngModel)]="productuantity" id="productuantity" name="productuantity" class="itemclass height-60 w-80 m-l-10p ion-text-center" (keyup)="changevalue($event)" pattern="[0-9]" inputmode="numeric"  minlength="1" maxlength="10" type="tel" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" />
+          <input *ngIf="smallestUnit < 1" [(ngModel)]="productuantity" id="productuantity" name="productuantity" class="itemclass height-60 w-80 m-l-10p ion-text-center" (keyup)="changevalue($event)" pattern="[0-9]" inputmode="numeric"  minlength="1" maxlength="10" type="tel" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" />
         </ion-col>
       </ion-row>
       
@@ -93,7 +98,8 @@
             <p class="totalqty jostBook size-13 font-weight-400">QTY</p>
           </ion-col>
           <ion-col size="5" class="p-0">
-            <p class="totalqty jostBook size-13 font-weight-400">{{productDetailtobuy?.shortName}}</p>
+            <!-- <p class="totalqty jostBook size-13 font-weight-400" *ngIf="productDetailtobuy?.shortName">{{productDetailtobuy?.shortName}}</p> -->
+            <p class="totalqty jostBook size-13 font-weight-400">USD</p>
           </ion-col>
         </ion-row>
 

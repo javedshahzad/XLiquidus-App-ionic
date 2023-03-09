@@ -50,7 +50,7 @@ export class ProductPageComponent implements OnInit {
 
   ionViewWillEnter() {
     this._appservices.presentLoading();
-    this.currentDateTime = new Date();
+    this.currentDateTime =Date.now();
     this.backButtonSubscription = this.platform.backButton.subscribe(() => {
       this._nav.navigateRoot(['user-panel/']);
     });
@@ -58,15 +58,13 @@ export class ProductPageComponent implements OnInit {
     var proData = this._encServices.decrypt(this.activatedroute.snapshot.paramMap.get('productData'));
     this.productDataFromDashboardPage = JSON.parse(proData);
     console.log(this.productDataFromDashboardPage);
-    if(this.productDataFromDashboardPage.type==="VendorToken"){
+    if(this.productDataFromDashboardPage.type==="VendorToken" || this.productDataFromDashboardPage.type==="Team"){
       this.getTokenProfile(this.productDataFromDashboardPage.tokenIndexId);
-    }else{
-      this.getDetailsbySearchtoken(this.productDataFromDashboardPage.tokenIndexId);
     }
 
     // if(this.productDataFromDashboardPage.isSaleAvailable){
     if (this.productDataFromDashboardPage.type == 'Team') {
-      var UrlParameters = `symbol=UCTokens&name=${this.productDataFromDashboardPage.name}`
+      var UrlParameters = `symbol=UCTokens&name=${this.productDataFromDashboardPage.shortName}`
     } else {
       var UrlParameters = `symbol=${this.productDataFromDashboardPage.shortName}`
     }
@@ -130,21 +128,7 @@ export class ProductPageComponent implements OnInit {
       this.isDataLoad = false;
     });
   }
-  getDetailsbySearchtoken(tokenIndexId){
-    var UrlParameters = `Search/Get/${tokenIndexId}`;
-    console.log(UrlParameters);
-    this._appservices.getDataByHttp(UrlParameters).subscribe(res => {
-      console.log("Search/Get response",res);
-      if(res.status == 200){
-        this.getSearchedData= res.data;
-      }
-      this._appservices.loaderDismiss();
-    }, err => {
-      this._appservices.loaderDismiss();
-      console.log(err);
-      this.isDataLoad = false;
-    });
-  }
+  
   getPercentageMilstone(unlockedMeasurement){
    var num=(this.GetTokenProfileData.maxSupply - this.GetTokenProfileData.available) / unlockedMeasurement;
    var total = Math.round(num);

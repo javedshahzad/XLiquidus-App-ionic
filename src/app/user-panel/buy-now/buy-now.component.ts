@@ -19,6 +19,7 @@ export class BuyNowComponent implements OnInit {
   GetTokenProfileData: any;
   smallestUnit: number;
   @ViewChild("input1", { static: true }) nameField1: ElementRef;
+  decimalvalueIndexDot: any="";
   constructor(public platform: Platform, public router: Router, public _appServices: AppService, public _encServices: EncryptionDecryptionService, public activatedroute: ActivatedRoute, public _nav: NavController) { }
 
   ngOnInit() { 
@@ -46,41 +47,9 @@ export class BuyNowComponent implements OnInit {
   ionViewDidLeave() {
     this.backButtonSubscription.unsubscribe();
   }
-  numericAndDecimalValidation(event:any){
-    if(this.smallestUnit >= 1){
-       if(event.keyCode === 110 || event.keyCode === 190 || event.keyCode === 229){
-        var decimalvalueIndexDot= event.target.value.indexOf('.');
-        var decimalvalueIndexMinus= event.target.value.indexOf('-');
-        if(decimalvalueIndexDot){
-          this.removeByIndex(event.target.value,decimalvalueIndexDot);
-          this.productuantity=event.target.value;
-          event.preventDefault();
-        }
-        if(decimalvalueIndexMinus){
-          this.removeByIndex(event.target.value,decimalvalueIndexMinus);
-          this.productuantity=event.target.value;
-          event.preventDefault();
-        }else{
-          event.preventDefault();
-        }
-       }else{
-        this.changevalue(event);
-       }
-    }else{
-      if ((event.keyCode >= 97 && event.keyCode <=105) || (event.keyCode >=48 && event.keyCode <=57)  || /\d/.test(String.fromCharCode(event.keyCode))) {
-          this.changevalue(event);
-          return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
-}
-removeByIndex(str,index) {
-  return str.slice(0,index) + str.slice(index+1);
-}
   changevalue(event) {
     var val=event.target.value;
+    console.log(val)
     this.productuantity = val;
     var price=this.GetTokenProfileData?.currentPrice ? this.GetTokenProfileData?.currentPrice : this.productDetailtobuy?.marketPrice;
     this.total = val * price;

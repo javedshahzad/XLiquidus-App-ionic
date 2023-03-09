@@ -107,9 +107,6 @@ export class DashboardComponent implements OnInit {
 
   gotoProductPage(index,token) {
     let data=this.getSearchResult[index];
-    if(data.shortName === 'NSA'){
-      data.flag="assets/images/nos.svg";
-    }
     var jsonData = JSON.stringify(data);
     this.router.navigate(['/user-panel/product-page', { 'productData': this._encServices.encrypt(jsonData) }]);
   }
