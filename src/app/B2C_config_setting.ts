@@ -15,10 +15,9 @@ export class B2C_config_setting {
     public EditProfilePolicy = "B2C_1_xl_ep";
     public IosKeyChainGroup = "com.usscyber.xliquidus";
     public Scopes = `https://${this.TenantName}.onmicrosoft.com/0ac094e4-2c68-447d-8688-579dcba5fd80/access_as_user+openid+offline_access+profile`; //`https://${this.TenantName}.onmicrosoft.com/0ac094e4-2c68-447d-8688-579dcba5fd80/access_as_user+openid+offline_access+profile`;
-
     public AuthorizeVersion = 'oauth2/v2.0/authorize';
-    //public AuthorityBase = `https://${this.TenantName}.b2clogin.com/${this.TenantId}/`;
-    public AuthorityBase = `https://auth.usscyber.com/${this.TenantId}/`;
+    public AuthorityBase = `https://${this.TenantName}.b2clogin.com/${this.TenantId}/`;
+    //public AuthorityBase = `https://auth.usscyber.com/${this.TenantId}/`;
     public AuthoritySignInSignUp = `${this.AuthorityBase}${this.AuthorizeVersion}?p=${this.SignInPolicy}`;
     public AuthorityGoogleSignInSignUp = `${this.AuthorityBase}${this.AuthorizeVersion}?p=${this.GoogleSignInPolicy}`;
     public AuthorityMircoSoftSignInSignUp = `${this.AuthorityBase}${this.AuthorizeVersion}?p=${this.MircosoftSignInPolicy}`;
