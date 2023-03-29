@@ -100,6 +100,7 @@ export class DashboardComponent implements OnInit {
     })
     this.sub2 = this._appServices.getDataByHttp(`Search/Get?${UrlParameters}`).subscribe(_res => {
       this.getSearchResult = _res.status == 200 ? (_res.data ? _res.data.data.data : []) : [];
+      console.log(this.getSearchResult);
       this._appServices.loaderDismiss();
     });
   }

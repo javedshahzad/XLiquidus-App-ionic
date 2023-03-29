@@ -14,7 +14,7 @@
           <h5 class="m-t-15 m-b-5 color-black size-16 ion-text-center font-weight-800  custom-color-blue display-block jostHeavy">SELECT AN ASSET TYPE</h5>
           <ion-item class="itemStyle height-62 w-80 m-l-10p ion-searchbar" lines="none">
             <ion-thumbnail slot="start" class="thubnil">
-              <img class="imageCdn" [src]="productDetailtobuy?.flag ? productDetailtobuy?.flag : productDetailtobuy?.logo" onerror="this.src='assets/images/wfse.png'" alt=""/>
+              <img class="imageCdn" [src]="productDetailtobuy?.logo ? productDetailtobuy?.logo : productDetailtobuy?.flag" onerror="this.src='assets/images/wfse.png'" alt=""/>
             </ion-thumbnail>
             <ion-input [value]="productDetailtobuy?.name" readonly="true" class="ion-text-center m-t-3"></ion-input>  
           </ion-item>
@@ -74,7 +74,7 @@
       <div class="child">
         <ion-row>
           <ion-col size="5" class="ion-text-center">
-            <img [src]="productDetailtobuy?.flag ? productDetailtobuy?.flag : productDetailtobuy?.logo" onerror="this.src='assets/images/wfse.png'" width="80%">
+            <img [src]="productDetailtobuy?.logo ? productDetailtobuy?.logo : productDetailtobuy?.flag" onerror="this.src='assets/images/wfse.png'" width="80%">
           </ion-col>
           <ion-col size="7" class="ion-text-left">
               <h4 class="color-secondary jostDemi size-20 m-l--15 font-weight-600 coincss m-b-0 m-t-20">
