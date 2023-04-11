@@ -34,14 +34,14 @@ export class BuyNowComponent implements OnInit {
     this.backButtonSubscription = this.platform.backButton.subscribe(() => {
       this._nav.navigateRoot(['user-panel/']);
     });
-
     var price=this.GetTokenProfileData.currentPrice ? this.GetTokenProfileData.currentPrice : this.productDetailtobuy?.marketPrice;
     this.total = this.productuantity * price;
-    this.smallestUnit=this.GetTokenProfileData?.smallestUnit ? this.GetTokenProfileData?.smallestUnit :0.00;
+
+    this.smallestUnit=this.GetTokenProfileData?.smallestUnit ? this.GetTokenProfileData?.smallestUnit : 0;
     if(this.smallestUnit >= 1){
       this.productuantity=1;
     }else{
-      this.productuantity=0.01;
+      this.productuantity=1.00;
     }
   }
   ionViewDidLeave() {
@@ -53,7 +53,10 @@ export class BuyNowComponent implements OnInit {
     this.productuantity = val;
     var price=this.GetTokenProfileData?.currentPrice ? this.GetTokenProfileData?.currentPrice : this.productDetailtobuy?.marketPrice;
     this.total = val * price;
-    return true;
+  }
+  roundedNumber(number){
+    var total = Math.round(number);
+    return total
   }
   addtocart() {
     this.isDataLoad = true;

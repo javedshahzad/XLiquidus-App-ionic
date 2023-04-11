@@ -10,7 +10,7 @@ import { EncryptionDecryptionService } from 'src/app/services/encryption.service
   styleUrls: ['./product-page.component.scss'],
 })
 export class ProductPageComponent implements OnInit {
-  productDetail: any;
+  productDetail: any='';
   productDataFromDashboardPage: any;
   GraphData: any;
   showGraph = false;
@@ -49,60 +49,61 @@ export class ProductPageComponent implements OnInit {
   }
 
   ionViewWillEnter() {
-    this._appservices.presentLoading();
-    this.currentDateTime =Date.now();
-    this.backButtonSubscription = this.platform.backButton.subscribe(() => {
-      this._nav.navigateRoot(['user-panel/']);
-    });
-    this.isDataLoad = true;
-    var proData = this._encServices.decrypt(this.activatedroute.snapshot.paramMap.get('productData'));
-    this.productDataFromDashboardPage = JSON.parse(proData);
-    console.log(this.productDataFromDashboardPage);
-    if(this.productDataFromDashboardPage.type==="VendorToken" || this.productDataFromDashboardPage.type==="Team"){
-      this.getTokenProfile(this.productDataFromDashboardPage.tokenIndexId);
-    }
-
-    // if(this.productDataFromDashboardPage.isSaleAvailable){
-    if (this.productDataFromDashboardPage.type == 'Team') {
-      var UrlParameters = `symbol=UCTokens&name=${this.productDataFromDashboardPage.shortName}`
-    } else {
-      var UrlParameters = `symbol=${this.productDataFromDashboardPage.shortName}`
-    }
-    // var UrlParameters = `symbol=BTC&name=BTC`
-    console.log(UrlParameters);
-    this._appservices.getDataByHttp(`Markets/GetProduct?${UrlParameters}`).subscribe(res => {
-      console.log("::::", res);
-      this._appservices.cartRefresh.next(true);
-      this.isDataLoad = false;
-      if (res.status == 200) {
-        this.isProductData = true;
-        this.productDetail = res.data;
-        console.log(this.productDetail)
-      }
-      this._appservices.loaderDismiss();
-    }, err => {
-      this.isDataLoad = false;
-      console.log(err);
-      // if (err.status == 400) {
-      //   this.isProductData = false;
-      //   var result = JSON.parse(err.toString());
-      //   console.log(result);
-      //   this._appservices.presentToast(result.symbol);
-      // }
-      this._appservices.loaderDismiss();
-    });
-
-    this.fromDate = new Date();
-    this.toDate = new Date();
-    let day = document.getElementById('day');
-    if (day) {
-      day.style.background = '#60CCF0';
-      day.style.color = 'white';
-      day.style.borderRadius = '5px'
-    }
-    this.getGraphData(this.fromDate, this.toDate);
+    this.initProductPage();
   }
+initProductPage(){
+  this._appservices.presentLoading();
+  this.currentDateTime =Date.now();
+  this.backButtonSubscription = this.platform.backButton.subscribe(() => {
+    this._nav.navigateRoot(['user-panel/']);
+  });
+  this.isDataLoad = true;
+  var proData = this._encServices.decrypt(this.activatedroute.snapshot.paramMap.get('productData'));
+  this.productDataFromDashboardPage = JSON.parse(proData);
+  console.log(this.productDataFromDashboardPage);
+  // if(this.productDataFromDashboardPage.isSaleAvailable){
+  if (this.productDataFromDashboardPage.type == 'Team') {
+    var UrlParameters = `symbol=UCTokens&name=${this.productDataFromDashboardPage.shortName}`
+  } else {
+    var UrlParameters = `symbol=${this.productDataFromDashboardPage.shortName}`
+  }
+  // var UrlParameters = `symbol=BTC&name=BTC`
+  console.log(UrlParameters);
+  this._appservices.getDataByHttp(`Markets/GetProduct?${UrlParameters}`).subscribe(res => {
+    console.log("::::", res);
+    this._appservices.cartRefresh.next(true);
+    this.isDataLoad = false;
+    if (res.status == 200) {
+      this.isProductData = true;
+      this.productDetail = res.data;
+      console.log(this.productDetail)
+    }
+    this._appservices.loaderDismiss();
+  }, err => {
+    this.isDataLoad = false;
+    console.log(err);
+    // if (err.status == 400) {
+      this.isProductData = false;
+    //   var result = JSON.parse(err.toString());
+    //   console.log(result);
+    //   this._appservices.presentToast(result.symbol);
+    // }
+    this._appservices.loaderDismiss();
+  });
 
+  this.fromDate = new Date();
+  this.toDate = new Date();
+  let day = document.getElementById('day');
+  if (day) {
+    day.style.background = '#60CCF0';
+    day.style.color = 'white';
+    day.style.borderRadius = '5px'
+  }
+  this.getGraphData(this.fromDate, this.toDate);
+  if(this.productDataFromDashboardPage.type==="VendorToken" || this.productDataFromDashboardPage.type==="Team"){
+    this.getTokenProfile(this.productDataFromDashboardPage.tokenIndexId);
+  }
+}
   ionViewDidLeave() {
     this.backButtonSubscription.unsubscribe();
   }
@@ -130,15 +131,18 @@ export class ProductPageComponent implements OnInit {
   }
   
   getPercentageMilstone(unlockedMeasurement){
-   var num=(this.GetTokenProfileData.maxSupply - this.GetTokenProfileData.available) / unlockedMeasurement;
-   var total = Math.round(num);
+   var num=(this.GetTokenProfileData?.maxSupply - this.GetTokenProfileData?.available) / unlockedMeasurement;
+   var subNumber=num ? num : 0;
+   var total = Math.round(subNumber);
    var decimal= total / 100;
+   console.log(decimal,"decimal values")
    return decimal;
 
   }
   showPercentage(unlockedMeasurement){
-    var num=(this.GetTokenProfileData.maxSupply - this.GetTokenProfileData.available) / unlockedMeasurement;
-    var total = Math.round(num);
+    var num=(this.GetTokenProfileData?.maxSupply - this.GetTokenProfileData?.available) / unlockedMeasurement;
+    var subNum=num ? num : 0;
+    var total = Math.round(subNum);
     return total
   }
   showDetails(index :number){
