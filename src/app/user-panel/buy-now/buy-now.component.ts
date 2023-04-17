@@ -14,7 +14,7 @@ export class BuyNowComponent implements OnInit {
   total: any;
   productBill: any = '';
   productDetailtobuy: any;
-  productuantity = 1;
+  productuantity:any = 1.00;
   isDataLoad = false;
   GetTokenProfileData: any;
   smallestUnit: number;
@@ -34,29 +34,28 @@ export class BuyNowComponent implements OnInit {
     this.backButtonSubscription = this.platform.backButton.subscribe(() => {
       this._nav.navigateRoot(['user-panel/']);
     });
-    var price=this.GetTokenProfileData.currentPrice ? this.GetTokenProfileData.currentPrice : this.productDetailtobuy?.marketPrice;
-    this.total = this.productuantity * price;
-
-    this.smallestUnit=this.GetTokenProfileData?.smallestUnit ? this.GetTokenProfileData?.smallestUnit : 0;
-    if(this.smallestUnit >= 1){
-      this.productuantity=1;
-    }else{
-      this.productuantity=1.00;
-    }
+    var price=this.GetTokenProfileData?.currentPrice ? this.GetTokenProfileData?.currentPrice : this.productDetailtobuy?.marketPrice;
+    this.total = this.roundedNumber(this.productuantity * price);
+    this.productuantity=this.roundedNumber(1.00);
+    // this.smallestUnit=this.GetTokenProfileData?.smallestUnit ? this.GetTokenProfileData?.smallestUnit : 0;
+    // if(this.smallestUnit >= 1){
+    //   this.productuantity=1;
+    // }else{
+    //   this.productuantity=1.00;
+    // }
   }
   ionViewDidLeave() {
     this.backButtonSubscription.unsubscribe();
   }
   changevalue(event) {
     var val=event.target.value;
-    console.log(val)
     this.productuantity = val;
     var price=this.GetTokenProfileData?.currentPrice ? this.GetTokenProfileData?.currentPrice : this.productDetailtobuy?.marketPrice;
-    this.total = val * price;
+    this.total =this.roundedNumber(val * price);
   }
   roundedNumber(number){
-    var total = Math.round(number);
-    return total
+    return number?.toFixed(2);
+     
   }
   addtocart() {
     this.isDataLoad = true;

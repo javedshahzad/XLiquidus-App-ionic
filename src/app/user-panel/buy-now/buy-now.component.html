@@ -26,8 +26,9 @@
       <ion-row class="m-t-15">
         <ion-col>
           <h5 class="m-t-15 m-b-5 size-16 font-weight-800 ion-text-center custom-color-blue  display-block jostHeavy">AMOUNT (QTY)</h5>
-          <input *ngIf="smallestUnit >= 1" [(ngModel)]="productuantity" id="productuantity" name="productuantity" class="itemclass height-60 w-80 m-l-10p ion-text-center" (keyup)="changevalue($event)" pattern="[0-9]" inputmode="numeric"  minlength="1" maxlength="10" type="tel" oninput="javascript: if (this.value.length > this.maxLength || this.value.length < this.minlength) this.value = this.value.slice(0, this.maxLength); this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" />
-          <input *ngIf="smallestUnit < 1" [(ngModel)]="productuantity" id="productuantity" name="productuantity" class="itemclass height-60 w-80 m-l-10p ion-text-center" (keyup)="changevalue($event)" pattern="[0-9]" inputmode="numeric"  minlength="2" maxlength="10" type="tel" oninput="javascript: if (this.value.length > this.maxLength || this.value.length < this.minlength) this.value = this.value.slice(0, this.maxLength); this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" />
+          <input [(ngModel)]="productuantity" [value]="productuantity" name="productuantity" class="itemclass height-60 w-80 m-l-10p ion-text-center" (keyup)="changevalue($event)" pattern="[0-9]" inputmode="numeric"  minlength="1" maxlength="10" type="tel" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" />
+          <!-- <input *ngIf="smallestUnit >= 1" [(ngModel)]="productuantity" id="productuantity" name="productuantity" class="itemclass height-60 w-80 m-l-10p ion-text-center" (keyup)="changevalue($event)" pattern="[0-9]" inputmode="numeric"  minlength="1" maxlength="10" type="tel" oninput="javascript: if (this.value.length > this.maxLength || this.value.length < this.minlength) this.value = this.value.slice(0, this.maxLength); this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" />
+          <input *ngIf="smallestUnit < 1" [(ngModel)]="productuantity" id="productuantity" name="productuantity" class="itemclass height-60 w-80 m-l-10p ion-text-center" (keyup)="changevalue($event)" pattern="[0-9]" inputmode="numeric"  minlength="2" maxlength="10" type="tel" oninput="javascript: if (this.value.length > this.maxLength || this.value.length < this.minlength) this.value = this.value.slice(0, this.maxLength); this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" /> -->
         </ion-col>
       </ion-row>
       
@@ -89,7 +90,7 @@
             <p class="totalqty jostBook size-21 font-weight-600">{{productuantity}}</p>
           </ion-col>
           <ion-col size="5" class="p-0">
-            <p class="totalqty jostBook size-21 font-weight-600">{{roundedNumber(total)}}</p>
+            <p class="totalqty jostBook size-21 font-weight-600">{{total}}</p>
           </ion-col>
         </ion-row>
         <ion-row>
