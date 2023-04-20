@@ -16,10 +16,7 @@ export class BuyNowComponent implements OnInit {
   productDetailtobuy: any;
   productuantity:any = this.roundedNumber(1.00);
   isDataLoad = false;
-  GetTokenProfileData: any;
-  smallestUnit: number;
-  @ViewChild("input1", { static: true }) nameField1: ElementRef;
-  decimalvalueIndexDot: any="";
+  GetTokenProfileData: any='';
   cartItems:Array<CART_ITEM> = []
   constructor(public platform: Platform, public router: Router, public _appServices: AppService, public _encServices: EncryptionDecryptionService, public activatedroute: ActivatedRoute, public _nav: NavController) { }
 

@@ -106,7 +106,7 @@
 
         <ion-row>
           <ion-col>
-            <ion-button expand="block" size="large"
+            <ion-button [disabled]="GetTokenProfileData === '' " expand="block" size="large"
               class="jostDemi shadownot letter-spacing size-16 cartbtnstyle primary-color-background no-border border-radius-8 m-b-20 height-50 ion-activatable ripple-parent box-shadow"
               (click)="addtocart()"><img src="../../../assets/images/shopingcarticon.png" class="carticonimg">
               <ion-text class="m-l-10">ADD TO CART </ion-text>
