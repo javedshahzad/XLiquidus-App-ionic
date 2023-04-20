@@ -41,6 +41,7 @@ import { LetsLiquidateComponent } from './lets-liquidate/lets-liquidate.componen
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { SalesComponent } from './sales-module/sales/sales.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -52,7 +53,8 @@ import { SalesComponent } from './sales-module/sales/sales.component';
     SharedModule,
     UserPanelPageRoutingModule,
     BrMaskerModule,
-    NgSelectModule
+    NgSelectModule,
+    TranslateModule
   ],
   declarations: [
     UserPanelPage,

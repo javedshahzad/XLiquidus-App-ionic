@@ -10,14 +10,14 @@
       <!-- <ion-grid> -->
       <ion-row class="m-t-15">
         <ion-col size="7">
-          <h2 class="jostDemi size-24 color-tertiary-dark font-weight-600 p-0 ion-text-left">YOUR CART
+          <h2 class="jostDemi size-24 color-tertiary-dark font-weight-600 p-0 ion-text-left">{{'YOUR CART' | translate }}
             <img src="../../../assets/images/buynowshopingcart.png" class="carticonimg">
           </h2>
 
         </ion-col>
         <ion-col size="5" class="ion-text-right">
           <ion-title (click)="gotomarketplace()" class="jostDemi size-13 m-t-10 keepshopingcolor font-weight-600 p-0">
-            KEEP SHOPPING
+            {{'KEEP SHOPPING' | translate }}
             <ion-icon name="chevron-forward-outline"></ion-icon>
           </ion-title>
         </ion-col>
@@ -26,7 +26,7 @@
     <!--  -->
     <ion-list *ngIf="cartDetail?.items.length == 0 && showCart">
       <ion-item-divider class="height-30 removeborder">
-        <ion-title class="jostDemi size-24 color-tertiary-dark font-weight-600 p-0">NO ITEM IN CART
+        <ion-title class="jostDemi size-24 color-tertiary-dark font-weight-600 p-0">{{'NO ITEM IN CART' | translate }}
         </ion-title>
       </ion-item-divider>
     </ion-list>
@@ -38,7 +38,7 @@
         <ion-row>
           <ion-col size="11" class="m-b--10">
             <ion-text class="display-block">
-              <img [src]="item?.flag" onerror="this.src='assets/images/wfse.png'" class="w-15 m-t--10 ion-float-left">
+              <img [src]="item?.logo" onerror="this.src='assets/images/wfse.png'" class="item-logo m-t--10 ion-float-left">
               <div ion-float-right>
                 <h4 class="jostDemi size-20 m-b-0 m-t-5 font-weight-600">
                   {{item.name}}
@@ -53,27 +53,27 @@
           <ion-col size="5.5">
             <ion-text class="display-block">
               <div ion-float-right>
-                <p class="changecolor jostBook size-12 font-weight-400 m-t-0 m-b-0">PRICE</p>
-                <h4 class="color-secondary jostBook size-15 m-b-0 m-t-0 font-weight-400">
-                  ${{item.price}} USD
+                <p class="changecolor jostBook size-12 font-weight-400 m-t-0 m-b-0">{{'PRICE' | translate }}</p>
+                <h4 class="ion-text-wrap color-secondary jostBook size-15 m-b-0 m-t-0 font-weight-400">
+                  ${{item.price}} {{'USD' | translate }}
 
                 </h4>
               </div>
             </ion-text>
           </ion-col>
-          <ion-col size="3">
+          <ion-col  class="ion-text-wrap" size="3">
             <ion-text class="display-block">
-              <p class="changecolor jostBook size-12 font-weight-400 m-t-0 m-b-0">QTY</p>
+              <p class="changecolor jostBook size-12 font-weight-400 m-t-0 m-b-0">{{'QTY' | translate }}</p>
               <ion-input class="color-secondary jostBook size-15 m-b-0 m-t--10 font-weight-400" inputmode="numeric"
                 type="tel" [value]="item.amount" (ionBlur)="updateqty(item,$event.target.value)">
 
               </ion-input>
             </ion-text>
           </ion-col>
-          <ion-col size="3">
-            <ion-text class="ion-float-right">
-              <p class="changecolor jostBook size-12  font-weight-400 m-t-0 m-b-0">TOTAL</p>
-              <h4 class="color-secondary jostBook size-18 m-b-0 m-t-0 font-weight-500">
+          <ion-col size="3" class="ion-text-wrap">
+            <ion-text class="ion-text-center">
+              <p class="changecolor jostBook size-12  font-weight-400 m-t-0 m-b-0">{{'TOTAL' | translate }}</p>
+              <h4 class="ion-text-wrap color-secondary jostBook size-18 m-b-0 m-t-0 font-weight-500">
                 ${{item.totalPrice}}
               </h4>
             </ion-text>
@@ -89,11 +89,11 @@
       <ion-row class="m-t-10">
         <ion-col size="1"></ion-col>
         <ion-col size="5">
-          <h4 class="size-19 font-weight-400 jostBook">TOTAL:</h4>
+          <h4 class="size-19 font-weight-400 jostBook">{{'TOTAL' | translate }}:</h4>
         </ion-col>
         <ion-col size="2"></ion-col>
         <ion-col size="4">
-          <h2 class="size-19 font-weight-400 jostBook ">${{cartDetail?.totalPrice}} USD</h2>
+          <h2 class="size-19 font-weight-400 jostBook ">${{cartDetail?.totalPrice}} {{'USD' | translate }}</h2>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -101,8 +101,8 @@
           <p class="font-weight-800 size-10">.</p>
         </ion-col>
         <ion-col size="10">
-          <p class="size-15 m-t-0 m-b-0 text-gray jostBook font-weight-400 font-weight-500">Pricing is current as of
-            {{currentDateTime | date:'EEEE, MMMM d, y, h:mm a'}} PST and is subject to change at time of checkout</p>
+          <p class="size-15 m-t-0 m-b-0 text-gray jostBook font-weight-400 font-weight-500">{{'Pricing is current as of' | translate }}
+            {{currentDateTime | date:'EEEE, MMMM d, y, h:mm a' | translate }} {{'PST and is subject to change at time of checkout' | translate }}</p>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -110,7 +110,7 @@
           <p class="font-weight-800 size-10">.</p>
         </ion-col>
         <ion-col size="10">
-          <p class="size-15 m-t-0 m-b-0 text-gray jostBook font-weight-400">Transaction fees apply at time of checkout
+          <p class="size-15 m-t-0 m-b-0 text-gray jostBook font-weight-400">{{'Transaction fees apply at time of checkout' | translate }}
           </p>
         </ion-col>
       </ion-row>
@@ -119,8 +119,7 @@
           <p class="font-weight-800 size-10">.</p>
         </ion-col>
         <ion-col size="10">
-          <p class="size-15 m-t-0 m-b-0 text-gray jostBook font-weight-400">Your transaction is over the normal safety
-            limit. We will be required to provide an MFA key to complete your transaction.</p>
+          <p class="size-15 m-t-0 m-b-0 text-gray jostBook font-weight-400">{{'Your transaction is over the normal safety limit. We will be required to provide an MFA key to complete your transaction.' | translate }}</p>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -129,7 +128,7 @@
           <ion-button expand="block" size="large"
             class="primary-color-background shadownot no-border border-radius-8 p-t-10p  height-60 letter-spacing p-a z-index-10 w-100"
             (click)="checkout()">
-            <h4 class="jostDemi font-weight-600 size-19 m-t-10">CHECKOUT</h4>
+            <h4 class="jostDemi font-weight-600 size-19 m-t-10">{{'CHECKOUT' | translate }}</h4>
           </ion-button>
         </ion-col>
         <ion-col size="1"></ion-col>

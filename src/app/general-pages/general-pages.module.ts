@@ -17,6 +17,10 @@ import { AppUpdateComponent } from './app-update/app-update.component';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { SignupOptionsComponent } from './signup-options/signup-options.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { CardPaymentsComponent } from './card-payments/card-payments.component';
+import { CheckoutTransactionSummaryComponent } from './checkout-transaction-summary/checkout-transaction-summary.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -79,6 +83,16 @@ const routes: Routes = [
     component: ForgotPasswordComponent,
     data: { title: 'Forgot Password' }
   },
+  {
+    path: 'card-payments',
+    component: CardPaymentsComponent,
+    data: { title: 'Card Payments' }
+  },
+  {
+    path: 'transaction-summary/:id',
+    component: CheckoutTransactionSummaryComponent,
+    data: { title: 'Transaction Summary' }
+  },
 ];
 
 @NgModule({
@@ -93,7 +107,9 @@ const routes: Routes = [
     AppUpdateComponent,
     PrivacyComponent,
     SignupOptionsComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    CardPaymentsComponent,
+    CheckoutTransactionSummaryComponent
   ],
   imports: [
     CommonModule,
@@ -101,7 +117,9 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    BrMaskerModule
+    BrMaskerModule,
+    TranslateModule,
+    SharedModule
   ],
   providers: [
     InAppBrowser,

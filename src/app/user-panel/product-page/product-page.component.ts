@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, Platform } from '@ionic/angular';
-import { AppService } from 'src/app/services/app.service';
+import { ADD_TO_CART_PAYLOAD, AppService, CART_ITEM } from 'src/app/services/app.service';
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
 
 @Component({
@@ -36,6 +36,7 @@ export class ProductPageComponent implements OnInit {
   MileStones: any=[];
   showDetailsIndex: number;
   getSearchedData: any="";
+  cartItems:Array<CART_ITEM> = []
   constructor(
     public _nav: NavController,
     public router: Router,
@@ -252,21 +253,38 @@ initProductPage(){
   addtocart() {
     this._appservices.presentLoading();
     this.isDataLoad = true;
-    var UrlParameters = `teamId=${this.productDataFromDashboardPage.id}&emailAddress=${encodeURIComponent(this._appservices.loggedInUserDetails['email'])}&amount=1&clientIpAddress=${this._appservices.ipAddress.ip}`;
-    console.log(UrlParameters);
-    this._appservices.postDataByPromissHttp(`ShoppingCart/PostAddToCart?${UrlParameters}`, {}).then(res => {
+    // var UrlParameters = `teamId=${this.productDataFromDashboardPage.id}&emailAddress=${encodeURIComponent(this._appservices.loggedInUserDetails['email'])}&amount=1&clientIpAddress=${this._appservices.ipAddress.ip}`;
+    // console.log(UrlParameters);
+    this.cartItems[0] = {
+      amount:1,
+      item:this.productDataFromDashboardPage?.tokenIndexId
+    }
+    let payload:ADD_TO_CART_PAYLOAD = {
+       email:this._appservices.loggedInUserDetails.email,
+       type:'XL',
+       items:this.cartItems
+    }
+    this._appservices.addToCart(payload).then(res => {
       console.log("responce data", res);
       this._appservices.cartRefresh.next(true);
       this.isDataLoad = false;
       this._appservices.loaderDismiss();
       if (res.status == 200) {
         console.log(res);
+
         this.router.navigate(['/user-panel/shoping-cart']);
-        this._appservices.presentToast(res.data.message);
+        this._appservices.presentToast('Added to the cart!');
       } else if (res.status == 202) {
         this.router.navigate(['/user-panel/shoping-cart']);
+      }else if(res.status === 404){
+        this._appservices.createCart(this._appservices.loggedInUserDetails.email).then(_response=>{
+          console.log('Create cart:',_response)
+        }).catch(err =>{
+          console.log('Create cart:',err)
+        })
       }
     }, (err) => {
+      console.log(err)
       if (err.status == 402) {
         this.router.navigate(['/user-panel/shoping-cart']);
       } else if (err.status == 402) {
@@ -274,23 +292,22 @@ initProductPage(){
       }
     });
   }
-
   toggleTooltip1() {
-    // setTimeout(() => {
-    //   this.showTooltip1 = !this.showTooltip1;
-    // }, 100);
+    setTimeout(() => {
+      this.showTooltip1 = !this.showTooltip1;
+    }, 100);
   }
 
   toggleTooltip2() {
-    // setTimeout(() => {
-    //   this.showTooltip2 = !this.showTooltip2;
-    // }, 200);
+    setTimeout(() => {
+      this.showTooltip2 = !this.showTooltip2;
+    }, 200);
   }
 
   toggleTooltip3() {
-    // setTimeout(() => {
-    //   this.showTooltip3 = !this.showTooltip3;
-    // }, 300);
+    setTimeout(() => {
+      this.showTooltip3 = !this.showTooltip3;
+    }, 300);
   }
 
   closeTooltips() {

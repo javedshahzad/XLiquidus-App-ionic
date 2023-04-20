@@ -184,24 +184,11 @@ export class AppService {
   }
 
   async presentLoading(message = "") {
-    // if (!this.isLoading) {
-    //   this.isLoading = true;
-    //   return await this.loadingController.create({
-    //     message: message == "" ? 'Please wait...' : message,
-    //     duration:10000,
-    //   }).then(a => {
-    //     a.present().then(() => {
-    //       if (!this.isLoading) {
-    //         a.dismiss().then(() => null);
-    //       }
-    //     });
-    //   });
-    // }
     this.isLoading = true;
     return await this.loadingController
       .create({
         message: message == "" ? 'Please wait...' : message,
-        duration:8000,
+        duration:10000,
       
       })
       .then(a => {
@@ -214,10 +201,6 @@ export class AppService {
   }
 
   async loaderDismiss() {
-    // if (this.isLoading) {
-    //   this.isLoading = false;
-    //   return await this.loadingController.dismiss().then(() => null);
-    // }
     this.isLoading = false;
     return await this.loadingController.dismiss();
   }
@@ -225,10 +208,10 @@ export class AppService {
   async presentToast(msg) {
     const toast = await this._toastController.create({
       message: msg,
-      position: 'bottom',
+      position: 'top',
       color: "primary",
       keyboardClose: true,
-      duration: 2000
+      duration: 4000
     });
     toast.present();
   }
@@ -537,4 +520,65 @@ export class AppService {
       this._nav.navigateRoot('/token-expires');
     }
   }
+
+  // Cart management system
+  getCart(email: string) {
+    let url = `CloudCart/GetCart?email=${email}&cartType=XL`
+    return this.getDataByPromissHttp(url)
+  }
+  createCart(email: string) {
+    let url = `CloudCart/CreateCart?email=${email}&cartType=XL`
+    return this.postDataByPromissHttp(url, {})
+  }
+  addToCart(payload: ADD_TO_CART_PAYLOAD) {
+    let url = `CloudCart/AddToCart?email=${payload.email}&cartType=XL`
+    return this.postDataByPromissHttp(url, payload)
+  }
+  updateCart(payload: ADD_TO_CART_PAYLOAD) {
+    let url = `CloudCart/UpdateCart`
+    return this.putDataByPromissHttp(url, payload)
+  }
+
+  removeFromCart(email: string, itemId: string) {
+    let url = `CloudCart/RemoveFromCart?email=${email}&cartType=XL&item=${itemId}`
+    return this.postDataByPromissHttp(url, {})
+  }
+
+  getCheckoutCode(type:string) {
+    let url: string = `CloudCart/GetCheckoutCode?email=${this.loggedInUserDetails.email}&cartType=XL&type=${type}`
+    return this.postDataByNativePromissUnparsed(url,{})
+  }
+
+  postCheckout(body:any) {
+    let url:string = `CloudCart/PostCheckout`
+    return this.postDataByNativePromissUnparsed(url, body)
+  }
+  postDataByNativePromissUnparsed(url, data): Promise<any> {
+    this._nativeHttp.setDataSerializer('json');
+    url = this.apiUrl + url;
+    console.log(url, JSON.stringify(data));
+    return from(this._nativeHttp.post(url, data, this.getHttpHeaders())).pipe(retry(this.UploadMaxRetryHit)).toPromise().then(results => {
+      // var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) }
+      return results;
+    }, err => {
+      console.log('url', url, err)
+      var _err: apiResponse = { status: err.status, data: err };
+      console.log("eroor message2", _err)
+      this.customErrorHandler(_err);
+      return _err;
+    });
+  }
+}
+export interface ADD_TO_CART_PAYLOAD {
+
+  email: string,
+  items: Array<CART_ITEM>,
+  type: string
+}
+
+export interface CART_ITEM {
+
+  item: string,
+  amount: number
+
 }

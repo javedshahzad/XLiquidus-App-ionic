@@ -1,0 +1,82 @@
+.background-transaction-status{
+    --background: url('../../../assets/images/email-confirm-background.png');
+    --background-repeat: no-repeat;
+    background-size: cover; 
+    width: 100%;
+    position: absolute;
+  }
+  .m-t-20p{
+      margin-top: 20%;
+  }
+  .size-28{
+      font-size: 28px;
+  }
+  .color-black{
+      color: #000;
+  }
+  .m-t-0{
+      margin-top: 0px;
+  }
+  .f-s-14{
+    font-size: 14px;
+  }
+  .f-s-18{
+    font-size: 18px;
+  }
+  .p-b-10p{
+      margin-bottom: 10%;
+  }
+  .m-t-15p{
+      margin-top: 15%;
+  }.m-b-15p{
+    margin-bottom: 15%;
+  }
+  .circle-pending{
+    background: orange;
+    position: absolute;
+    height: 75px;
+    font-size: 10px;
+    width: 75px;
+    display: flex;
+    z-index: 9999;
+    border: 10px solid white;
+    border-radius: 100%;
+    align-content: center;
+    justify-content: center;
+    margin-left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .circle-complete{
+    background: #37AE8B;
+    position: absolute;
+    height: 75px;
+    font-size: 10px;
+    width: 75px;
+    display: flex;
+    z-index: 9999;
+    border: 10px solid white;
+    border-radius: 100%;
+    align-content: center;
+    justify-content: center;
+    margin-left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .circle-close{
+    background: #C70000;
+    position: absolute;
+    height: 75px;
+    font-size: 10px;
+    width: 75px;
+    display: flex;
+    z-index: 9999;
+    border: 10px solid white;
+    border-radius: 100%;
+    align-content: center;
+    justify-content: center;
+    margin-left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .iconstyle{
+      zoom: 5;
+      color: white;
+  }

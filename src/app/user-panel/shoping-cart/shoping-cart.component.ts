@@ -1,3 +1,4 @@
+import { ADD_TO_CART_PAYLOAD, CART_ITEM } from './../../services/app.service';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, NavController, Platform } from '@ionic/angular';
@@ -38,9 +39,8 @@ export class ShopingCartComponent implements OnInit {
 
 
   async getCartDetails() {
-    this._appServices.presentLoading();
-    var UserDetailsUrl = `ShoppingCart/GetActiveCart?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
-    this._appServices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
+    // var UserDetailsUrl = `ShoppingCart/GetActiveCart?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
+    this._appServices.getCart(this._appServices.loggedInUserDetails.email).then(_res => {
       console.log(_res.status);
       console.log(_res);
       if (_res.status == 200) {
@@ -60,8 +60,11 @@ export class ShopingCartComponent implements OnInit {
         var result = JSON.parse(_res.data.error)
         this.isDataLoad = false;
         this.getCheckoutCode(result.message);
+      }else if (_res.status == 404){
+        this.showCart = true;
+        this.isDataLoad = false;
+        this._appServices.createCart(this._appServices.loggedInUserDetails.email)
       }
-      this._appServices.loaderDismiss();
     }, (err) => {
       this.isDataLoad = false;
       console.log(err);
@@ -75,12 +78,10 @@ export class ShopingCartComponent implements OnInit {
         this.getCheckoutCode(result.message);
         // this.confirmation(result.message)
       }
-      this._appServices.loaderDismiss();
     });
   }
 
   getCheckoutCode(message) {
-    this._appServices.presentLoading();
     var getCheckoutId = `ShoppingCart/GetCurrentCheckoutDetails?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}`
     this._appServices.getDataByHttp(getCheckoutId).subscribe(_res => {
       console.log(_res);
@@ -88,8 +89,7 @@ export class ShopingCartComponent implements OnInit {
         console.log('checkoutcode', _res.data.summary.checkoutCode)
         localStorage.setItem('checkOutId', _res.data.summary.checkoutCode);
         this.confirmation(message)
-      };
-      this._appServices.loaderDismiss();
+      }
     })
   }
 
@@ -177,9 +177,9 @@ export class ShopingCartComponent implements OnInit {
   delete(val) {
     this.isDataLoad = true;
     // this.router.navigate(['/user-panel/kyc']); 
-    var UrlParameters = `teamId=${val.teamId}&emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`;
-    console.log(UrlParameters);
-    this._appServices.postDataByPromissHttp(`ShoppingCart/PostRemoveFromCart?${UrlParameters}`, {}).then(res => {
+    // var UrlParameters = `teamId=${val.teamId}&emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`;
+    console.log(val);
+    this._appServices.removeFromCart(this._appServices.loggedInUserDetails.email,val.id).then(res => {
       console.log("responce data", res);
       this._appServices.cartRefresh.next(true);
       this.isDataLoad = false;
@@ -206,8 +206,14 @@ export class ShopingCartComponent implements OnInit {
   updateqty(val, qty) {
     this.isDataLoad = true;
     var UrlParameters = `teamId=${val.teamId}&emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}&amount=${qty}`;
-    console.log(UrlParameters);
-    this._appServices.postDataByPromissHttp(`ShoppingCart/PostUpdateActiveCartTeamItem?${UrlParameters}`, {}).then(res => {
+    let payload:ADD_TO_CART_PAYLOAD = {
+      email:this._appServices.loggedInUserDetails['email'],
+      type:'XL',
+      items:[{ amount: qty, item: val.tokenIndexId }]
+    }
+    console.log('val:',val,'Payload:',payload);
+
+    this._appServices.updateCart(payload).then(res => {
       console.log("responce data", res);
       this.isDataLoad = false;
       this.cartDetail = [];

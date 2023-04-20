@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppService } from './services/app.service';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { NetworkInterface } from '@ionic-native/network-interface/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 import { B2C_config_setting } from './B2C_config_setting';
@@ -25,7 +25,11 @@ import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { FingerprintjsProAngularModule } from '@fingerprintjs/fingerprintjs-pro-angular';
 import { environment } from 'src/environments/environment.prod';
-
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -36,7 +40,14 @@ import { environment } from 'src/environments/environment.prod';
     HttpClientModule,
     NgChartsModule,
     NgSelectModule,
-    FingerprintjsProAngularModule.forRoot({loadOptions: {apiKey: environment.FingerprintApiKey}})
+    FingerprintjsProAngularModule.forRoot({loadOptions: {apiKey: environment.FingerprintApiKey}}),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (HttpLoaderFactory),
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     HTTP,
@@ -53,6 +64,7 @@ import { environment } from 'src/environments/environment.prod';
     NgChartsModule,
     Network,
     Clipboard,
+    TranslateService,
     { provide: HTTP_INTERCEPTORS, useClass: httpClientInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

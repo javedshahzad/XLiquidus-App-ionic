@@ -13,7 +13,12 @@
     width: 100%;
     position:absolute;
     bottom: 0; 
-}
+}ion-select{
+    border: 2px solid #5fccf0;
+      border-radius: 8px;
+      background: #ffffff;
+      height: 55px;
+  }
 .custome-color-gray{
     color: #999999;
 }
@@ -66,4 +71,8 @@
   }
   .text-light-gray{
       color: #666666;
+  }.item-logo{
+    width: 45px;
+    height: 45px;
+    padding: 5px;
   }

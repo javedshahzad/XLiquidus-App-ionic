@@ -1,0 +1,135 @@
+
+<ion-content class="h-100 no-scroll">
+  <div class="overfolow-y h-100">
+    <ion-item-divider class="height-30 removeborder background-subheader"></ion-item-divider>
+    <ion-grid class="position-relative z-index-10">
+      <ion-row>
+        <ion-col>
+          <ion-toolbar class="general-pages-toolbar p-t-5p">
+            <div class="ion-text-center">
+              <h1 class="color-secondary size-32 font-weight-600 jostDemi">
+                {{'FILL YOUR' | translate }}
+              </h1>
+              <h2 class="size-23 transaction-color m-t-0 jostDemi letter-spacing font-weight-600">{{'BILLING AND CARD INFORMATION' | translate }}
+              </h2>
+              <!-- <div class="showtip size-15 jostBook font-weight-400" *ngIf="isshowtip==true">
+                {{'A Transaction Profile is needed to do transactions under $250. This information is kept private per our privacy policy and used ONLY to verify and authorize transactions.' | translate }}
+              </div>
+              <p class="m-0 color-secondary size-15 jostBook p-l-6p p-r-6p  font-weight-400">{{'To authorize, expedite and get the most out of your XLiquidus Account you need to create a' | translate }} <span class="transaction-color"
+                  (click)="toggleshowtip()">{{'Billing Information.' | translate }} </span></p> -->
+            </div>
+
+          </ion-toolbar>
+          <form id="payment-form" class="p-5" [formGroup]="billingInformation" (ngSubmit)="submitStep2()">
+           
+
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block ">{{'FULL NAME' | translate }} <span
+                  class="text-gray jostDemi">{{"(AS SHOWN ON LEGAL ID)"}}</span></ion-label>
+              <ion-input class="itemclass height-60" formControlName="fullname"></ion-input>
+              <div *ngFor="let error of errorMessages?.fullname" class="errormsg">
+                <ng-container *ngIf="fullname?.hasError(error.type) && (fullname?.dirty || fullname?.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">{{'ADDRESS' | translate }}</ion-label>
+              <ion-input class="itemclass height-60" formControlName="address"></ion-input>
+              <div *ngFor="let error of errorMessages?.address" class="errormsg">
+                <ng-container *ngIf="address?.hasError(error.type) && (address?.dirty || address?.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="position-relative">
+              <div class="showtip showtip-top size-14" *ngIf="isshowtipc==true">
+                <p class="m-t-0">{{'Select the Country in which you have current Legal Identification for.' | translate }}
+                  <br>
+                 {{' If you don\'t see your country in this list, XLiquidus may not be available in your country.' | translate }}
+                </p>
+              </div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">{{'COUNTRY' | translate }}
+                <span class="text-gray">{{'(AS SHOWN ON LEGAL ID )' | translate }}
+                  <ion-icon name="information-circle" class="color-tertiary iconsize v-lign-m"
+                    (click)="toggleshowtipc()"></ion-icon>
+                </span>
+              </ion-label>
+              <ion-select class="itemclass height-60 " interface="action-sheet" formControlName="country">
+                <ion-select-option>
+                  {{'CHOOSE COUNTRY' | translate }}
+                </ion-select-option>
+                <ion-select-option *ngFor="let item of countries" [value]="item.name">
+                  {{item.name}}
+                </ion-select-option>
+              </ion-select>
+              <div *ngFor="let error of errorMessages?.country" class="errormsg">
+                <ng-container *ngIf="country?.hasError(error.type) && (country?.dirty || country?.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+
+            </div>
+
+            <!-- <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">{{'STATE' | translate }}</ion-label>
+              <ion-input class="itemclass height-60" formControlName="state"></ion-input>
+              <div *ngFor="let error of errorMessages?.state" class="errormsg">
+                <ng-container *ngIf="state?.hasError(error.type) && (state?.dirty || state?.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">{{'CITY' | translate }}</ion-label>
+              <ion-input class="itemclass height-60" formControlName="city"></ion-input>
+              <div *ngFor="let error of errorMessages?.city" class="errormsg">
+                <ng-container *ngIf="city?.hasError(error.type) && (city?.dirty || city?.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">{{'POSTAL/ZIP CODE' | translate }}</ion-label>
+              <ion-input class="itemclass height-60" formControlName="zipcode"></ion-input>
+              <div *ngFor="let error of errorMessages?.zipcode" class="errormsg">
+                <ng-container *ngIf="zipcode?.hasError(error.type) && (zipcode?.dirty || zipcode?.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div> -->
+
+            
+
+            
+
+            
+          </form>
+
+          <div id="card-container"></div>
+
+          <button (click)="pay()" id="card-button" type="button" [disabled]="!billingInformation.valid">Pay</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div class="backgroundimage-footer z-index-0">
+    </div>
+
+  </div>
+</ion-content>
