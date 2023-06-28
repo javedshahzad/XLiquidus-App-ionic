@@ -107,8 +107,8 @@
             <div>
               <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">DATE OF BIRTH
               </ion-label>
-              <ion-datetime class="itemclass height-60" min="1960" max={{maxDate}} displayFormat="MMM DD, YYYY"
-                placeholder="MM / DD / YYYY" formControlName="dob"></ion-datetime>
+              <ion-input  class="itemclass height-60" [readonly]="true" displayFormat="MMM DD, YYYY"
+                placeholder="MM / DD / YYYY" formControlName="dob"></ion-input >
               <div *ngFor="let error of errorMessages.dob" class="errormsg">
                 <ng-container *ngIf="dob.hasError(error.type) && (dob.dirty || dob.touched) ">
                   <div class="erroronform">
@@ -133,17 +133,17 @@
                 </ng-container>
               </div>
             </div>
-            <ion-button expand="block" size="large" *ngIf="signupForm2.valid"
+            <ion-button expand="block" size="large"
               class="shadownot size-18 primary-color-background no-border border-radius-8 m-b-20 m-t-15 height-60 jostDemi letter-spacing ion-activatable ripple-parent box-shadow font-weight-600"
               [class.background-blue-light]="checkbackground" (click)="submitStep2()">SUBMIT<ion-spinner name="lines"
                 class="validatespinner1" *ngIf="ShowSpinner"></ion-spinner>
             </ion-button>
 
-            <ion-button expand="block" size="large" *ngIf="!signupForm2.valid" [disabled]="true"
+            <!-- <ion-button expand="block" size="large" *ngIf="!signupForm2.valid" [disabled]="true"
               class="shadownot size-18 static-button-color no-border border-radius-8 m-b-20 m-t-15 height-60 jostDemi letter-spacing ion-activatable ripple-parent box-shadow font-weight-600"
               [class.background-blue-light]="checkbackground">SUBMIT<ion-spinner name="lines" class="validatespinner1"
                 *ngIf="ShowSpinner"></ion-spinner>
-            </ion-button>
+            </ion-button> -->
           </form>
           <ion-button expand="block" size="large" fill="clear" (click)="skipthisstep()" *ngIf="createProfile != 1"
             class="text-white shadownot white-space ion-text-inherit size-12 no-border border-radius-8 m-b-20 height-50 jostDemi">

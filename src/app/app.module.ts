@@ -27,6 +27,7 @@ import { FingerprintjsProAngularModule } from '@fingerprintjs/fingerprintjs-pro-
 import { environment } from 'src/environments/environment.prod';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -65,6 +66,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     Network,
     Clipboard,
     TranslateService,
+    InAppBrowser,
     { provide: HTTP_INTERCEPTORS, useClass: httpClientInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

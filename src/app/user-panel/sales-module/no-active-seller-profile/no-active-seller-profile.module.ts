@@ -8,6 +8,7 @@ import { NoActiveSellerProfilePageRoutingModule } from './no-active-seller-profi
 
 import { NoActiveSellerProfilePage } from './no-active-seller-profile.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
   imports: [
@@ -17,6 +18,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
     NoActiveSellerProfilePageRoutingModule,
     SharedModule
   ],
-  declarations: [NoActiveSellerProfilePage]
+  declarations: [NoActiveSellerProfilePage],
+  providers: [
+    InAppBrowser
+  ]
 })
 export class NoActiveSellerProfilePageModule {}

@@ -24,7 +24,7 @@ export class AboutComponent implements OnInit {
     var UrlParameters = `emailAddress=${encodeURIComponent(this._appservices.loggedInUserDetails.email)}&clientIpAddress=${this._appservices.ipAddress.ip}`
     this._appservices.getDataByHttp(`Global/GetLanguages?${UrlParameters}`).subscribe(res => {
       if (res.status == 200) {
-        this.languages = res.data;
+        this.languages = res.data.data;
         console.log(this.languages);
       }
       this._appservices.loaderDismiss();
@@ -51,7 +51,7 @@ export class AboutComponent implements OnInit {
     this.updateUserDetail = {
       'language':this.item,
       'objectId':this._appservices.loggedInUserDetails.oid,
-      'email':this.userDetail.email
+      'email':this.userDetail?.email ? this.userDetail?.email : this._appservices.loggedInUserDetails.email,
     }
     console.log(this.userDetail);
     var postJson = this.updateUserDetail;

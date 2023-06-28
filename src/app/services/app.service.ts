@@ -187,22 +187,25 @@ export class AppService {
     this.isLoading = true;
     return await this.loadingController
       .create({
-        message: message == "" ? 'Please wait...' : message,
-        duration:10000,
-      
+        duration: 8000,
+        message:message ? message : "Please wait...",
       })
-      .then(a => {
+      .then((a) => {
         a.present().then(() => {
           if (!this.isLoading) {
-            a.dismiss().then(() => {});
+            a.dismiss().then(() => { });
           }
         });
       });
   }
 
   async loaderDismiss() {
-    this.isLoading = false;
-    return await this.loadingController.dismiss();
+    setTimeout(async () => {
+      this.isLoading = false;
+    return await this.loadingController.dismiss({
+      'dismissed': true
+    });
+    }, 2000);
   }
 
   async presentToast(msg) {
@@ -520,7 +523,10 @@ export class AppService {
       this._nav.navigateRoot('/token-expires');
     }
   }
-
+  roundNumberTowDecimal(number){
+    return number?.toFixed(2);
+     
+  }
   // Cart management system
   getCart(email: string) {
     let url = `CloudCart/GetCart?email=${email}&cartType=XL`
@@ -573,7 +579,7 @@ export interface ADD_TO_CART_PAYLOAD {
 
   email: string,
   items: Array<CART_ITEM>,
-  type: string
+  type?: string
 }
 
 export interface CART_ITEM {

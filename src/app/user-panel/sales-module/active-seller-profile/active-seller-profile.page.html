@@ -24,12 +24,13 @@
     </ion-col>
   </ion-row>
   <ion-row>
-    <ion-col routerLink="/user-panel/no-active-seller-profile">
-      <div class="setup-main">
+    <ion-col routerLink="/user-panel/list-crypto-sales-details">
+      <ion-button expand="block" size="large"
+        class="height-70 primary-second-color-background setup-main">
         <p class="ion-text-capitalize fontFamilysystemUI size-16 m-b-5 m-t-5 font-weight-500">
-        Create new sales <br> offer
-        </p>
-      </div>
+          Create new sales <br> offer
+          </p>
+      </ion-button>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -90,7 +91,8 @@
          </p>
       </ion-col>
     </ion-row>
-    <ion-row *ngFor="let item of [1,2,3]; let i = index" class="border-botom" [class.noborder]="i+1 === 3" routerLink="/user-panel/list-crypto-sales">
+    <ng-container>
+    <ion-row *ngFor="let item of [1,2,3]; let i = index" class="border-botom" [class.noborder]="i+1 === 3" routerLink="/user-panel/no-active-seller-profile">
       <ion-col>
         <p class="darken-color ion-text-center ion-text-uppercase fontFamilysystemUI size-12 m-b-5 m-t-5 font-weight-600">
           1.0 btc
@@ -112,6 +114,8 @@
          </p>
       </ion-col>
     </ion-row>
+    </ng-container>
+    
   </ion-grid>
 </div>
 

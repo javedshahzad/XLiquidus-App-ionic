@@ -16,7 +16,7 @@ import { AppEnum } from 'src/app/appEnum/appenum';
 })
 export class SignUpComponent implements OnInit {
   checkbackground: boolean = false;
-  languages: any;
+  languages: any=[];
   ShowSpinner = false;
   deviceId: any;
   data: any;
@@ -43,8 +43,8 @@ export class SignUpComponent implements OnInit {
 
     var UrlParameters = `emailAddress=${this._appservices.loggedInUserDetails.email}&clientIpAddress=${this._appservices.ipAddress.ip}`
     this._appservices.getDataByHttp(`Global/GetLanguages?${UrlParameters}`).subscribe(res => {
-      if (res.status == 200) {
-        this.languages = res.data;
+      if (res.status === 200 || res.statusCode === 200) {
+        this.languages = res.data.data;
         console.log(this.languages);
       }
       this._appservices.loaderDismiss();

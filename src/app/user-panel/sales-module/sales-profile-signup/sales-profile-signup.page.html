@@ -10,6 +10,7 @@
       </ion-item-divider>
     </ion-list>
   </div>
+<ng-container *ngIf="IsSignup">
   <ion-grid class="ion-padding">
     <ion-row>
       <ion-col>
@@ -45,15 +46,16 @@
         </h5>
         <!-- <ion-label class="m-t-25 m-b-10 size-13 font-weight-600 l-h-0 m-l-15  level-color display-block jostDemi">
           PREFERRED LANGUAGE:</ion-label> -->
-        <ion-select class="selectClass height-50 darken-color" interface="action-sheet" placeholder="Choose Crypto Currency" [(ngModel)]="CryptoCurrency">
-          <ion-select-option *ngFor="let item of [1,2,3,4]" [value]="item">
-               Bitcoin (BTC)
+        <ion-select class="selectClass height-50 darken-color" interface="action-sheet" placeholder="Choose Crypto Currency" [(ngModel)]="paymentCurrency">
+          <ion-select-option *ngFor="let item of fundingOtions" [value]="item">
+               {{item.paymentOption}}
           </ion-select-option>
         </ion-select>
-        <ion-item lines="none">
-          <ion-input type="number" value="0.0006" slot="start" class="darken-color"></ion-input>
-          <span class="font-weight-700 size-16 darken-color" slot="end">BTC</span>
+        <ion-item lines="none" *ngIf="PaymentAddress">
+          <p class="darken-color size-14 m-b-0 m-t-0" slot="start">{{PaymentAddress.expectedCryptoAmount}}</p>
+          <span class="font-weight-700 size-16 darken-color" slot="end">{{PaymentAddress.type}}</span>
         </ion-item>
+        <br>
         <div class="under-line"></div>
         <ion-item lines="none">
           <p class="darken-color size-14 m-b-0 m-t-0" slot="start">20.00</p>
@@ -63,7 +65,7 @@
           <table>
             <tr>
               <td>
-                <ion-checkbox color="tertiary" slot="start" class="zoom-1-2 m-r-8 m-t--10" mode="md">
+                <ion-checkbox (ionChange)="CheckBox($event)" [checked]="isChecked" color="tertiary" slot="start" class="zoom-1-2 m-r-8 m-t--10" mode="md" >
                 </ion-checkbox>
               </td>
               <td>
@@ -72,7 +74,7 @@
                     above. Also, by checking on this checkbox
                     and pressing the "Confirm" button, agree
                     to the</span>
-                  <span class="text-black p-r-2 font-weight-400 size-15 jostlight" [routerLink]="['/tnc']"><u>Terms
+                  <span class="text-black p-r-2 font-weight-400 size-15 jostlight" [routerLink]="['/tnc']"><u>
                     terms of use</u></span>
                 </ion-label>
               </td>
@@ -82,44 +84,112 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-button expand="full" routerLink="/user-panel/no-active-seller-profile">I want to sign up</ion-button>
+  <ion-button expand="full" (click)="Signup()" [disabled]="!isChecked">I want to sign up</ion-button>
+</ng-container>
+
+<ng-container *ngIf="PaymentAddress">
   <ion-grid class="ion-padding-start ion-padding-end">
-      <ion-row>
-        <ion-col>
-        <h5 class="ion-text-capitalize color-tertiary-dark jostDemi size-22 m-b-0 m-t-0 m-l-5 font-weight-600">
-          deposit BTC 
-        </h5>
+    <ion-row>
+      <ion-col>
+      <h5 class="ion-text-capitalize color-tertiary-dark jostDemi size-22 m-b-0 m-t-0 m-l-5 font-weight-600">
+        deposit {{PaymentAddress.type}} 
+      </h5>
+    </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <img [src]="PaymentAddress.addressAsQrCode" alt="">
       </ion-col>
+      <ion-col>
+         <div class="ion-text-end">
+          <p class="darken-color size-14 m-b-0 m-t-0">{{PaymentAddress.expectedCryptoAmount}}</p>
+          <span class="font-weight-700 size-16 darken-color">{{PaymentAddress.type}}</span>
+         </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <h5 class="darken-color jostDemi size-22 m-b-0 m-t-0 m-l-5 font-weight-600">
+          {{PaymentAddress.address}}
+        </h5>
+        <p class="darken-color jostDemi size-12 m-b-5 m-t-5 font-weight-500">
+          Please send the BTC deposit to the address
+          above to continue the process. These:
+          transactions will need to be completed within 50
+          minutes.
+        </p>
+        <br>
+        <p class="darken-color jostDemi size-12 m-b-5 m-t-5 font-weight-500">
+          We wil email you once the deposit is confirmed.
+          Once confirmed, you can move to the last stage
+          of the seller sign up process.            
+        </p>
+      </ion-col>
+    </ion-row>
+</ion-grid>
+</ng-container>
+
+  
+<ng-container *ngIf="IsPay">
+    <ion-grid *ngIf="PostCheckoutRespone?.data?.fiatPaymentIntent">
+      <ion-row>
+        <ion-col>
+          <ion-item lines="none">
+            <span class="font-weight-700 size-10 darken-color" slot="start">Activation Deposit</span>
+            <p class="darken-color size-14 m-b-0 m-t-0" slot="end">{{_appservices.roundNumberTowDecimal(PostCheckoutRespone?.data?.fiatPaymentIntent?.requestTotalAmount)}} USD</p>
+          </ion-item>
+          <ion-item lines="none" *ngFor="let activationFee of PostCheckoutRespone?.data?.fiatPaymentIntent?.fees">
+            <span class="font-weight-700 size-10 darken-color" slot="start">{{activationFee.description}}</span>
+            <p class="darken-color size-14 m-b-0 m-t-0" slot="end">{{activationFee.amount}} {{activationFee.currency}}</p>
+          </ion-item>
+          <div class="under-line"></div>
+          <ion-item lines="none">
+            <span class="font-weight-700 size-10 darken-color" slot="start">Grand Total</span>
+            <p class="darken-color size-14 m-b-0 m-t-0" slot="end">{{PostCheckoutRespone.data.fiatPaymentIntent.grandTotal}} {{PostCheckoutRespone.data.fiatPaymentIntent.currency}}</p>
+          </ion-item>
+        </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
-          <img src="../../../../assets/images/qr-code.PNG" alt="">
-        </ion-col>
-        <ion-col>
-           <div class="ion-text-end">
-            <p class="darken-color size-14 m-b-0 m-t-0">0.00093</p>
-            <span class="font-weight-700 size-16 darken-color">BTC</span>
-           </div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <h5 class="darken-color jostDemi size-22 m-b-0 m-t-0 m-l-5 font-weight-600">
-            34VmryzZUymutQuwDJBvgWQyT2mT5s7sZP
-          </h5>
-          <p class="darken-color jostDemi size-12 m-b-5 m-t-5 font-weight-500">
-            Please send the BTC deposit to the address
-            above to continue the process. These:
-            transactions will need to be completed within 50
-            minutes.
-          </p>
+          <div class="ion-padding">
+            <p class="darken-color jostDemi size-12 m-b-5 m-t-5 font-weight-500">
+              Enter your Card details
+            </p>
+          <div id="card-container"></div>
+            <p class="darken-color jostDemi size-12 m-b-5 m-t-5 font-weight-500">
+              Enter Verification code sent to email: {{_appservices.loggedInUserDetails.email}}
+            </p>
+          <div>
+            <ion-label class="m-t-25 m-b-10 size-13 font-weight-600 l-h-0 m-l-15  level-color display-block jostDemi">
+              Verification Code 
+            </ion-label>
+            <ion-input class="itemclass height-60" 
+            [(ngModel)]="verificationCode"
+             placeholder="Enter Verification code"
+             type="text"
+            ></ion-input>
+          </div>
           <br>
-          <p class="darken-color jostDemi size-12 m-b-5 m-t-5 font-weight-500">
-            We wil email you once the deposit is confirmed.
-            Once confirmed, you can move to the last stage
-            of the seller sign up process.            
-          </p>
+          <ion-button expand="full" color="secondary" (click)="ProcessToPay()" shape="round">Process To Pay</ion-button>
+          </div>
         </ion-col>
       </ion-row>
-  </ion-grid>
+    </ion-grid>
+  </ng-container>
+  <ng-container *ngIf="FiatPaymentData">
+    <ion-grid *ngIf="FiatPaymentData?.data?.messageType === 'User'">
+      <ion-row>
+        <ion-col>
+          <p class="darken-color jostDemi size-12 m-b-5 m-t-5 font-weight-500">
+            Congratulation! You have deposited all the fees.
+          </p>
+          <div class="ion-text-center">
+            <ion-button color="secondary" (click)="ViewReceipt(FiatPaymentData?.data.receiptUrl)" class="ion-text-capitalize ">View Receipt</ion-button>
+            <ion-button class="ion-text-capitalize" routerLink="/user-panel/active-seller-profile">Return Back</ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
+  
 </ion-content>

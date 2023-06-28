@@ -29,7 +29,7 @@ export class ListCryptoSalesDetailsPage implements OnInit {
   }
 
   backtomarktplace() {
-    this._nav.navigateRoot(['/user-panel/dashboard']);
+    this._nav.back();
   }
 
 }

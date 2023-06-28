@@ -92,8 +92,8 @@
         </ng-template>
         <ion-label class="tabLabel_color size-9 font-weight-400">Watchlist</ion-label>
       </ion-tab-button>
-      <ion-tab-button tab="sales" [disabled]="true">
-        <ng-container *ngIf="selectedTab == 'sales'; else salesNonActive">
+      <ion-tab-button tab="active-seller-profile" [disabled]="false">
+        <ng-container *ngIf="selectedTab == 'active-seller-profile'; else salesNonActive">
           <img src="../../assets/images/bottomBar-icons/blue_icons/sales.png" class="sales-icon">
         </ng-container>
         <ng-template #salesNonActive>

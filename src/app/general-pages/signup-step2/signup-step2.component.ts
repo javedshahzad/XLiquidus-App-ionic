@@ -26,6 +26,7 @@ export class SignupStep2Component implements OnInit {
   RegistrationId: any;
   createProfile: any;
   noteighteen: any;
+  userDetails: any="";
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,7 +42,18 @@ export class SignupStep2Component implements OnInit {
   }
 
   ngOnInit() { }
-
+getUserProfile(){
+  this._appservices.presentLoading();
+  var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appservices.loggedInUserDetails['email'])}&clientIpAddress=${this._appservices.ipAddress.ip}`
+  this._appservices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
+    if (_res.status == 200) {
+      this.userDetails = _res.data;
+      console.log(this.userDetails)
+      this.signupForm2.controls["dob"].setValue(this.userDetails.dob);
+    }
+    this._appservices.loaderDismiss();
+  });
+}
   ionViewWillEnter() {
     this._appservices.presentLoading();
     this.Callname = this._encServices.decrypt(this.activatedroute.snapshot.paramMap.get('prefferedLanguage'));
@@ -57,17 +69,18 @@ export class SignupStep2Component implements OnInit {
     var UrlParameters = `emailAddress=${this._appservices.loggedInUserDetails.email}&clientIpAddress=${this._appservices.ipAddress.ip}`
     this._appservices.getDataByHttp(`Global/GetCountries?${UrlParameters}`).subscribe(res => {
       if (res.status == 200) {
-        this.countries = res.data;
+        this.countries = res.data.data;
         console.log(this.countries);
       }
     });
 
     this._appservices.getDataByHttp(`Global/GetGenders?${UrlParameters}`).subscribe(res => {
       if (res.status == 200) {
-        this.genders = res.data;
+        this.genders = res.data.data;
         console.log(this.genders);
       }
     });
+    this.getUserProfile();
     this._appservices.presentLoading();
   }
 
@@ -210,7 +223,7 @@ export class SignupStep2Component implements OnInit {
         // "zipPostal": this.signupForm2.value.zipcode,
         "country": this.signupForm2.value.country
       },
-      "dob": newDate.toISOString(),
+      "dob": this.signupForm2.value.dob,
       "gender": this.signupForm2.value.gender,
       "language": this.language,
       "objectId": this.RegistrationId
