@@ -64,6 +64,7 @@ export class SalesProfileSignupPage implements OnInit {
   PostCheckoutRespone: any = "";
   PaymentAddress: any = "";
   FiatPaymentData: any = "";
+    userDetails: any="";
   constructor(
       public _nav: NavController,
       public router: Router,
@@ -82,6 +83,7 @@ export class SalesProfileSignupPage implements OnInit {
   ionViewWillEnter() {
       this.GetFudingOptionsTypes();
       this.GetCurrentMarketProfile();
+      this.GetUser();
   }
   backtomarktplace() {
       this._nav.back();
@@ -97,50 +99,67 @@ export class SalesProfileSignupPage implements OnInit {
           this._appservices.loaderDismiss();
       });
   }
-  CreateMarketProfile() {
-    if(this.paymentCurrency){
-        this.isDataLoad = true;
-      this._appservices.presentLoading();
-      let payload = {
-          email: this._appservices.loggedInUserDetails.email,
-          paymentCurrency: this.paymentCurrency.paymentOption,
-          fundingOption: this.paymentCurrency.FundingOption,
-          marketName: this._appservices.loggedInUserDetails.name
+  GetUser(){
+    this._appservices.presentLoading();
+    var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appservices.loggedInUserDetails['email'])}&clientIpAddress=${this._appservices.ipAddress.ip}`
+    this._appservices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
+      if (_res.status == 200) {
+        this.userDetails = _res.data;
+        console.log(this.userDetails)
       }
-      var UrlParameters = `CustomerMarkets/PostCreateMarketProfile?email=${this._appservices.loggedInUserDetails.email}&marketName=${this._appservices.loggedInUserDetails.name}&paymentCurrency=${this.paymentCurrency.paymentOption}&fundingOption=${this.paymentCurrency.FundingOption}`;
-      console.log(UrlParameters);
-      this._appservices.postDataByHttp(UrlParameters, payload).subscribe(res => {
-          console.log("PostCreateMarketProfile Response", res);
-          if (res.status === 200) {
+      this._appservices.loaderDismiss();
+    });
+  }
+  CreateMarketProfile() {
+    if(this.userDetails?.firstName || this.userDetails?.lastName || this.userDetails?.gender){
+        if(this.paymentCurrency){
+            this.isDataLoad = true;
+          this._appservices.presentLoading();
+          let payload = {
+              email: this._appservices.loggedInUserDetails.email,
+              paymentCurrency: this.paymentCurrency.paymentOption,
+              fundingOption: this.paymentCurrency.FundingOption,
+              marketName: this._appservices.loggedInUserDetails.name
+          }
+          var UrlParameters = `CustomerMarkets/PostCreateMarketProfile?email=${this._appservices.loggedInUserDetails.email}&marketName=${this._appservices.loggedInUserDetails.name}&paymentCurrency=${this.paymentCurrency.paymentOption}&fundingOption=${this.paymentCurrency.FundingOption}`;
+          console.log(UrlParameters);
+          this._appservices.postDataByHttp(UrlParameters, payload).subscribe(res => {
+              console.log("PostCreateMarketProfile Response", res);
+              if (res.status === 200) {
+                  this._appservices.loaderDismiss();
+                  this._appservices.presentToast("Congrats! Your profile has been created.Please follow the next steps to activate profile!");
+                  this.UserCurrentMarketProfile = res.data;
+                  this.PostCheckoutProfile();
+                  //this._nav.navigateRoot("/user-panel/active-seller-profile");
+              } else {
+                  var errors = JSON.parse(res.error);
+                  this._appservices.presentToast(errors.message);
+              }
               this._appservices.loaderDismiss();
-              this._appservices.presentToast("Congrats! Your profile has been created.Please follow the next steps to activate profile!");
-              this.UserCurrentMarketProfile = res.data;
-              this.PostCheckoutProfile();
-              //this._nav.navigateRoot("/user-panel/active-seller-profile");
-          } else {
-              var errors = JSON.parse(res.error);
-              this._appservices.presentToast(errors.message);
-          }
-          this._appservices.loaderDismiss();
-          this.isDataLoad = false;
-      }, err => {
-          console.log(err);
-          this._appservices.loaderDismiss();
-          this.isDataLoad = false;
-          if(err.status === 400){
-            this.global.CreateToast('Seems like your profile is not completed yet. Please complete your profile to continue!');
-            this._nav.navigateRoot("/user-panel/myprofile")
-        }else if(err.status != 400) {
-            if (err.error){
-                var errorsMsg = JSON.parse(err.error);
-                this._appservices.presentToast(errorsMsg?.message);
-            }
-
-          }
-      });
+              this.isDataLoad = false;
+          }, err => {
+              console.log(err);
+              this._appservices.loaderDismiss();
+              this.isDataLoad = false;
+              if(err.status === 400){
+                this.global.CreateToast('Seems like your profile is not completed yet. Please complete your profile to continue!');
+                this._nav.navigateRoot("/user-panel/myprofile")
+            }else if(err.status != 400) {
+                if (err.error){
+                    var errorsMsg = JSON.parse(err.error);
+                    this._appservices.presentToast(errorsMsg?.message);
+                }
+    
+              }
+          });
+        }else{
+            this.global.CreateToast("Please select deposit type!")
+        }
     }else{
-        this.global.CreateToast("Please select deposit type!")
+        this.global.CreateToast('Seems like your profile is not completed yet. Please complete your profile and try again!');
+        this._nav.navigateRoot("/user-panel/myprofile");
     }
+    
   }
   Signup() {
       console.log(this.paymentCurrency);

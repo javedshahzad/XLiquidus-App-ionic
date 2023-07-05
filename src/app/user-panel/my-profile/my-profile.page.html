@@ -101,7 +101,7 @@
 
     <!--With Transaction Profile-->
     <ion-list
-      *ngIf="!(userDetails?.firstName == '' || userDetails?.lastName == '' || userDetails?.gender == '' ||  userDetails?.dob == '' || userDetails?.addressCountryName == '')"
+    *ngIf="userDetails?.firstName"
       lines="none" class="p-t-20p p-b-20p background-success-light border-radius-8 p-2p m-15 overflow-visible">
       <ion-item class="background-success-light">
         <ion-row>
@@ -171,11 +171,11 @@
         </ion-row>
       </ion-item>
     </ion-list>
-
-
+<!-- 
+    *ngIf="userDetails?.firstName === '' || userDetails?.lastName === '' || userDetails?.gender === '' ||  userDetails?.dob === '' || userDetails?.addressCountryName === ''" -->
     <!--With No Transaction Profile-->
     <ion-list
-      *ngIf="userDetails?.firstName == '' || userDetails?.lastName == '' || userDetails?.gender == '' ||  userDetails?.dob == '' || userDetails?.addressCountryName == ''"
+    *ngIf="!userDetails?.firstName"
       lines="none" class="no-background">
       <ion-item lines="none" class="no-background">
         <ion-row>

@@ -15,7 +15,7 @@ import { UserPanelPage } from '../user-panel.page';
   providers: [InAppBrowser]
 })
 export class MyProfilePage implements OnInit {
-  userDetails: any;
+  userDetails: any="";
   registrationId: any;
   showCountryTooltip: boolean;
   showProfileTooltip: boolean;
@@ -101,7 +101,8 @@ export class MyProfilePage implements OnInit {
 
   createmyprofile() {
     console.log(this._appServices.loggedInUserDetails);
-    this.router.navigate(['/signupstep2', { email: this._encServices.encrypt(this.userDetails.email), Preflanguage: this.userDetails.language, registerationId: this._encServices.encrypt(this._appServices.loggedInUserDetails['oid']), prefferedLanguage: this._encServices.encrypt(this.userDetails.preferredName), onlyCreateProfile: 1 }])
+    var language = this.userDetails.language ? this.userDetails.language : "English";
+    this.router.navigate(['/signupstep2', { email: this._encServices.encrypt(this.userDetails?.email ? this.userDetails?.email : this._appServices.loggedInUserDetails.email), Preflanguage: language, registerationId: this._encServices.encrypt(this._appServices.loggedInUserDetails['oid']), prefferedLanguage: this._encServices.encrypt(this.userDetails.preferredName ? this.userDetails.preferredName : this._appServices.loggedInUserDetails.name), onlyCreateProfile: 1 }])
   }
 
   gotoVerifyMFA() {

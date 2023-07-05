@@ -21,6 +21,7 @@ export class SignUpComponent implements OnInit {
   deviceId: any;
   data: any;
   geolocationparam: any;
+  countriesList: any=[];
   constructor(private router: Router, private geolocation: Geolocation, private uniqueDeviceID: UniqueDeviceID,
     public _appservices: AppService, private formBuilder: FormBuilder, public _platform: Platform,
     public _encServices: EncryptionDecryptionService, public _appEnum: AppEnum) {
@@ -34,6 +35,7 @@ export class SignUpComponent implements OnInit {
     // this._appservices.getDataByHttp('Users/GetUser?emailAddress=cree.finnikin%40usscyber.com&clientIpAddress=127.0.0.1').subscribe(res=>{
     //   console.log(res);
     // }) 
+    this.getCountries();
     this._appservices.presentLoading();
     this.uniqueDeviceID.get().then((uuid: any) => {
       this.deviceId = uuid;
@@ -51,7 +53,16 @@ export class SignUpComponent implements OnInit {
     });
     this._appservices.loaderDismiss();
   }
+getCountries(){
+  var UrlParameters = `emailAddress=${this._appservices.loggedInUserDetails.email}&clientIpAddress=${this._appservices.ipAddress.ip}`
+  this._appservices.getDataByHttp(`Global/GetCountries?${UrlParameters}`).subscribe(res => {
+    if (res.status == 200) {
+      this.countriesList = res.data.data;
+      console.log(this.countriesList);
+    }
+  });
 
+}
   get CallName() {
     return this.signupForm.get('CallName');
   }
@@ -64,11 +75,15 @@ export class SignUpComponent implements OnInit {
   get agree() {
     return this.signupForm.get('agree');
   }
+  get country() {
+    return this.signupForm.get('country');
+  }
   signupForm = this.formBuilder.group({
     CallName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), Validators.pattern('[a-zA-Z][a-zA-Z_ ]+[a-zA-Z _]$')]],
     email: ['', [Validators.minLength(3), Validators.maxLength(100), Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
     language: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    agree: [null, Validators.required]
+    agree: [null, Validators.required],
+    country: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
   });
 
   public errorMessages = {
@@ -81,6 +96,9 @@ export class SignUpComponent implements OnInit {
     ],
     language: [
       { type: 'required', message: 'Language is required' },
+    ],
+    country: [
+      { type: 'required', message: 'Country is required' },
     ],
   };
 
@@ -115,7 +133,8 @@ export class SignUpComponent implements OnInit {
     var postJson = {
       "emailAddress": this.signupForm.value.email,
       "preferredName": this.signupForm.value.CallName,
-      "preferredLanguage": this.signupForm.value.language
+      "preferredLanguage": this.signupForm.value.language,
+      "country": this.signupForm.value.country
     }
     this._appservices.postDataByPromissHttp(`Users/LiteMobileRegistration`, postJson).then(res => {
       console.log("responce data", res);
@@ -143,7 +162,7 @@ export class SignUpComponent implements OnInit {
       "hasAccepted": true
     }
     console.log('acceptTermsConditions', JSON.stringify(postJson));
-    this._appservices.postDataByPromissHttp(`Users/AcceptedTerms`, postJson).then(res => {
+    this._appservices.postDataByPromissHttp(`Users/AcceptedTerms`, postJson).then(TermsResponse => {
       console.log("responce data", res);
       this.ShowSpinner = false;
       if (res.status == 200) {

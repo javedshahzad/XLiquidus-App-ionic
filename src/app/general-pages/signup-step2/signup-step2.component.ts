@@ -240,7 +240,11 @@ getUserProfile(){
           this._nav.navigateRoot(['.']);
         }
       } else {
-        this._appservices.presentToast(res.data.message);
+        if(res.data.error){
+          var msg =JSON.parse(res.data.error);
+          this._appservices.presentToast(msg.message);
+        }
+      
       }
       // this._appservices.presentToast(res);
     });

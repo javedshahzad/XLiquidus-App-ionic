@@ -107,7 +107,7 @@
             <div>
               <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">DATE OF BIRTH
               </ion-label>
-              <ion-input  class="itemclass height-60" [readonly]="true" displayFormat="MMM DD, YYYY"
+              <ion-input  class="itemclass height-60" type="date"  displayFormat="MMM DD, YYYY"
                 placeholder="MM / DD / YYYY" formControlName="dob"></ion-input >
               <div *ngFor="let error of errorMessages.dob" class="errormsg">
                 <ng-container *ngIf="dob.hasError(error.type) && (dob.dirty || dob.touched) ">

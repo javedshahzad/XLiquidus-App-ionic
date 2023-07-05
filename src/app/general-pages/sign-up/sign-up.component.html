@@ -61,6 +61,27 @@
                 </ng-container>
               </div>
             </div>
+            <div>
+              <ion-label class="m-t-25 m-b-10 size-13 font-weight-600 l-h-0 m-l-15  level-color display-block jostDemi">
+                COUNTRY:</ion-label>
+              <ion-select class="itemclass height-60" interface="action-sheet" formControlName="country"
+                placeholder="Choose Country">
+                <ion-select-option>
+                  CHOOSE COUNTRY
+                </ion-select-option>
+                <ion-select-option *ngFor="let item of countriesList" [value]="item.name">
+                  {{item.name}}
+                </ion-select-option>
+              </ion-select>
+
+              <div *ngFor="let error of errorMessages.country" class="errormsg regularFonts">
+                <ng-container *ngIf="country.hasError(error.type) && (country.dirty || country.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
             <div class="m-t-20 m-b-20">
               <table>
                 <tr>
