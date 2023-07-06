@@ -20,29 +20,37 @@ export class SignUpComponent implements OnInit {
   ShowSpinner = false;
   deviceId: any;
   data: any;
-  geolocationparam: any;
+  geolocationparam: any= '28.482098,77.0851379';
   countriesList: any=[];
   constructor(private router: Router, private geolocation: Geolocation, private uniqueDeviceID: UniqueDeviceID,
     public _appservices: AppService, private formBuilder: FormBuilder, public _platform: Platform,
     public _encServices: EncryptionDecryptionService, public _appEnum: AppEnum) {
 
-
+      this.getUserLocation();
   }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    this.getUserLocation();
+  }
 
   ionViewWillEnter() {
     // this._appservices.getDataByHttp('Users/GetUser?emailAddress=cree.finnikin%40usscyber.com&clientIpAddress=127.0.0.1').subscribe(res=>{
     //   console.log(res);
     // }) 
     this.getCountries();
-    this._appservices.presentLoading();
+    this.getUserLocation();
+    this.getLanguages();
+   
     this.uniqueDeviceID.get().then((uuid: any) => {
       this.deviceId = uuid;
     }).catch((error: any) => {
       this.deviceId = this._encServices.getUUID();
     });
 
+
+  }
+  getLanguages(){
+     this._appservices.presentLoading();
     var UrlParameters = `emailAddress=${this._appservices.loggedInUserDetails.email}&clientIpAddress=${this._appservices.ipAddress.ip}`
     this._appservices.getDataByHttp(`Global/GetLanguages?${UrlParameters}`).subscribe(res => {
       if (res.status === 200 || res.statusCode === 200) {
@@ -54,12 +62,14 @@ export class SignUpComponent implements OnInit {
     this._appservices.loaderDismiss();
   }
 getCountries(){
+  this._appservices.presentLoading();
   var UrlParameters = `emailAddress=${this._appservices.loggedInUserDetails.email}&clientIpAddress=${this._appservices.ipAddress.ip}`
   this._appservices.getDataByHttp(`Global/GetCountries?${UrlParameters}`).subscribe(res => {
     if (res.status == 200) {
       this.countriesList = res.data.data;
       console.log(this.countriesList);
     }
+    this._appservices.loaderDismiss();
   });
 
 }
@@ -101,7 +111,16 @@ getCountries(){
       { type: 'required', message: 'Country is required' },
     ],
   };
-
+async getUserLocation(){
+      this.geolocation.getCurrentPosition().then((resp) => {
+      console.log(resp.coords.latitude)
+      console.log(resp.coords.longitude)
+      this.geolocationparam = resp.coords.latitude + ',' + resp.coords.longitude;
+    }).catch((error) => {
+      console.log(error)
+      this.geolocationparam = '28.482098,77.0851379';
+    });
+}
   async goToSignUpConfirm() {
     if (!this.signupForm.valid) {
       Object.keys(this.signupForm.controls).forEach(field => {
@@ -111,25 +130,6 @@ getCountries(){
       return;
     }
     this.ShowSpinner = true;
-    await this.geolocation.getCurrentPosition().then((resp) => {
-      console.log(resp.coords.latitude)
-      console.log(resp.coords.longitude)
-      this.geolocationparam = resp.coords.latitude + ',' + resp.coords.longitude;
-    }).catch((error) => {
-      this.geolocationparam = '28.482098,77.0851379';
-    });
-
-
-    // var UrlParametersForLiteMobile = `emailAddress=${this.signupForm.value.email}&preferredName=${this.signupForm.value.CallName}&preferredLanguage=${this.signupForm.value.language}` 
-    // var UrlParametersForTerms = `id=${''}&userId=${''}&acceptanceDate=${new Date().toISOString()}&geoLocation=${this.geolocationparam}&deviceId=${this.deviceId}&deviceOs=${'android'}&userIpAddress=${this._appservices.ipAddress.ip}&hasAccepted=${this.signupForm.value.agree}` 
-    // var LiteMobileRegistration= this._appservices.postDataByPromissHttp(`Users/LiteMobileRegistration?${UrlParametersForLiteMobile}`,{});
-    // var AcceptedTerms= this._appservices.postDataByPromissHttp(`Users/AcceptedTerms?${UrlParametersForTerms}`,{});
-    // forkJoin([LiteMobileRegistration,AcceptedTerms]).subscribe(_res=>{ 
-    //    var userCoinMetricsList = _res[0].status ==200 ?  _res[0].data : [];
-    //    console.log(userCoinMetricsList)   
-    //    this.router.navigate(['/signupconfirm',{email:this._encServices.encrypt(this.signupForm.value.email)}])
-    //  }); 
-    // this.router.navigate(['/signupconfirm',{email:this._encServices.encrypt('mmittal@gmail.com'),RegistraionId:this._encServices.encrypt('5656vhvgcghj878978'),language:this._encServices.encrypt('English'),prefName:this._encServices.encrypt('JIMMY')}])
     var postJson = {
       "emailAddress": this.signupForm.value.email,
       "preferredName": this.signupForm.value.CallName,
