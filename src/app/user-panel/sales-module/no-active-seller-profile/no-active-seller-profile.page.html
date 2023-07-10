@@ -25,7 +25,7 @@
       </ion-row>
       <ion-row>
         <ion-col >
-          <ion-button expand="block" size="large" routerLink="/user-panel/sales-profile-signup"
+          <ion-button expand="block" size="large" (click)="gotoSellSignUp()"
           class="height-70 primary-second-color-background setup-main">
           <p class="ion-text-capitalize fontFamilysystemUI size-16 m-b-5 m-t-5 font-weight-500">
             Setup selling <br> profile
@@ -80,7 +80,7 @@
         </ion-col>
         <ion-col>
           <ion-icon *ngIf="requirement?.status === 'Pending'" name="close-outline" class="size-28 darken-color jostDemi"></ion-icon>
-          <ion-icon *ngIf="requirement?.status != 'Pending'" name="checkmark" class="size-28 darken-color jostDemi"></ion-icon>
+          <ion-icon *ngIf="requirement?.status === 'Completed'" name="checkmark" class="size-28 success-color jostDemi"></ion-icon>
         </ion-col>
       </ion-row>
       <ion-row *ngIf="activationRequest?.screeningSession.status === 'Pending'">

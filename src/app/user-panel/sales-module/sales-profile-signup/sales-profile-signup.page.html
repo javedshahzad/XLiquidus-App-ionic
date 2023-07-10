@@ -32,8 +32,8 @@
         <p class="darken-color jostDemi size-12 m-b-5 m-t-10 p-t-4 font-weight-500">
           I order to continue with the activation process
           we require a deposit of <span class="font-weight-700 size-16 color-secondary">$20 USD</span>, You may pay in
-          USD, BTC, LTC, or USDC. Please note that a non:
-          refundable activation fee of <span class="font-weight-700 size-16 color-secondary">$5 USD</span> will be
+          USD, BTC, ETH, LTC, or USDC. Please note that a non:
+          refundable activation fee of <span class="font-weight-700 size-16 color-secondary">$10 USD</span> will be
           deducted from the deposit
         </p>
         <p class="darken-color jostDemi size-12 m-b-5 m-t-10 p-t-4 font-weight-500">
@@ -177,11 +177,11 @@
     </ion-grid>
   </ng-container>
   <ng-container *ngIf="FiatPaymentData">
-    <ion-grid *ngIf="FiatPaymentData?.data?.messageType === 'User'">
+    <ion-grid *ngIf="FiatPaymentData?.data?.messageType === 'User'" class="ion-padding">
       <ion-row>
         <ion-col>
           <p class="darken-color jostDemi size-12 m-b-5 m-t-5 font-weight-500">
-            Congratulation! You have deposited all the fees.
+            Congratulation! You have deposited all the fees. Let's Retun Back to complete KYC Screening.
           </p>
           <div class="ion-text-center">
             <ion-button color="secondary" (click)="ViewReceipt(FiatPaymentData?.data.receiptUrl)" class="ion-text-capitalize ">View Receipt</ion-button>

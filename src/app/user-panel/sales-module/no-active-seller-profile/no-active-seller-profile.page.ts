@@ -61,18 +61,31 @@ export class NoActiveSellerProfilePage implements OnInit {
     });
    }
    KYCIdentityVerification(url){
-    var ths = this;
-    console.log(url);
-    let BaseUrl=url.toString();
-    console.log(BaseUrl);
-    var browserRef = ths.iab.create(BaseUrl, "_system", ths._appservices.inAppBrowserOption());
-    var eventType: any = ths._appservices.inAppBrowserExitEvent();
-    console.log(ths.platform.is('android'));
-    console.log(eventType);
-    browserRef.show();
-    browserRef.on(eventType).subscribe(event => {
-      console.log(event);
-    })
+    let checkStatus = this.UserCurrentMarketProfile?.data?.activationRequests[0].requirements.filter((a)=>a.name === "KYC Screening");
+    if(checkStatus[0].status === "Completed"){
+      this.global.CreateToast(`You already completed your KYC Screening!`);
+    }else{
+      var ths = this;
+      console.log(url);
+      let BaseUrl=url.toString();
+      console.log(BaseUrl);
+      var browserRef = ths.iab.create(BaseUrl, "_system", ths._appservices.inAppBrowserOption());
+      var eventType: any = ths._appservices.inAppBrowserExitEvent();
+      console.log(ths.platform.is('android'));
+      console.log(eventType);
+      browserRef.show();
+      browserRef.on(eventType).subscribe(event => {
+        console.log(event);
+      })
+    }
+
    }
-  
+  gotoSellSignUp(){
+   let checkStatus = this.UserCurrentMarketProfile?.data?.activationRequests[0].requirements.filter((a)=>a.name === "Activation Deposit");
+    if(checkStatus[0].status === "Completed"){
+      this.global.CreateToast(`You already paid activation fee!`);
+    }else{
+      this._nav.navigateRoot("/user-panel/sales-profile-signup");
+    }
+  }
 }
