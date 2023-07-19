@@ -154,20 +154,20 @@
           <form id="payment-form" [formGroup]="billingInformation" (ngSubmit)="ProcessToPay()">
            
           <div class="ion-padding">
+   
             <div>
-              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block ">{{'FULL NAME' | translate }} <span
-                  class="text-gray jostDemi">{{"(AS SHOWN ON LEGAL ID)"}}</span></ion-label>
-              <ion-input class="itemclass height-60" formControlName="fullname"></ion-input>
-              <div *ngFor="let error of errorMessages?.fullname" class="errormsg">
-                <ng-container *ngIf="fullname?.hasError(error.type) && (fullname?.dirty || fullname?.touched)">
+              <ion-label class="m-t-25 m-b-10 size-13 font-weight-600 l-h-0 level-color display-block jostDemi">
+                EMAIL</ion-label>
+              <ion-input class="itemclass height-60" formControlName="email"></ion-input>
+              <div *ngFor="let error of errorMessages.email" class="errormsg">
+                <ng-container *ngIf="email.hasError(error.type) && (email.dirty || email.touched)">
                   <div class="erroronform">
                     <small class="error-message jostDemi size-13">{{error.message}}</small>
                   </div>
                 </ng-container>
               </div>
             </div>
-
-            <div>
+            <!-- <div>
               <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">{{'ADDRESS' | translate }}</ion-label>
               <ion-input class="itemclass height-60" formControlName="address"></ion-input>
               <div *ngFor="let error of errorMessages?.address" class="errormsg">
@@ -177,11 +177,43 @@
                   </div>
                 </ng-container>
               </div>
-            </div>
-            <p class="darken-color jostDemi size-12 m-b-5 m-t-5 font-weight-500">
-              Enter your Card details
-            </p>
+            </div> -->
+            <ion-label class="m-t-25 m-b-10 size-13 font-weight-600 l-h-0 level-color display-block jostDemi">
+              Card Information</ion-label>
             <div id="card-container"></div>
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block ">{{'NAME' | translate }} <span
+                  class="text-gray jostDemi">{{"(AS SHOWN ON CARD)"}}</span></ion-label>
+              <ion-input class="itemclass height-60" formControlName="fullname"></ion-input>
+              <div *ngFor="let error of errorMessages?.fullname" class="errormsg">
+                <ng-container *ngIf="fullname?.hasError(error.type) && (fullname?.dirty || fullname?.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <div>
+              <ion-label class="m-t-25 m-b-10 size-13 font-weight-600 l-h-0 level-color display-block jostDemi">
+                COUNTRY</ion-label>
+              <ion-select class="itemclass height-60" interface="action-sheet" formControlName="country"
+                placeholder="Choose Country" [disabled]="userDetails.addressCountryName ? true : false">
+                <ion-select-option>
+                  CHOOSE COUNTRY
+                </ion-select-option>
+                <ion-select-option *ngFor="let item of countriesList" [value]="item.name">
+                  {{item.name}}
+                </ion-select-option>
+              </ion-select>
+
+              <div *ngFor="let error of errorMessages.country" class="errormsg regularFonts">
+                <ng-container *ngIf="country.hasError(error.type) && (country.dirty || country.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
             <p class="darken-color jostDemi size-12 m-b-5 m-t-5 font-weight-500">
               Enter Verification code sent to email: {{_appservices.loggedInUserDetails.email}}
             </p>
@@ -197,7 +229,7 @@
               </div>
             </div>
           <br>
-          <ion-button expand="full" color="secondary" (click)="ProcessToPay()" shape="round" [disabled]="!billingInformation.valid">Process To Pay</ion-button>
+          <ion-button class="border-radius-8" expand="block" color="secondary" (click)="ProcessToPay()" [disabled]="!billingInformation.valid">Pay <ion-icon slot="end" name="lock-closed"></ion-icon></ion-button>
           </div>
           </form>
         </ion-col>

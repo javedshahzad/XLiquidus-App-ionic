@@ -70,6 +70,7 @@ export class SalesProfileSignupPage implements OnInit {
     FiatPaymentData: any = "";
     userDetails: any = "";
     public billingInformation: FormGroup
+    countriesList: any=[];
     constructor(
         public _nav: NavController,
         public router: Router,
@@ -91,6 +92,7 @@ export class SalesProfileSignupPage implements OnInit {
         this.GetCurrentMarketProfile();
         this.initForm();
         this.GetUser();
+        this.getCountries();
         this.card?.clear();
     }
     backtomarktplace() {
@@ -116,7 +118,15 @@ export class SalesProfileSignupPage implements OnInit {
                 console.log(this.userDetails)
                 if(this.userDetails.preferredName){
                     this.billingInformation.controls["fullname"].setValue(this.userDetails.preferredName);
-                    this.billingInformation.controls["address"].setValue(this.userDetails.addressCountryName);
+                    this.billingInformation.controls["fullname"].disable();
+                }
+                if(this.userDetails.addressCountryName){
+                    this.billingInformation.controls["country"].setValue(this.userDetails.addressCountryName);
+                    this.billingInformation.controls["country"].disable();
+                }
+                if(this.userDetails.email){
+                    this.billingInformation.controls["email"].setValue(this.userDetails.email);
+                    this.billingInformation.controls["email"].disable();
                 }
             }
             this._appservices.loaderDismiss();
@@ -336,17 +346,21 @@ export class SalesProfileSignupPage implements OnInit {
     get fullname() {
         return this.billingInformation.get('fullname');
     }
-    get address() {
-        return this.billingInformation.get('address');
-    }
     get verificationCode() {
         return this.billingInformation.get('verificationCode');
     }
+    get email() {
+        return this.billingInformation.get('email');
+      }
+      get country() {
+        return this.billingInformation.get('country');
+      }
     initForm() {
         this.billingInformation = this.formBuilder.group({
             fullname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(128)]],
-            address: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]],
             verificationCode: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]],
+            email: ['', [Validators.minLength(3), Validators.maxLength(100), Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+            country: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
         })
     }
     public errorMessages = {
@@ -354,13 +368,27 @@ export class SalesProfileSignupPage implements OnInit {
             type: 'required',
             message: 'Name is required'
         }, ],
-        address: [{
-            type: 'required',
-            message: 'Address is required'
-        }],
         verificationCode: [{
             type: 'required',
             message: 'Verification code is required'
-        }]
+        }],
+        country: [
+            { type: 'required', message: 'Country is required' },
+          ],
+          email: [
+            { type: 'pattern', message: 'Enter a valid Email' },
+            { type: 'required', message: 'Email is required' }
+          ],
     };
+    getCountries(){
+        this._appservices.presentLoading();
+        var UrlParameters = `emailAddress=${this._appservices.loggedInUserDetails.email}&clientIpAddress=${this._appservices.ipAddress.ip}`
+        this._appservices.getDataByHttp(`Global/GetCountries?${UrlParameters}`).subscribe(res => {
+          if (res.status == 200) {
+            this.countriesList = res.data.data;
+            console.log(this.countriesList);
+          }
+          this._appservices.loaderDismiss();
+        });
+      }
 }

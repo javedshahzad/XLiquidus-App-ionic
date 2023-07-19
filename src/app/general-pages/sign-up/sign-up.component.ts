@@ -71,7 +71,6 @@ getCountries(){
     }
     this._appservices.loaderDismiss();
   });
-
 }
   get CallName() {
     return this.signupForm.get('CallName');
