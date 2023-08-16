@@ -24,7 +24,7 @@ export class ListCryptoSalesPage implements OnInit {
   }
 
   backtomarktplace() {
-    this._nav.back();;
+    this._nav.navigateRoot(['/user-panel/dashboard']);
   }
 
 

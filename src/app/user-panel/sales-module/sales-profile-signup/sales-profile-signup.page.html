@@ -245,7 +245,7 @@
           </p>
           <div class="ion-text-center">
             <ion-button color="secondary" (click)="ViewReceipt(FiatPaymentData?.data?.receiptUrl)" class="ion-text-capitalize ">View Receipt</ion-button>
-            <ion-button class="ion-text-capitalize" routerLink="/user-panel/active-seller-profile">Return Back</ion-button>
+            <ion-button class="ion-text-capitalize" (click)="returnBack()">Return Back</ion-button>
           </div>
         </ion-col>
       </ion-row>

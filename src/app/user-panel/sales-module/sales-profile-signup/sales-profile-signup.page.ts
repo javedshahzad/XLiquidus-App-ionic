@@ -391,4 +391,7 @@ export class SalesProfileSignupPage implements OnInit {
           this._appservices.loaderDismiss();
         });
       }
+      returnBack(){
+        this._nav.navigateRoot(["/user-panel/active-seller-profile"])
+      }
 }
