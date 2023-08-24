@@ -1,0 +1,63 @@
+<ion-content>
+  <ion-grid class="ion-padding-start ion-padding-end">
+    <ion-row class="border-botom">
+      <ion-col size="3">
+          <img src="assets/images/bitcoin.png" alt="" class="image">
+      </ion-col>
+      <ion-col>
+        <p class="color-tertiary-dark ion-text-start ion-text-capitalize jostDemi size-16 m-b-5 m-t-5 font-weight-800"> Bitcoin offer builk sale </p>
+      </ion-col>
+      <ion-col size="3">
+        <div class="ion-text-end" (click)="closeModal()">
+          <ion-icon name="close-outline" class="size-30 darken-color jostDemi"></ion-icon>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="border-botom">
+      <ion-col class="ion-no-padding">
+        <div class="items-centers">
+          <img src="{{data.sellerLocarion}}" alt="">
+        </div>
+      </ion-col>
+      <ion-col class="ion-no-padding">
+        <p class="color-secondary ion-text-start ion-text-capitalize jostDemi size-12 m-b-2 m-t-2 font-weight-500">
+          current price
+         </p>
+          <p class="color-secondary ion-text-start ion-text-capitalize jostDemi size-14 m-b-2 m-t-2 font-weight-600"> Available </p>
+          <p class="color-secondary ion-text-start ion-text-capitalize jostDemi size-14 m-b-2 m-t-2 font-weight-600"> price </p>
+      </ion-col>
+      <ion-col class="ion-no-padding">
+        <p class="darken-color ion-text-end ion-text-uppercase jostDemi size-12 m-b-2 m-t-2 font-weight-600">
+          528 usd
+         </p>
+        <p class="color-secondary ion-text-end ion-text-capitalize jostDemi size-14 m-b-2 m-t-2 font-weight-600"> {{data.crypto}} BTC </p>
+        <p class="color-secondary ion-text-end ion-text-capitalize jostDemi size-14 m-b-2 m-t-2 font-weight-600"> {{data.usd}} USD </p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p class="color-tertiary-dark ion-text-start jostDemi size-16 m-b-0 m-t-0 font-weight-800">
+          Amount you want
+        </p>
+        <ion-item lines="none" class="main-border">
+          <ion-input type="number" value="125.00" slot="start" class="color-secondary font-weight-700 jostDemi size-14 ion-no-margin"></ion-input>
+          <span class="font-weight-700 size-14 jostDemi color-secondary" slot="end">BTC</span>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="addUpdate()" size="small" class="ion-text-right primary-second-color-background no-border shadownot border-radius-8 height-40 letter-spacing padding">
+          <h5 class="jostHeavy size-12 font-weight-600 m-t-10">Add/update</h5>
+        </ion-button>
+      </ion-col>
+      <ion-col>
+       <div class="ion-text-end">
+        <ion-button (click)="remove()" size="small" class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-40 letter-spacing padding">
+          <h5 class="jostHeavy size-12 font-weight-600 m-t-10">Remove</h5>
+        </ion-button>
+       </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

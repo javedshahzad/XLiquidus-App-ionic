@@ -1,0 +1,91 @@
+<app-user-panel-header></app-user-panel-header>
+<ion-content>
+  <ion-progress-bar type="indeterminate" *ngIf="isDataLoad"></ion-progress-bar>
+  <div class="position-relative z-index-10">
+    <ion-list class="p-0">
+      <ion-item-divider class="height-50 removeborder background-subheader-30">
+        <ion-button slot="start" fill="clear" class="p-0-srart m-t-30" (click)="backtomarktplace()">
+          <ion-icon name="chevron-back" class="color-tertiary size-32"></ion-icon>
+        </ion-button>
+      </ion-item-divider>
+    </ion-list>
+  </div>
+  <ion-grid class="ion-padding">
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-center">
+          <h5 class="ion-text-uppercase color-tertiary-dark jostDemi size-28 m-b-0 m-t-5 font-weight-600"> Market Search </h5>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-padding">
+        <div class="ion-text-center">
+          <p class="darken-color ion-text-center ion-text-capitalize jostDemi size-14 m-b-5 m-t-5 font-weight-500"> marketplace search </p>
+        </div>
+        <ion-searchbar show-clear-button="focus" (ionChange)="handleChange($event)"
+        class="jostDemi shadownot capitalize height-40 letter-spacing size-14 alredy-member no-border border-radius-8 ion-activatable ripple-parent font-weight-700"
+        ></ion-searchbar>
+        <p class="darken-color ion-text-center jostDemi size-12 m-b-2 m-t-2 font-weight-400"> Click on an item to enter the amount you would like to buy or to see more details </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="ion-padding">
+    <ion-row class="border-botom ion-text-center">
+      <ion-col class="ion-no-padding" size="3">
+        <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-14 m-b-2 m-t-2 font-weight-500"> Sellers location </p>
+      </ion-col>
+      <ion-col>
+        <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-14 m-b-2 m-t-2 font-weight-500"> Payment terms </p>
+      </ion-col>
+      <ion-col class="ion-no-padding">
+        <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-14 m-b-2 m-t-2 font-weight-500"> offer <br> type </p>
+      </ion-col>
+      <ion-col class="ion-no-padding">
+        <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-14 m-b-2 m-t-2 font-weight-500"> details </p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="border-botom" *ngFor="let item of CurrentOrder" (click)="ShowSingleItem(item)">
+      <ion-col class="ion-no-padding" size="3">
+        <div class="items-centers">
+          <img src="{{item.sellerLocarion}}" alt="">
+        </div>
+      </ion-col>
+      <ion-col class="ion-no-padding">
+        <div class="items-centers">
+        <p class="darken-color ion-text-center ion-text-uppercase jostDemi size-14 m-b-5 m-t-5 font-weight-500"> {{item.paymentTerm}} </p>
+        </div>
+      </ion-col>
+      <ion-col class="ion-no-padding">
+        <div class="items-centers">
+          <p class="darken-color ion-text-center ion-text-uppercase jostDemi size-14 m-b-5 m-t-5 font-weight-500"> {{item.offerType}} </p>
+        </div>
+      </ion-col>
+      <ion-col class="ion-no-padding">
+        <p class="color-secondary ion-text-center ion-text-capitalize jostDemi size-14 m-b-5 m-t-5 font-weight-600"> {{item.crypto}} BTC </p>
+        <p class="color-secondary ion-text-center ion-text-capitalize jostDemi size-14 m-b-5 m-t-5 font-weight-600"> {{item.usd}} USD </p>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+  <br>
+  <ion-grid class="border-botom border-top">
+    <ion-row class="ion-no-padding">
+      <ion-col class="ion-no-padding">
+        <p class="darken-color ion-text-center ion-text-uppercase jostDemi size-12 m-b-2 m-t-2 font-weight-400"> Current order </p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4" class="ion-no-padding">
+        <p class="darken-color ion-text-center ion-text-uppercase jostDemi size-14 m-b-5 m-t-5 font-weight-600"> BTC </p>
+        <p class="darken-color ion-text-center ion-text-uppercase jostDemi size-16 m-b-5 m-t-5 font-weight-800"> 8.366 </p>
+      </ion-col>
+      <ion-col class="ion-no-padding">
+        <p class="darken-color ion-text-end ion-text-uppercase jostDemi size-14 m-b-5 m-t-5 font-weight-600 m-r-10"> Total </p>
+        <p class="darken-color ion-text-end ion-text-uppercase jostDemi size-16 m-b-5 m-t-5 font-weight-800 m-r-10">
+          {{ 1649416.36 | currency:'USD' }} USD
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -17,15 +17,12 @@
           <ion-row class="w-100" *ngIf="productDataFromDashboardPage?.isSaleAvailable">
             <ion-col size="8">
               <ion-text class="display-block">
-                <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left p-t-20">Last
-                  Updated:</p>
-                <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left">{{currentDateTime
-                  | date:'MMM-d-y, h:mm a' :'UTC +0'}} UTC</p>
+                <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left p-t-20">Last Updated:</p>
+                <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left">{{currentDateTime | date:'MMM-d-y, h:mm a' :'UTC +0'}} UTC</p>
               </ion-text>
             </ion-col>
             <ion-col size="4">
-              <ion-button expand="block" (click)="buynow()" size="large"
-                class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
+              <ion-button expand="block" (click)="buynow()" size="large" class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
                 <h5 class="jostHeavy size-15 font-weight-800 m-t-10">BUY NOW</h5>
               </ion-button>
             </ion-col>
@@ -33,38 +30,34 @@
           <ion-row class="w-100" *ngIf="!productDataFromDashboardPage?.isSaleAvailable">
             <ion-col size="6">
               <ion-text class="display-block">
-                <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left p-t-20">Last
-                  Updated:</p>
-                <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left">{{currentDateTime
-                  | date:'MMM-d-y, h:mm a'}} PST</p>
-
-
+                <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left p-t-20">Last Updated:</p>
+                <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left">{{currentDateTime | date:'MMM-d-y, h:mm a' :'UTC +0'}} UTC</p>
               </ion-text>
             </ion-col>
             <ion-col size="6">
-              <ion-button expand="block" size="large" [disabled]="true"
-                class="shadownot static-butto-color no-border border-radius-8 height-50 letter-spacing">
+              <ion-button expand="block" size="large" [disabled]="true" class="shadownot static-butto-color no-border border-radius-8 height-50 letter-spacing">
                 <h5 class="font-weight-800 size-15 jostHeavy m-t-10">COMING SOON</h5>
               </ion-button>
             </ion-col>
           </ion-row>
         </ion-item>
-
+        <ion-item class="white-background ion-activatable ripple-parent">
+          <ion-button expand="block" (click)="customizeorder()" size="large" slot="end" class="ion-text-right primary-second-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
+            <h5 class="jostHeavy size-12 font-weight-600 m-t-10">customize order</h5>
+          </ion-button>
+        </ion-item>
         <ion-item class="white-background p-r-12 ion-activatable ripple-parent">
           <ion-ripple-effect type="unbounded"></ion-ripple-effect>
           <ion-row>
             <ion-col>
               <ion-text class="display-block">
-                <img [src]="productDataFromDashboardPage?.logo ? productDataFromDashboardPage?.logo : productDataFromDashboardPage?.flag" onerror="this.src='assets/images/wfse.png'"
-                  class="w-30 ion-float-left">
+                <img [src]="productDataFromDashboardPage?.logo ? productDataFromDashboardPage?.logo : productDataFromDashboardPage?.flag" onerror="this.src='assets/images/wfse.png'" class="w-30 ion-float-left">
                 <div ion-float-right>
                   <h5 class="color-tertiary-dark jostDemi size-32 m-b-0 m-t-5 font-weight-600">
                     {{productDataFromDashboardPage?.name}}
                   </h5>
-                  <h2 class="color-secondary jostDemi size-23 m-b-0 m-t-0 p-t-4 font-weight-600"
-                    *ngIf="productDataFromDashboardPage?.shortName != '' && productDataFromDashboardPage?.shortName != null">
-                    {{productDataFromDashboardPage?.shortName}}: <span
-                      class="jostBook font-weight-400 size-23">{{productDataFromDashboardPage?.marketPrice | currency}}</span>
+                  <h2 class="color-secondary jostDemi size-23 m-b-0 m-t-0 p-t-4 font-weight-600" *ngIf="productDataFromDashboardPage?.shortName != '' && productDataFromDashboardPage?.shortName != null">
+                    {{productDataFromDashboardPage?.shortName}}: <span class="jostBook font-weight-400 size-23">{{productDataFromDashboardPage?.marketPrice | currency}}</span>
                   </h2>
                 </div>
               </ion-text>
@@ -75,122 +68,104 @@
       <ion-grid *ngIf="!GetTokenProfileData">
         <ion-row>
           <ion-col size="12">
-            <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
-              USD: <span class="jostBook darken-color font-weight-400 size-20">{{productDataFromDashboardPage?.marketPrice | currency}}</span>
+            <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600"> USD: <span class="jostBook darken-color font-weight-400 size-20">{{productDataFromDashboardPage?.marketPrice | currency}}</span>
             </h4>
           </ion-col>
         </ion-row>
       </ion-grid>
-    <ion-grid *ngIf="GetTokenProfileData">
-      <ion-row>
-        <ion-col size="12">
-          <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
-            USD: <span class="jostBook darken-color font-weight-400 size-20">{{productDataFromDashboardPage?.marketPrice | currency}}</span>
-          </h4>
-          <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
-            {{GetTokenProfileData?.marketSymbol}}: <span class="jostBook darken-color font-weight-400 size-20">{{GetTokenProfileData?.available}}</span>
-          </h4>
-          <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600s">
-            About: <span class="jostBook darken-color font-weight-400 size-20">{{GetTokenProfileData?.type}}</span>
-          </h4>
-          <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
-            Description: <span class="jostBook darken-color font-weight-400 size-20">{{GetTokenProfileData?.description?.summary}}</span>
-          </h4>
-          </ion-col>
+      <ion-grid *ngIf="GetTokenProfileData">
+        <ion-row>
           <ion-col size="12">
-            <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
-              Token Benefits:
+            <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600"> USD: <span class="jostBook darken-color font-weight-400 size-20">{{productDataFromDashboardPage?.marketPrice | currency}}</span>
             </h4>
-            <p class="jostBook darken-color margins font-weight-400 size-20" *ngFor="let item of TokenBenefits"><img class="m-b-3" src="assets/images/elip3.png" alt=""> {{item?.name}}</p>
+            <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
+              {{GetTokenProfileData?.marketSymbol}}: <span class="jostBook darken-color font-weight-400 size-20">{{GetTokenProfileData?.available}}</span>
+            </h4>
+            <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600s"> About: <span class="jostBook darken-color font-weight-400 size-20">{{GetTokenProfileData?.type}}</span>
+            </h4>
+            <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600"> Description: <span class="jostBook darken-color font-weight-400 size-20">{{GetTokenProfileData?.description?.summary}}</span>
+            </h4>
           </ion-col>
           <ion-col size="12">
-          <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
-            Key Project Features:
-          </h4>
-          <p class="jostBook darken-color margins font-weight-400 size-20" *ngFor="let item of KeyProjectFeatures"><img class="m-b-3" src="assets/images/elip3.png" alt=""> {{item?.name}}</p>
-        </ion-col>
-        <ion-col size="12" *ngIf="GetTokenProfileData?.gallery.length > 0">
-          <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
-            Gallery:
-          </h4>
-          <ion-slides pager="true" [options]="slideOptsOne">
-          <ion-slide *ngFor="let item of GetTokenProfileData?.gallery">
-            <img [src]="item?.url"  onerror="this.src='assets/images/wfse.png'" class="gallery-images">
-            <span class="slide-text jostDemi" *ngIf="item?.name">{{item?.name}}</span>
-          </ion-slide>
-        </ion-slides>
-        </ion-col>
-      </ion-row>
-      <ion-row *ngIf="GetTokenProfileData?.isMileStoneEnabled">
-        <ion-col size="12">
-          <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600 text-center">
-            Milestones Achievements
-          </h4>
-        </ion-col>
-        <ion-col size="12" *ngFor="let item of MileStones; let i = index">
-          <ion-item lines="none">
-            <h4 class="darken-color center jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">Pahse {{i+1}}:<span class="jostBook darken-color font-weight-400 size-18">{{item?.name}}</span></h4>
-            <ion-icon (click)="showDetails(i)" class="jostBook darken-color font-weight-400 size-24 icon-style" name="caret-forward"></ion-icon>
-          </ion-item>
-          <div class="details" *ngIf="showDetailsIndex === i">
-            <p class="jostBook darken-color font-weight-400 margins size-20 center">{{item?.details}}</p>
-            <p class="jostBook darken-color font-weight-400 margins size-20 center">{{item?.startDate ? item?.startDate : currentDateTime | date:'MMM-d-y, h:mm a'}}</p>
-            <p class="jostBook darken-color font-weight-400 margins size-20 center">{{item?.indexMileStoneMeasurement?.unlockedMeasurement ? item?.indexMileStoneMeasurement?.unlockedMeasurement : 0}}</p>
-          </div>
-          <div class="progesss-main" *ngIf="item?.indexMileStoneMeasurement?.unlockedMeasurement !== null">
-            <ion-progress-bar class="progressbar" [value]="getPercentageMilstone(item?.indexMileStoneMeasurement?.unlockedMeasurement ? item?.indexMileStoneMeasurement?.unlockedMeasurement : 0 ? item?.indexMileStoneMeasurement?.unlockedMeasurement ? item?.indexMileStoneMeasurement?.unlockedMeasurement : 0 : 0) ? getPercentageMilstone(item?.indexMileStoneMeasurement?.unlockedMeasurement ? item?.indexMileStoneMeasurement?.unlockedMeasurement : 0) : 0"></ion-progress-bar>
-            <span class="percentage jostBook color-secondary font-weight-400 size-20">{{showPercentage(item?.indexMileStoneMeasurement?.unlockedMeasurement ? item?.indexMileStoneMeasurement?.unlockedMeasurement : 0) ? showPercentage(item?.indexMileStoneMeasurement?.unlockedMeasurement ? item?.indexMileStoneMeasurement?.unlockedMeasurement : 0) : 0}}%</span>
-          </div>
-          <div class="progesss-main" *ngIf="item?.indexMileStoneMeasurement?.unlockedMeasurement === null">
-            <ion-progress-bar class="progressbar" value="0.01"></ion-progress-bar>
-            <span class="percentage jostBook color-secondary font-weight-400 size-20">0%</span>
-          </div>
-        </ion-col>        
-      </ion-row>
-    </ion-grid>
-    <ion-grid *ngIf="!GetTokenProfileData">
-      <ion-row>
-        <ion-col size="12" class="ion-text-center">
-          <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-center ion-text-uppercase">
-            No Data Found</h4>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+            <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600"> Token Benefits: </h4>
+            <p class="jostBook darken-color margins font-weight-400 size-20" *ngFor="let item of TokenBenefits">
+              <img class="m-b-3" src="assets/images/elip3.png" alt=""> {{item?.name}}
+            </p>
+          </ion-col>
+          <ion-col size="12">
+            <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600"> Key Project Features: </h4>
+            <p class="jostBook darken-color margins font-weight-400 size-20" *ngFor="let item of KeyProjectFeatures">
+              <img class="m-b-3" src="assets/images/elip3.png" alt=""> {{item?.name}}
+            </p>
+          </ion-col>
+          <ion-col size="12" *ngIf="GetTokenProfileData?.gallery.length > 0">
+            <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600"> Gallery: </h4>
+            <ion-slides pager="true" [options]="slideOptsOne">
+              <ion-slide *ngFor="let item of GetTokenProfileData?.gallery">
+                <img [src]="item?.url" onerror="this.src='assets/images/wfse.png'" class="gallery-images">
+                <span class="slide-text jostDemi" *ngIf="item?.name">{{item?.name}}</span>
+              </ion-slide>
+            </ion-slides>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="GetTokenProfileData?.isMileStoneEnabled">
+          <ion-col size="12">
+            <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600 text-center"> Milestones Achievements </h4>
+          </ion-col>
+          <ion-col size="12" *ngFor="let item of MileStones; let i = index">
+            <ion-item lines="none">
+              <h4 class="darken-color center jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">Pahse {{i+1}}: <span class="jostBook darken-color font-weight-400 size-18">{{item?.name}}</span>
+              </h4>
+              <ion-icon (click)="showDetails(i)" class="jostBook darken-color font-weight-400 size-24 icon-style" name="caret-forward"></ion-icon>
+            </ion-item>
+            <div class="details" *ngIf="showDetailsIndex === i">
+              <p class="jostBook darken-color font-weight-400 margins size-20 center">{{item?.details}}</p>
+              <p class="jostBook darken-color font-weight-400 margins size-20 center">{{item?.startDate ? item?.startDate : currentDateTime | date:'MMM-d-y, h:mm a'}}</p>
+              <p class="jostBook darken-color font-weight-400 margins size-20 center">{{item?.indexMileStoneMeasurement?.unlockedMeasurement ? item?.indexMileStoneMeasurement?.unlockedMeasurement : 0}}</p>
+            </div>
+            <div class="progesss-main" *ngIf="item?.indexMileStoneMeasurement?.unlockedMeasurement !== null">
+              <ion-progress-bar class="progressbar" [value]="getPercentageMilstone(item?.indexMileStoneMeasurement?.unlockedMeasurement ? item?.indexMileStoneMeasurement?.unlockedMeasurement : 0 ? item?.indexMileStoneMeasurement?.unlockedMeasurement ? item?.indexMileStoneMeasurement?.unlockedMeasurement : 0 : 0) ? getPercentageMilstone(item?.indexMileStoneMeasurement?.unlockedMeasurement ? item?.indexMileStoneMeasurement?.unlockedMeasurement : 0) : 0"></ion-progress-bar>
+              <span class="percentage jostBook color-secondary font-weight-400 size-20">{{showPercentage(item?.indexMileStoneMeasurement?.unlockedMeasurement ? item?.indexMileStoneMeasurement?.unlockedMeasurement : 0) ? showPercentage(item?.indexMileStoneMeasurement?.unlockedMeasurement ? item?.indexMileStoneMeasurement?.unlockedMeasurement : 0) : 0}}%</span>
+            </div>
+            <div class="progesss-main" *ngIf="item?.indexMileStoneMeasurement?.unlockedMeasurement === null">
+              <ion-progress-bar class="progressbar" value="0.01"></ion-progress-bar>
+              <span class="percentage jostBook color-secondary font-weight-400 size-20">0%</span>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid *ngIf="!GetTokenProfileData">
+        <ion-row>
+          <ion-col size="12" class="ion-text-center">
+            <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-center ion-text-uppercase"> No Data Found</h4>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
       <ion-grid *ngIf="productDetail">
         <ion-row>
           <ion-col size="7">
             <div>
               <div class="showtipMFA showtipMFA-top w-120p" *ngIf="showTooltip1">
-                <p class="m-t-15 size-15 font-weight-400 ion-text-center text-black display-block jostBook">You will
-                  need to enter your MFA Key at check out when doing a transaction.</p>
+                <p class="m-t-15 size-15 font-weight-400 ion-text-center text-black display-block jostBook">You will need to enter your MFA Key at check out when doing a transaction.</p>
                 <h2 class="text-black m-b-0 text-center jostBook font-weight-800">Forgot your MFA Key?</h2>
-                <p class="m-b-5 m-t-0 size-15 font-weight-400 ion-text-center text-black display-block jostBook">Contact
-                  us here:</p>
-                <a class="m-t-15 m-b-5 size-15 font-weight-400 ion-text-center color-primary display-block jostBook">Support.Xliquidus.com/help
-                </a>
+                <p class="m-b-5 m-t-0 size-15 font-weight-400 ion-text-center text-black display-block jostBook">Contact us here:</p>
+                <a class="m-t-15 m-b-5 size-15 font-weight-400 ion-text-center color-primary display-block jostBook">Support.Xliquidus.com/help </a>
               </div>
-              <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase">
-                Performance <ion-icon name="information-circle" class="color-tertiary custome-icon-info v-lign-m"
-                  (click)="toggleTooltip1()">
-                </ion-icon>
+              <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase"> Performance <ion-icon name="information-circle" class="color-tertiary custome-icon-info v-lign-m" (click)="toggleTooltip1()"></ion-icon>
               </h4>
             </div>
           </ion-col>
           <ion-col size="1">
-            <h5 class="color-tertiary-dark font-weight-800 jostHeavy m-b-0 m-t-10 size-15 p-5-p" id="day"
-              (click)="getoneDay()">D</h5>
+            <h5 class="color-tertiary-dark font-weight-800 jostHeavy m-b-0 m-t-10 size-15 p-5-p" id="day" (click)="getoneDay()">D</h5>
           </ion-col>
           <ion-col size="1">
-            <h5 class="color-tertiary-dark font-weight-800 jostHeavy m-b-0 m-t-10 size-15 p-5-p" id="week"
-              (click)="getoneWeek()">W</h5>
+            <h5 class="color-tertiary-dark font-weight-800 jostHeavy m-b-0 m-t-10 size-15 p-5-p" id="week" (click)="getoneWeek()">W</h5>
           </ion-col>
           <ion-col size="1">
-            <h5 class="color-tertiary-dark font-weight-800 jostHeavy m-b-0 m-t-10 size-15 p-5-p" id="month"
-              (click)="getoneMonth()">M</h5>
+            <h5 class="color-tertiary-dark font-weight-800 jostHeavy m-b-0 m-t-10 size-15 p-5-p" id="month" (click)="getoneMonth()">M</h5>
           </ion-col>
           <ion-col size="1">
-            <h5 class="color-tertiary-dark font-weight-800 jostHeavy m-b-0 m-t-10 size-15 p-5-p" id="year"
-              (click)="getoneYear()">Y</h5>
+            <h5 class="color-tertiary-dark font-weight-800 jostHeavy m-b-0 m-t-10 size-15 p-5-p" id="year" (click)="getoneYear()">Y</h5>
           </ion-col>
         </ion-row>
         <ion-row>
@@ -204,20 +179,12 @@
           <ion-col>
             <div>
               <div class="showtipMFA showtipMFA-top" *ngIf="showTooltip2">
-                <p class="m-t-15 size-15 font-weight-400 ion-text-center text-black display-block jostBook">You will
-                  need
-                  to enter your MFA Key at check out when doing a transaction.</p>
+                <p class="m-t-15 size-15 font-weight-400 ion-text-center text-black display-block jostBook">You will need to enter your MFA Key at check out when doing a transaction.</p>
                 <h2 class="text-black m-b-0 text-center jostBook font-weight-800">Forgot your MFA Key?</h2>
-                <p class="m-b-5 m-t-0 size-15 font-weight-400 ion-text-center text-black display-block jostBook">Contact
-                  us
-                  here:</p>
-                <a class="m-t-15 m-b-5 size-15 font-weight-400 ion-text-center color-primary display-block jostBook">Support.Xliquidus.com/help
-                </a>
+                <p class="m-b-5 m-t-0 size-15 font-weight-400 ion-text-center text-black display-block jostBook">Contact us here:</p>
+                <a class="m-t-15 m-b-5 size-15 font-weight-400 ion-text-center color-primary display-block jostBook">Support.Xliquidus.com/help </a>
               </div>
-              <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase">
-                MARKET STATS
-                <ion-icon name="information-circle" class="color-tertiary custome-icon-info v-lign-m"
-                  (click)="toggleTooltip2()"></ion-icon>
+              <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase"> MARKET STATS <ion-icon name="information-circle" class="color-tertiary custome-icon-info v-lign-m" (click)="toggleTooltip2()"></ion-icon>
               </h4>
               <ion-list>
                 <ion-item class="height-30">
@@ -246,20 +213,12 @@
           <ion-col>
             <div>
               <div class="showtipMFA showtipMFA-top" *ngIf="showTooltip3">
-                <p class="m-t-15 size-15 font-weight-400 ion-text-center text-black display-block jostBook">You will
-                  need
-                  to enter your MFA Key at check out when doing a transaction.</p>
+                <p class="m-t-15 size-15 font-weight-400 ion-text-center text-black display-block jostBook">You will need to enter your MFA Key at check out when doing a transaction.</p>
                 <h2 class="text-black m-b-0 text-center jostBook font-weight-800">Forgot your MFA Key?</h2>
-                <p class="m-b-5 m-t-0 size-15 font-weight-400 ion-text-center text-black display-block jostBook">Contact
-                  us
-                  here:</p>
-                <a class="m-t-15 m-b-5 size-15 font-weight-400 ion-text-center color-primary display-block jostBook">Support.Xliquidus.com/help
-                </a>
+                <p class="m-b-5 m-t-0 size-15 font-weight-400 ion-text-center text-black display-block jostBook">Contact us here:</p>
+                <a class="m-t-15 m-b-5 size-15 font-weight-400 ion-text-center color-primary display-block jostBook">Support.Xliquidus.com/help </a>
               </div>
-              <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase">
-                circulation
-                <ion-icon name="information-circle" class="color-tertiary custome-icon-info v-lign-m"
-                  (click)="toggleTooltip3()"></ion-icon>
+              <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase"> circulation <ion-icon name="information-circle" class="color-tertiary custome-icon-info v-lign-m" (click)="toggleTooltip3()"></ion-icon>
               </h4>
               <ion-list>
                 <ion-item class="height-30">
@@ -285,15 +244,10 @@
         <ion-row>
           <ion-col>
             <!-- [disabled]="!productDataFromDashboardPage?.isSaleAvailable"  -->
-            <ion-button expand="block" *ngIf="productDataFromDashboardPage?.isSaleAvailable" (click)="addtocart()"
-              size="large"
-              class="primary-color-background shadownot no-border border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-95 letter-spacing">
+            <ion-button expand="block" *ngIf="productDataFromDashboardPage?.isSaleAvailable" (click)="addtocart()" size="large" class="primary-color-background shadownot no-border border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-95 letter-spacing">
               <h5 class="jostHeavy size-15 font-weight-800 m-t-10">ADD TO CART</h5>
             </ion-button>
-
-            <ion-button expand="block" size="large" [hidden]="productDataFromDashboardPage?.isSaleAvailable"
-              [disabled]="true"
-              class="m-l-a m-r-a shadownot static-butto-color w-95 no-border border-radius-8 p-t-10p  height-50 letter-spacing ">
+            <ion-button expand="block" size="large" [hidden]="productDataFromDashboardPage?.isSaleAvailable" [disabled]="true" class="m-l-a m-r-a shadownot static-butto-color w-95 no-border border-radius-8 p-t-10p  height-50 letter-spacing ">
               <h5 class="font-weight-800 size-15 jostHeavy m-t-10">ADD TO CART</h5>
             </ion-button>
           </ion-col>
@@ -301,15 +255,13 @@
         <ion-row *ngIf="productDetail?.description != null">
           <ion-col>
             <div>
-              <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase">
-                About {{productDataFromDashboardPage?.name}}</h4>
+              <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase"> About {{productDataFromDashboardPage?.name}}</h4>
               <p class="size-14 jostBook font-weight-400 p-l-10 p-r-10">
                 {{productDetail?.description}}
               </p>
               <!-- <p class="size-14 futuraFontsMedium font-weight-500 p-l-10 p-r-10">
                 The gardener set his eldest son to watch; but about twelve o’clock he fell asleep, and in the morning another of the apples was missing. Then the second son was ordered to watch; and at midnig
-              </p>
-              <p class="size-14 futuraFontsMedium font-weight-500 p-l-10 p-r-10">
+              </p><p class="size-14 futuraFontsMedium font-weight-500 p-l-10 p-r-10">
                 The gardener set his eldest son to watch; but about twelve o’clock he fell asleep, and in the morning another of the apples was missing. Then the second son was ordered to watch; and at midnig
               </p> -->
             </div>
@@ -318,48 +270,34 @@
         <ion-row *ngIf="productDetail?.isUCProdcut == true">
           <ion-col>
             <div>
-              <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase">
-                Deeper Drive</h4>
-              <p class="size-14 jostBook font-weight-500 p-l-10 p-r-10">
-                For Deeper Drive into #{{productDataFromDashboardPage?.name}}# such as
-              </p>
+              <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase"> Deeper Drive</h4>
+              <p class="size-14 jostBook font-weight-500 p-l-10 p-r-10"> For Deeper Drive into #{{productDataFromDashboardPage?.name}}# such as </p>
               <ul class="size-14 jostBook font-weight-500 p-l-20 p-r-10">
                 <li>How is the {{productDataFromDashboardPage?.name}} #network secure</li>
                 <li>How Many are in Circulation ?</li>
                 <li>What makes #{{productDataFromDashboardPage?.name}}# unique ?</li>
               </ul>
-              <ion-button expand="block" fill="outline" fill="clear"
-                class="size-10 p-l-10 shadownot ion-text-left white-space ion-float-left p-0-srart color-primary font-weight-600 jostDemi">
-                Click here to learn more at CoinMarketCap.com
-              </ion-button>
+              <ion-button expand="block" fill="outline" fill="clear" class="size-10 p-l-10 shadownot ion-text-left white-space ion-float-left p-0-srart color-primary font-weight-600 jostDemi"> Click here to learn more at CoinMarketCap.com </ion-button>
             </div>
           </ion-col>
         </ion-row>
         <ion-row *ngIf="productDetail?.description != null">
           <ion-col>
-            <ion-button expand="block" (click)="backtomarktplace()" size="large"
-              class="custom-color-background shadownot no-border border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
+            <ion-button expand="block" (click)="backtomarktplace()" size="large" class="custom-color-background shadownot no-border border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
               <h5 class="jostHeavy size-15 font-weight-800 m-t-10">KEEP SHOPPING</h5>
             </ion-button>
           </ion-col>
           <ion-col>
-            <ion-button expand="block" (click)="addtocart()" *ngIf="productDataFromDashboardPage?.isSaleAvailable"
-              size="large"
-              class="primary-color-background no-border shadownot border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
+            <ion-button expand="block" (click)="addtocart()" *ngIf="productDataFromDashboardPage?.isSaleAvailable" size="large" class="primary-color-background no-border shadownot border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
               <h5 class="jostHeavy size-15 font-weight-800 m-t-10">ADD TO CART</h5>
             </ion-button>
-
-            <ion-button expand="block" size="large" [hidden]="productDataFromDashboardPage?.isSaleAvailable"
-              [disabled]="true"
-              class="m-l-a m-r-a shadownot static-butto-color w-85 no-border border-radius-8 p-t-10p  height-50 letter-spacing ">
+            <ion-button expand="block" size="large" [hidden]="productDataFromDashboardPage?.isSaleAvailable" [disabled]="true" class="m-l-a m-r-a shadownot static-butto-color w-85 no-border border-radius-8 p-t-10p  height-50 letter-spacing ">
               <h5 class="jostHeavy size-15 font-weight-800 m-t-10">ADD TO CART</h5>
             </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
     </div>
-    <div class="backgroundimage-footer-productpage z-index-0" *ngIf="isProductData">
-    </div>
+    <div class="backgroundimage-footer-productpage z-index-0" *ngIf="isProductData"></div>
   </div>
-
 </ion-content>

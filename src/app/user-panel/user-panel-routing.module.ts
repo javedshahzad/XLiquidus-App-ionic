@@ -209,7 +209,19 @@ const routes: Routes = [
   {
     path: 'my-profile',
     loadChildren: () => import('./my-profile/my-profile.module').then(m => m.MyProfilePageModule)
+  },  {
+    path: 'current-order',
+    loadChildren: () => import('./buying-options-module/current-order/current-order.module').then( m => m.CurrentOrderPageModule)
   },
+  {
+    path: 'market-search',
+    loadChildren: () => import('./buying-options-module/market-search/market-search.module').then( m => m.MarketSearchPageModule)
+  },
+  {
+    path: 'update-order-modal',
+    loadChildren: () => import('./buying-options-module/update-order-modal/update-order-modal.module').then( m => m.UpdateOrderModalPageModule)
+  },
+
 
 ];
 
