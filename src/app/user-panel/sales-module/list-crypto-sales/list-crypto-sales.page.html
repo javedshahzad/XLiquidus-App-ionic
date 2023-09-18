@@ -23,74 +23,224 @@
         </div>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col>
-        <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-10 font-weight-500">
-          I want to sell
-         </p>
-         <ion-item lines="none">
-          <p class="darken-color size-14 m-b-0 m-t-0" slot="start">0.009898</p>
-          <span class="font-weight-700 size-16 darken-color" slot="end">BTC</span>
-        </ion-item>
-        <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500">
-          asking price
-         </p>
-         <ion-item lines="none">
-          <p class="darken-color size-14 m-b-0 m-t-0" slot="start">20.00</p>
-          <span class="font-weight-700 size-16 darken-color" slot="end">USD</span>
-        </ion-item>
-        <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500">
-          Accapted Payment Types
-         </p>
-         <ion-item lines="none">
-          <p class="darken-color size-14 m-b-0 m-t-0 ion-text-uppercase" slot="end">usp, uc</p>
-        </ion-item>
-        <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500">
-          My offer should expire on
-         </p>
-         <ion-item lines="none">
-          <p class="darken-color size-14 m-b-0 m-t-0 ion-text-capitalize" slot="end">1 march 2023</p>
-        </ion-item>
-        <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500">
-          Pricing Model
-         </p>
-        <p class="darken-color jostDemi size-12 m-b-5 m-t-10 p-t-4 font-weight-500">
-          <span class="font-weight-700 size-16 color-secondary">Bulk Sale</span> -A bulk sale is a type of sale where a quantity of cryptocurrency is sold at a single. predetermined price. This would mean selling the quantity of a specific coin or token at a set price, rather than selling them individually. This type of sale is typically automated and handled by the platform or chosen by customers on the market
-        </p>
-        <ion-item lines="none">
-          <p class="font-weight-700 size-16 color-tertiary-dark" slot="start">Total Fees</p>
-          <span class="darken-color size-14 m-b-0 m-t-0" slot="end">5.55 USD</span>
-        </ion-item>
-        <ion-item lines="none">
-          <p class="font-weight-700 size-16 color-tertiary-dark" slot="start">Total Deposit</p>
-          <span class="darken-color size-14 m-b-0 m-t-0" slot="end">0.55 BTC</span>
-        </ion-item>
-        <ion-item lines="none">
-          <p class="font-weight-700 size-16 color-tertiary-dark" slot="start">Estimated Profit</p>
-          <p class="font-weight-700 size-16 darken-color" slot="end">119.75 USD</p>
-        </ion-item>
-        <div class="m-t-5 m-b-5">
-          <table>
-            <tr>
-              <td>
-                <ion-checkbox color="tertiary" slot="start" class="zoom-1-2 m-r-8 m-t--10" mode="md">
-                </ion-checkbox>
-              </td>
-              <td>
-                <ion-label class="size-14 jostBook font-weight-400 white-space text-overflow">
-                  <span class="text-black p-r-2 font-weight-400 size-15 jostlight">I agree to the offer that 1 have created
-                    above. Also, by checking on this checkbox
-                    and pressing the "Confirm" button, agree
-                    to the</span>
-                  <span class="text-black p-r-2 font-weight-400 size-15 jostlight" [routerLink]="['/tnc']"><u>Terms
-                    terms of use</u></span>
-                </ion-label>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </ion-col>
-    </ion-row>
   </ion-grid>
-  <ion-button expand="full" routerLink="/user-panel/active-seller-profile">Continue</ion-button>
+  <ng-container *ngIf="showDetails">
+    <ion-grid class="ion-padding">
+      <ion-row *ngIf="ListingData">
+        <ion-col>
+          <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-10 font-weight-500">
+            I want to sell
+           </p>
+           <ion-item lines="none">
+            <p class="darken-color size-14 m-b-0 m-t-0" slot="start">{{ListingData?.quantity}}</p>
+            <span class="font-weight-700 size-16 darken-color" slot="end">{{ListingData?.asset}}</span>
+          </ion-item>
+          <ng-container *ngIf="ListingData?.pricingModel === 'Bulk'">
+            <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500">
+              asking price
+             </p>
+             <ion-item lines="none">
+              <p class="darken-color size-14 m-b-0 m-t-0" slot="start">{{ListingData?.price}}</p>
+              <span class="font-weight-700 size-16 darken-color" slot="end">USD</span>
+            </ion-item>
+          </ng-container>
+          <ng-container *ngIf="ListingData?.pricingModel === 'Dynamic'">
+            <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500">
+              Dynamic price
+             </p>
+             <ion-item lines="none">
+              <p class="darken-color size-14 m-b-0 m-t-0" slot="start">{{ListingData?.price}}</p>
+              <span class="font-weight-700 size-16 darken-color" slot="end">USD</span>
+            </ion-item>
+          </ng-container>
+          <ng-container *ngIf="ListingData?.pricingModel === 'Unit'">
+            <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500">
+              unit price
+             </p>
+             <ion-item lines="none">
+              <p class="darken-color size-14 m-b-0 m-t-0" slot="start">{{ListingData?.unit}}</p>
+              <span class="font-weight-700 size-16 darken-color" slot="end">USD</span>
+            </ion-item>
+          </ng-container>
+          <ng-container *ngIf="ListingData?.pricingModel === 'Margin'">
+            <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500" *ngIf="ListingData?.marginModelType === 'Percentage'">
+              Margin Percentage?
+             </p>
+             <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500" *ngIf="ListingData?.marginModelType === 'Fixed'">
+              Margin Fixed Amount?
+             </p>
+             <ion-item lines="none">
+              <p class="darken-color size-14 m-b-0 m-t-0" slot="start">{{ListingData?.margin}}</p>
+              <span class="font-weight-700 size-16 darken-color" slot="end" *ngIf="ListingData?.marginModelType === 'Fixed'">USD</span>
+              <span class="font-weight-700 size-16 darken-color" slot="end" *ngIf="ListingData?.marginModelType === 'Percentage'">%</span>
+            </ion-item>
+          </ng-container>
+          <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500">
+            Accapted Payment Types
+           </p>
+           <ion-item lines="none">
+            <p class="darken-color size-14 m-b-0 m-t-0 ion-text-uppercase" slot="end"> <span *ngFor="let item of ListingData?.acceptedPaymentMethods">{{item.paymentCurrency}},</span></p>
+          </ion-item>
+          <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500">
+            My offer should expire on
+           </p>
+           <ion-item lines="none">
+            <p class="darken-color size-14 m-b-0 m-t-0 ion-text-capitalize" slot="end">{{ ListingData?.expirationDate | date:'d MMMM, y' }} </p>
+          </ion-item>
+          <p class="color-tertiary-dark ion-text-capitalize fontFamilysystemUI size-16 m-b-0 m-t-0 font-weight-500">
+            Pricing Model
+           </p>
+          <ng-container *ngIf="ListingData?.pricingModel === 'Bulk'">
+            <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+              <span class="font-weight-700 size-16 color-secondary">Bulk Sale</span> Bulk Sale- A bulk sale is a straightforward and efficient method of selling a collection of assets all at once, with all assets bundled together and offered at a single, predetermined price.
+              <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showMoreText()" *ngIf="!MoreText">Read More</span>
+            </p>
+            <div class="bulk-read-more" *ngIf="ListingData?.pricingModel === 'Bulk' && MoreText">
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500" >
+                This approach is advantageous when dealing with large quantities of assets, where individual pricing would be impractical or time-consuming. 
+              </p>
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+                This type of sale streamlines the transaction process, allowing sellers and buyers to quickly and easily complete large-scale transactions, often with discounts or advantageous pricing structures for volume purchases.
+                <br>
+                This type of sale can automatically be offered to the customer or chosen from a list of market offers.
+              </p>
+              <p class="jostDemi size-14 m-b-5 m-t-5 p-t-4 font-weight-700">ALL BULK SALE PRICES ARE SET BY THE SELLER.
+                <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showLessText()" *ngIf="MoreText">Read Less</span>
+              </p>
+            </div>
+          </ng-container>
+
+            <ng-container *ngIf="ListingData?.pricingModel === 'Unit'">
+            <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+              <span class="font-weight-700 size-16 color-secondary">Unit Sale</span> - A unit sale is a method of selling assets individually, with each asset priced at a specific, predetermined rate. Unlike bulk sales, where all assets are sold together at a single price, unit sales allow for the granular pricing of each individual asset.
+              <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showMoreText()" *ngIf="!MoreText">Read More</span>
+            </p>
+            <div class="bulk-read-more" *ngIf="ListingData?.pricingModel === 'Unit' && MoreText">
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500" >
+                This approach is often used for distinct value propositions, and customers can choose to purchase as many units as they desire at the specified unit price. Unit sales offer flexibility for sellers and buyers, making it suitable for a wide range of transactions as buyers can mix and match several different offers to create a custom order.
+              </p>
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+                This type of sale can automatically be offered to the customer or chosen from a list of market offer.
+              </p>
+              <p class="jostDemi size-14 m-b-5 m-t-5 p-t-4 font-weight-700">ALL UNIT SALE PRICES ARE SET BY THE SELLER.
+                <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showLessText()" *ngIf="MoreText">Read Less</span>
+              </p>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="ListingData?.pricingModel === 'Margin'">
+            <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+              <span class="font-weight-700 size-16 color-secondary">Margin Sale</span> - A margin sale involves selling individual assets at a predefined margin price above or below the current market price. In this type of sale, the seller sets a margin percentage or fixed amount by which the asset's selling price will exceed or be below the current market price.
+              <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showMoreText()" *ngIf="!MoreText">Read More</span>
+            </p>
+            <div class="bulk-read-more" *ngIf="ListingData?.pricingModel === 'Margin' && MoreText">
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500" >
+                Margin sales are commonly used in markets where traders buy and sell assets with the goal of profiting from price fluctuations. The margin price provides a clear profit target and risk management mechanism for sellers engaging in various trading activities.
+              </p>
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+                This type of sale can automatically be offered to the customer or chosen from a list of market offer
+              </p>
+              <p class="jostDemi size-14 m-b-5 m-t-5 p-t-4 font-weight-700">ALL MARGIN SALE PRICES ARE SET BY THE SELLER.
+                <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showLessText()" *ngIf="MoreText">Read Less</span>
+              </p>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="ListingData?.pricingModel === 'Dynamic'">
+            <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+              <span class="font-weight-700 size-16 color-secondary">Dynamic Sale</span> - A dynamic sale is a sales approach where assets are sold at the current market price, subject to continuous change based on supply and demand dynamics.
+              <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showMoreText()" *ngIf="!MoreText">Read More</span>
+            </p>
+            <div class="bulk-read-more" *ngIf="ListingData?.pricingModel === 'Dynamic' && MoreText">
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500" >
+                Unlike bulk, unit, or margin sales, the price in a dynamic sale is not predetermined but instead reflects the prevailing market conditions at the time of the transaction. 
+              </p>
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+                This type of sale is common in markets where asset prices fluctuate frequently. Dynamic sales offer real-time pricing and are influenced by various factors, making them suitable for sellers looking to capitalize on market movements.
+                <br>
+                The platform fully controls this type of sale.
+              </p>
+              <p class="jostDemi size-14 m-b-5 m-t-5 p-t-4 font-weight-700">ALL DYNAMIC SALE PRICES ARE SET BY THE CURRENT MARKET CONDITIONS.
+                <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showLessText()" *ngIf="MoreText">Read Less</span>
+              </p>
+            </div>
+          </ng-container>
+          <p class="color-secondary jostDemi size-14 m-b-5 m-t-5 p-t-4 font-weight-600" >
+            Fees are calculated on the current market price of the asset
+          </p> 
+          <ion-item lines="none">
+            <p class="font-weight-700 size-16 color-tertiary-dark" slot="start">Total Fees</p>
+            <span class="darken-color size-14 m-b-0 m-t-0" slot="end">{{ListingData?.totalFees}} USD</span>
+          </ion-item>
+          <ion-item lines="none">
+            <p class="font-weight-700 size-16 color-tertiary-dark" slot="start">Total Deposit</p>
+            <span class="darken-color size-14 m-b-0 m-t-0" slot="end">{{ListingData?.depositRequest.paymentAddress.expectedCryptoAmount}} {{ListingData?.asset}}</span>
+          </ion-item>
+          <ion-item lines="none">
+            <p class="font-weight-700 size-16 color-tertiary-dark" slot="start">Estimated Profit</p>
+            <p class="font-weight-700 size-16 darken-color" slot="end">{{ListingData?.currentEstimatedRevenue}} USD</p>
+          </ion-item>
+          <div class="m-t-5 m-b-5">
+            <table>
+              <tr>
+                <td>
+                  <ion-checkbox color="tertiary" slot="start" class="zoom-1-2 m-r-8 m-t--10" mode="md" (ionChange)="checkMark($event)">
+                  </ion-checkbox>
+                </td>
+                <td>
+                  <ion-label class="size-14 jostBook font-weight-400 white-space text-overflow">
+                    <span class="text-black p-r-2 font-weight-400 size-15 jostlight">I agree to the offer that 1 have created
+                      above. Also, by checking on this checkbox
+                      and pressing the "Confirm" button, agree
+                      to the</span>
+                    <span class="text-black p-r-2 font-weight-400 size-15 jostlight" [routerLink]="['/tnc']"><u>Terms
+                      terms of use</u></span>
+                  </ion-label>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-button expand="full" (click)="ConfirmContinue()" [disabled]="check">Continue</ion-button>
+  </ng-container>
+  
+  <ng-container *ngIf="ShowPaymentAddress">
+    <ion-grid class="ion-padding-start ion-padding-end">
+      <ion-row>
+        <ion-col>
+        <h5 class="ion-text-capitalize color-tertiary-dark jostDemi size-22 m-b-0 m-t-0 m-l-5 font-weight-600">
+          deposit {{ListingDataConfirm.depositRequest.paymentAddress.type}} 
+        </h5>
+      </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <img [src]="ListingDataConfirm.depositRequest.paymentAddress.addressAsQrCode" alt="" onerror="this.src='assets/images/qr-code.PNG'">
+        </ion-col>
+        <ion-col>
+           <div class="ion-text-end">
+            <p class="darken-color size-14 m-b-0 m-t-0">{{ListingDataConfirm.depositRequest.paymentAddress.expectedCryptoAmount}}</p>
+            <span class="font-weight-700 size-16 darken-color">{{ListingDataConfirm.depositRequest.paymentAddress.type}}</span>
+           </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <h5 class="darken-color jostDemi size-22 m-b-0 m-t-0 m-l-5 font-weight-600">
+            {{ListingDataConfirm.depositRequest.paymentAddress.address}}
+          </h5>
+          <p class="darken-color jostDemi size-12 m-b-5 m-t-5 font-weight-500">
+            Please send the {{ListingDataConfirm.depositRequest.paymentAddress.type}} deposit to the address
+            above to continue the process.
+          </p>
+          <br>
+          <p class="darken-color jostDemi size-12 m-b-5 m-t-5 font-weight-500">
+            We wil email you once the deposit is confirmed.           
+          </p>
+        </ion-col>
+      </ion-row>
+  </ion-grid>
+  </ng-container>
+  
 </ion-content>

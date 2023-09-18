@@ -39,10 +39,10 @@ export class ActiveSellerProfilePage implements OnInit {
       console.log("GetCurrentMarketProfile Response",res);
       if(res.status === 200){
         this.UserCurrentMarketProfile=res?.data;
-        if(this.UserCurrentMarketProfile.data.status === "Pending"){
-          this._appservices.presentToast(`You don't have active Seller profile. Please activate your profile to continue!`);
-          this._nav.navigateRoot("/user-panel/no-active-seller-profile");
-        }
+        // if(this.UserCurrentMarketProfile.data.status === "Pending"){
+        //   this._appservices.presentToast(`You don't have active Seller profile. Please activate your profile to continue!`);
+        //   this._nav.navigateRoot("/user-panel/no-active-seller-profile");
+        // }
       }else{
         this._appservices.presentToast(`No profile was found for ${this._appservices.loggedInUserDetails.email}`);
         this._nav.navigateRoot("/user-panel/sales-profile-signup");

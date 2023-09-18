@@ -198,14 +198,16 @@ export class AppService {
         });
       });
   }
-
-  async loaderDismiss() {
-    setTimeout(async () => {
-      this.isLoading = false;
-    return await this.loadingController.dismiss({
-      'dismissed': true
+  async simpleLoader() {
+    const loading = await this.loadingController.create({
+      message: 'Please wait...'
     });
-    }, 2000);
+    loading.present();
+    this.isLoading = false
+  }
+  async loaderDismiss() {
+    this.isLoading = false;
+    return await this.loadingController.dismiss();
   }
 
   async presentToast(msg) {

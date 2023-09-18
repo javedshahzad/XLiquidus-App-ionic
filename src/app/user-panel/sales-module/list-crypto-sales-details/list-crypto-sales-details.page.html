@@ -25,82 +25,175 @@
         <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
           What are you selling?
         </p>
-        <ion-select class="selectClass height-50 darken-color" interface="action-sheet" placeholder="Choose Crypto Currency" [(ngModel)]="CryptoCurrency">
-          <ion-select-option *ngFor="let item of [1,2,3,4]" [value]="item">
-               Bitcoin (BTC)
+        <ion-select class="itemclass height-50" interface="action-sheet" placeholder="Choose Crypto Currency" [(ngModel)]="SelectedAsset">
+          <ion-select-option *ngFor="let item of ListSellingsItems" [value]="item.name">
+              {{item.name}}
           </ion-select-option>
         </ion-select>
         <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
           How much are you selling?
         </p>
-        <ion-item lines="none" class="main-border">
-          <ion-input type="number" value="0.0006" slot="start" class="darken-color"></ion-input>
-          <span class="font-weight-700 size-14 darken-color" slot="end">BTC</span>
+        <ion-item lines="none" class="itemclass">
+          <ion-input type="number" [value]="Quantity" placeholder="Enter Quantity" slot="start" [(ngModel)]="Quantity" class="darken-color" ></ion-input>
+          <span class="font-weight-700 size-14 darken-color" slot="end">{{SelectedAsset}}</span>
         </ion-item>
-        <p class="darken-color ion-text-capitalize ion-text-center jostDemi size-16 m-b-0 m-t-5 font-weight-500">
+        <!-- <p class="darken-color ion-text-capitalize ion-text-center jostDemi size-16 m-b-0 m-t-5 font-weight-500">
           VALUE IN USD
           </p>
           <p class="darken-color jostDemi ion-text-center size-10 m-b-0 m-t-0 font-weight-500">
             (Calculated based on the above)
-           </p>
+           </p> -->
 
            <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
             Choose a Pricing Model
           </p>
           <ion-list>
-            <ion-radio-group value="Bulk Sale">
-              <ion-item *ngFor="let item of items" lines="none">
-                <ion-label class="darken-label jostDemi size-14 font-weight-500">{{item}}</ion-label>
-                <ion-radio slot="end" [value]="item" mode="md"></ion-radio>
+            <ion-radio-group [value]="PricingModel" [(ngModel)]="PricingModel">
+              <ion-item *ngFor="let item of ListPricingModel" lines="none">
+                <ion-label class="darken-label jostDemi size-14 font-weight-500">{{item.name}}</ion-label>
+                <ion-radio slot="end" [value]="item.pricingModel" mode="md"></ion-radio>
               </ion-item>
             </ion-radio-group>
           </ion-list>
           <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
             Pricing Model Description
           </p>
-          <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
-            Bulk Sale-A bulk sale is a type of sale where a quantity of cryptocurrency is sold at a single predetermined price. This would mean selling the quantity of a specific coin or token at a set
-            price, rather than selling them individually This type of sale is typically automated and handled by the platform or chosen by customers on the market.
-          </p>
-          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
-            Asking Price?
-          </p>
-          <ion-item lines="none" class="main-border">
-            <ion-input type="number" value="125.00" slot="start" class="darken-color ion-no-margin"></ion-input>
-            <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
-          </ion-item>
-          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
-            Unit Price?
-          </p>
-          <ion-item lines="none" class="main-border">
-            <ion-input type="number" value="125.00" slot="start" class="darken-color ion-no-margin"></ion-input>
-            <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
-          </ion-item>
-          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+          <ng-container *ngIf="PricingModel === 'Bulk'">
+            <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+              Bulk Sale- A bulk sale is a straightforward and efficient method of selling a collection of assets all at once, with all assets bundled together and offered at a single, predetermined price.
+              <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showMoreText()" *ngIf="!MoreText">Read More</span>
+            </p>
+            <div class="bulk-read-more" *ngIf="PricingModel === 'Bulk' && MoreText">
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500" >
+                This approach is advantageous when dealing with large quantities of assets, where individual pricing would be impractical or time-consuming. 
+              </p>
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+                This type of sale streamlines the transaction process, allowing sellers and buyers to quickly and easily complete large-scale transactions, often with discounts or advantageous pricing structures for volume purchases.
+                <br>
+                This type of sale can automatically be offered to the customer or chosen from a list of market offers.
+              </p>
+              <p class="jostDemi size-14 m-b-5 m-t-5 p-t-4 font-weight-700">ALL BULK SALE PRICES ARE SET BY THE SELLER.
+                <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showLessText()" *ngIf="MoreText">Read Less</span>
+              </p>
+            </div>
+          </ng-container>
+
+            <ng-container *ngIf="PricingModel === 'Unit'">
+            <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+             Unit Sale- A unit sale is a method of selling assets individually, with each asset priced at a specific, predetermined rate. Unlike bulk sales, where all assets are sold together at a single price, unit sales allow for the granular pricing of each individual asset.
+              <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showMoreText()" *ngIf="!MoreText">Read More</span>
+            </p>
+            <div class="bulk-read-more" *ngIf="PricingModel === 'Unit' && MoreText">
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500" >
+                This approach is often used for distinct value propositions, and customers can choose to purchase as many units as they desire at the specified unit price. Unit sales offer flexibility for sellers and buyers, making it suitable for a wide range of transactions as buyers can mix and match several different offers to create a custom order.
+              </p>
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+                This type of sale can automatically be offered to the customer or chosen from a list of market offer.
+              </p>
+              <p class="jostDemi size-14 m-b-5 m-t-5 p-t-4 font-weight-700">ALL UNIT SALE PRICES ARE SET BY THE SELLER.
+                <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showLessText()" *ngIf="MoreText">Read Less</span>
+              </p>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="PricingModel === 'Margin'">
+            <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+              Margin Sale- A margin sale involves selling individual assets at a predefined margin price above or below the current market price. In this type of sale, the seller sets a margin percentage or fixed amount by which the asset's selling price will exceed or be below the current market price.
+              <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showMoreText()" *ngIf="!MoreText">Read More</span>
+            </p>
+            <div class="bulk-read-more" *ngIf="PricingModel === 'Margin' && MoreText">
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500" >
+                Margin sales are commonly used in markets where traders buy and sell assets with the goal of profiting from price fluctuations. The margin price provides a clear profit target and risk management mechanism for sellers engaging in various trading activities.
+              </p>
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+                This type of sale can automatically be offered to the customer or chosen from a list of market offer
+              </p>
+              <p class="jostDemi size-14 m-b-5 m-t-5 p-t-4 font-weight-700">ALL MARGIN SALE PRICES ARE SET BY THE SELLER.
+                <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showLessText()" *ngIf="MoreText">Read Less</span>
+              </p>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="PricingModel === 'Dynamic'">
+            <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+              Dynamic Sale- A dynamic sale is a sales approach where assets are sold at the current market price, subject to continuous change based on supply and demand dynamics.
+              <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showMoreText()" *ngIf="!MoreText">Read More</span>
+            </p>
+            <div class="bulk-read-more" *ngIf="PricingModel === 'Dynamic' && MoreText">
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500" >
+                Unlike bulk, unit, or margin sales, the price in a dynamic sale is not predetermined but instead reflects the prevailing market conditions at the time of the transaction. 
+              </p>
+              <p class="darken-color jostDemi size-12 m-b-5 m-t-5 p-t-4 font-weight-500">
+                This type of sale is common in markets where asset prices fluctuate frequently. Dynamic sales offer real-time pricing and are influenced by various factors, making them suitable for sellers looking to capitalize on market movements.
+                <br>
+                The platform fully controls this type of sale.
+              </p>
+              <p class="jostDemi size-14 m-b-5 m-t-5 p-t-4 font-weight-700">ALL DYNAMIC SALE PRICES ARE SET BY THE CURRENT MARKET CONDITIONS.
+                <span class="jostDemi size-16 font-weight-800 text-under-line" (click)="showLessText()" *ngIf="MoreText">Read Less</span>
+              </p>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="PricingModel === 'Bulk'">
+            <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+              Asking Price?
+            </p>
+            <ion-item lines="none" class="itemclass">
+              <ion-input type="number" [value]="AskingPrice" placeholder="Enter Asking price" slot="start" class="darken-color ion-no-margin" [(ngModel)]="AskingPrice"></ion-input>
+              <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
+            </ion-item>
+          </ng-container>
+          <ng-container *ngIf="PricingModel === 'Unit'">
+            <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+              Unit Price?
+            </p>
+            <ion-item lines="none" class="itemclass">
+              <ion-input type="number" [value]="UnitPrice" placeholder="Enter Unit Price" slot="start" class="darken-color ion-no-margin" [(ngModel)]="UnitPrice"></ion-input>
+              <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
+            </ion-item>
+          </ng-container>
+          <ng-container *ngIf="PricingModel === 'Margin'">
+                <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+                  Margin Model Type?
+                </p>
+                <ion-select class="itemclass height-50 darken-color" interface="action-sheet" placeholder="Select Margin Model" [(ngModel)]="MarginModel">
+                  <ion-select-option *ngFor="let item of MarginModelTypes" [value]="item">
+                      {{item}}
+                  </ion-select-option>
+                </ion-select>
+          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600" *ngIf="MarginModel === 'Percentage'">
             Margin Percentage?
           </p>
-          <ion-item lines="none" class="main-border">
-            <ion-input type="number" value="7.00" slot="start" class="darken-color ion-no-margin"></ion-input>
-            <span class="font-weight-700 size-14 darken-color" slot="end">%</span>
-          </ion-item>
-          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
-            Highest Selling Price?
+          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600" *ngIf="MarginModel === 'Fixed'">
+            Fixed Amount?
           </p>
-          <ion-item lines="none" class="main-border">
-            <ion-input type="number" value="7.00" slot="start" class="darken-color ion-no-margin"></ion-input>
-            <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
+          <ion-item lines="none" class="itemclass">
+            <ion-input type="number" [value]="MarginPercentage" placeholder="Enter {{MarginModel}}" [(ngModel)]="MarginPercentage" slot="start" class="darken-color ion-no-margin"></ion-input>
+            <span class="font-weight-700 size-14 darken-color" slot="end" *ngIf="MarginModel === 'Percentage'">%</span>
+            <span class="font-weight-700 size-14 darken-color" slot="end" *ngIf="MarginModel === 'Fixed'">USD</span>
           </ion-item>
-          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
-            Lowest Selling Price?
-          </p>
-          <ion-item lines="none" class="main-border">
-            <ion-input type="number" value="7.00" slot="start" class="darken-color ion-no-margin"></ion-input>
-            <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
-          </ion-item>
-          <ion-item lines="none">
-            <span class="font-weight-700 size-14 darken-color" slot="start">22,33212</span>
-            <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
-          </ion-item>
+          </ng-container>
+          <div class="optionals">
+            <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+              Highest Selling Price? <span class="font-weight-400 size-13 jostBook">(Optional)</span>
+            </p>
+            <ion-item lines="none" class="itemclass">
+              <ion-input type="number" [value]="HighestPrice" placeholder="Enter Highest price" slot="start" [(ngModel)]="HighestPrice" class="darken-color ion-no-margin"></ion-input>
+              <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
+            </ion-item>
+            <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+              Lowest Selling Price? <span class="font-weight-400 size-13 jostBook">(Optional)</span>
+            </p>
+            <ion-item lines="none" class="itemclass">
+              <ion-input type="number" [value]="LowestPrice" placeholder="Enter Lowest price" slot="start" [(ngModel)]="LowestPrice" class="darken-color ion-no-margin"></ion-input>
+              <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
+            </ion-item>
+          </div>
+          <!-- <ng-container *ngIf="PricingModel === 'Dynamic'">
+            <ion-item lines="none">
+              <span class="font-weight-700 size-14 darken-color" slot="start">22,33212</span>
+              <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
+            </ion-item>
+          </ng-container> -->
+     
       </ion-col>
     </ion-row>
     <ion-row>
@@ -110,17 +203,17 @@
         </p>
       </ion-col>
     </ion-row>
-    <ion-row class="main-border">
+    <ion-row class="itemclass">
       <ion-col size="10" class="ion-no-padding">
-        <ion-select class="selectClass height-50 darken-color" interface="action-sheet" placeholder="Choose Crypto Currency" [(ngModel)]="CryptoCurrency">
-          <ion-select-option *ngFor="let item of [1,2,3,4]" [value]="item">
-               Bitcoin (BTC)
+        <ion-select class="height-50 darken-color" interface="action-sheet" placeholder="Choose" [(ngModel)]="paymentCurrency">
+          <ion-select-option *ngFor="let item of AcceptedPaymentMethodsType" [value]="item">
+              {{item.paymentCurrency}}
           </ion-select-option>
         </ion-select>
       </ion-col>
-      <ion-col class="ion-no-padding">
-        <div class="center">
-          <ion-icon name="add-outline" class="font-weight-700 size-24 darken-color"></ion-icon>
+      <ion-col class="ion-no-padding bg-blue">
+        <div class="center" (click)="AddpaymentCurrency()">
+          <ion-icon name="add-outline" class="font-weight-700 size-28 color-white"></ion-icon>
         </div>
       </ion-col>
     </ion-row>
@@ -129,25 +222,41 @@
         <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
           Accepted Payment Types
         </p>
-        <p class="darken-color ion-text-uppercase jostDemi size-12 m-b-5 m-t-5 font-weight-600">
-         - USD
-        </p>
-        <p class="darken-color ion-text-uppercase jostDemi size-12 m-b-5 m-t-5 font-weight-600">
-          - LTC
-         </p>
+        <ion-row *ngFor="let item of acceptedPaymentMethodsArray">
+          <ion-col>
+            <p class="darken-color ion-text-uppercase jostDemi size-12 m-b-5 m-t-5 font-weight-600">
+              - {{item.paymentCurrency}}
+             </p>
+          </ion-col>
+          <ion-col>
+            <ion-button size="small" shape="round" fill="outline" (click)="deletePaymentCurrency(item.paymentCurrency)"> <ion-icon name="close-outline" class="size-20 jostDemi"></ion-icon></ion-button>
+          </ion-col>
+        </ion-row>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
-          When should your offer expire?
+          Market Offer Payment Source?
         </p>
-        <ion-item lines="none" class="main-border">
-          <ion-input type="date" value="01 March, 2023"class="darken-color ion-no-margin"></ion-input>
-        </ion-item>
+        <ion-select class="itemclass height-50 darken-color" interface="action-sheet" placeholder="Payment source" [(ngModel)]="PaymentSource">
+          <ion-select-option *ngFor="let item of PaymentSourceTypes" [value]="item.value">
+              {{item.name}}
+          </ion-select-option>
+        </ion-select>
       </ion-col>
     </ion-row>
     <ion-row>
+      <ion-col>
+        <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+          When should your offer expire? <span class="font-weight-400 size-13 jostBook">(Optional)</span>
+        </p>
+        <ion-item lines="none" class="itemclass">
+          <ion-input type="date" [value]="ExpirationDate"class="darken-color ion-no-margin" [(ngModel)]="ExpirationDate" placeholder="Select Date & Time"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <!-- <ion-row>
       <ion-col>
         <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
           Total Fees
@@ -168,7 +277,7 @@
           117.558 USD
         </p>
       </ion-col>
-    </ion-row>
+    </ion-row> -->
   </ion-grid>
-  <ion-button expand="full" routerLink="/user-panel/list-crypto-sales">Continue</ion-button>
+  <ion-button expand="full" (click)="Continue()">Continue</ion-button>
 </ion-content>
