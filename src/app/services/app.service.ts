@@ -421,7 +421,9 @@ export class AppService {
   }
 
   putDataByNativePromiss(url, data): Promise<any> {
-    return from(this._nativeHttp.put(url, data, this.getHttpHeaders())).pipe(retry(this.UploadMaxRetryHit)).toPromise().then(results => {
+    var urls = this.apiUrl + url;
+    console.log(urls, JSON.stringify(data));
+    return from(this._nativeHttp.put(urls, data, this.getHttpHeaders())).pipe(retry(this.UploadMaxRetryHit)).toPromise().then(results => {
       var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) }
       return _res;
     }, err => {
@@ -585,7 +587,7 @@ export interface ADD_TO_CART_PAYLOAD {
 }
 
 export interface CART_ITEM {
-
+  isSecondaryMarketItem?: boolean
   item: string,
   amount: number
 

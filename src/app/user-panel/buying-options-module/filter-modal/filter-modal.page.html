@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar class="primary-second-color-background">
+    <ion-title slot="start" class="color-white ion-text-capitalize jostDemi size-16 font-weight-800">Filters</ion-title>
+    <div  (click)="closeModal()" slot="end">
+      <ion-icon name="close-outline" class="size-30 color-white jostDemi"></ion-icon>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding-start ion-padding-end">
+    <ion-row>
+      <ion-col>
+        <ng-container>
+          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+            Market Symbol?
+          </p>
+          <ion-select class="itemclass height-50" interface="action-sheet" placeholder="Choose Crypto Currency" [(ngModel)]="SelectedAsset">
+            <ion-select-option *ngFor="let item of ListSellingsItems" [value]="item.name">
+                {{item.name}}
+            </ion-select-option>
+          </ion-select>
+        </ng-container>
+        
+        <ng-container>
+          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+           Pricing Model
+          </p>
+          <ion-list>
+            <ion-radio-group [value]="PricingModel" [(ngModel)]="PricingModel">
+              <ion-item *ngFor="let item of ListPricingModel" lines="none">
+                <ion-label class="darken-label jostDemi size-14 font-weight-500">{{item.pricingModel}}</ion-label>
+                <ion-radio slot="end" [value]="item.pricingModel" mode="md"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-list>
+        </ng-container>
+        <ng-container>
+          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+            Margin Model Type?
+          </p>
+          <ion-select class="itemclass height-50 darken-color" interface="action-sheet" placeholder="Select Margin Model" [(ngModel)]="MarginModel">
+            <ion-select-option *ngFor="let item of MarginModelTypes" [value]="item">
+                {{item}}
+            </ion-select-option>
+          </ion-select>
+        </ng-container>
+        
+        <div class="optionals">
+          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+            Maximum Price?
+          </p>
+          <ion-item lines="none" class="itemclass">
+            <ion-input type="number" [value]="HighestPrice" placeholder="Enter price" slot="start" [(ngModel)]="HighestPrice" class="darken-color ion-no-margin"></ion-input>
+            <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
+          </ion-item>
+          <p class="color-tertiary-dark jostDemi size-16 m-b-0 m-t-0 font-weight-600">
+            Minimum Price?
+          </p>
+          <ion-item lines="none" class="itemclass">
+            <ion-input type="number" [value]="LowestPrice" placeholder="Enter price" slot="start" [(ngModel)]="LowestPrice" class="darken-color ion-no-margin"></ion-input>
+            <span class="font-weight-700 size-14 darken-color" slot="end">USD</span>
+          </ion-item>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="applyFilters()" expand="block" size="small" class="ion-text-right primary-second-color-background no-border shadownot border-radius-8 height-40 letter-spacing padding">
+          <h5 class="jostHeavy size-12 font-weight-600 m-t-10">Apply Filters</h5>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+

@@ -111,7 +111,9 @@ export class DashboardComponent implements OnInit {
     var jsonData = JSON.stringify(data);
     this.router.navigate(['/user-panel/product-page', { 'productData': this._encServices.encrypt(jsonData) }]);
   }
-
+  customizeorder(){
+    this._nav.navigateForward(["/user-panel/current-order"])
+  }
   mapCoinMatrics(userCoinMetricsList) {
     this.userCoinMetricsList = userCoinMetricsList.userWallet.inWallet.tokens.map((token, i) => {
       var teams = userCoinMetricsList?.teams.filter(t => t.team.id == token.teamId);

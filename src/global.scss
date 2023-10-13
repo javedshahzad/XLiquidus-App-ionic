@@ -1676,6 +1676,16 @@ ion-button {
   --border-radius: 8px;
   --box-shadow: 0px 4px 8px rgba(85, 112, 255, 0.6);
 }
+.filter-items-modal{
+  --background: #FFFFFF;
+  --width: 325px;
+  --height: 400px;
+  --border-width: 1px;
+  --border-color:#001b47;
+  --border-style: solid;
+  --border-radius: 8px;
+  --box-shadow: 0px 4px 8px rgba(85, 112, 255, 0.6);
+}
 .text-under-line{
   text-decoration: underline;
 }

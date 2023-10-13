@@ -4,6 +4,8 @@ import { ModalController, NavController, Platform } from '@ionic/angular';
 import { AppService } from 'src/app/services/app.service';
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
 import { UpdateOrderModalPage } from '../update-order-modal/update-order-modal.page';
+import { finalize } from 'rxjs/operators';
+import { FilterModalPage } from '../filter-modal/filter-modal.page';
 
 @Component({
   selector: 'app-market-search',
@@ -42,6 +44,9 @@ export class MarketSearchPage implements OnInit {
     }
   ]
   searchArray:any=[];
+  isDataLoad:boolean=false;
+  AllAvailableListings:any=[];
+  pageNumber:any=1;
   constructor(
     public _nav: NavController,
     public router: Router,
@@ -53,16 +58,41 @@ export class MarketSearchPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.searchArray = this.CurrentOrder
+    this.pageNumber=1;
+    var payloadParamters = {
+      pageSize:50,
+      page: this.pageNumber,
+    }
+    this.getAllListings(payloadParamters);
   }
   handleChange(event) {
     const str = event.detail.value;
-    if (str) {
-        let arrdata = this.searchArray;
-        let x = arrdata.filter((a) => a.offerType.toUpperCase().includes(str.toUpperCase()));
-        this.CurrentOrder = x;
-    } else {
-        this.CurrentOrder = this.searchArray;
+    if (str.length > 0) {
+      this.pageNumber=1;
+      var payloadParamters = {
+        pageSize:50,
+        page: this.pageNumber,
+        filters:`MarketSymbol@=${str.toLowerCase()}`
+      }
+      var UrlParameters = `CustomerMarkets/PostMarketSearch?email=${this._appservices.loggedInUserDetails.email}`;
+      console.log(UrlParameters);
+      this._appservices.postDataByHttp(UrlParameters, payloadParamters).subscribe(res => {
+        console.log("PostMarketSearch Response", res);
+        if(res.status === 200){
+          this.AllAvailableListings = res.data.data.results;
+        }
+        this.isDataLoad = false;
+      }, err => {
+        console.log(err);
+        this.isDataLoad = false;
+      });
+    } else if(str.length === 0) {
+      this.pageNumber=1;
+      var payloadParams = {
+        pageSize:50,
+        page: this.pageNumber,
+      }
+      this.getAllListings(payloadParams);
     }
   }
   backtomarktplace() {
@@ -79,5 +109,73 @@ export class MarketSearchPage implements OnInit {
         },
     });
     return await modal.present();
+}
+async openFilterModal(){
+  const modal = await this.modalController.create({
+    component: FilterModalPage,
+    cssClass: 'filter-items-modal',
+    mode: "md",
+    backdropDismiss:false,
+    componentProps: {
+        data: "item"
+    },
+});
+modal.onDidDismiss().then((data:any)=>{
+  console.log(data)
+  if(data.data){
+    var filter = data.data;
+    var payloadParamters = {
+      pageSize:50,
+      page: this.pageNumber,
+      filters:filter
+    }
+    this.getAllListings(payloadParamters);
+  }
+})
+return await modal.present();
+}
+getAllListings(payload){
+    this._appservices.simpleLoader();
+  var UrlParameters = `CustomerMarkets/PostMarketSearch?email=${this._appservices.loggedInUserDetails.email}`;
+  console.log(UrlParameters);
+  this._appservices.postDataByHttp(UrlParameters, payload).pipe(finalize(() => this._appservices.loaderDismiss())).subscribe(res => {
+    console.log("PostMarketSearch Response", res);
+    if(res.status === 200){
+      this.AllAvailableListings = res.data.data.results;
+    }
+    this.isDataLoad = false;
+  }, err => {
+    console.log(err);
+    this._appservices.loaderDismiss();
+    this.isDataLoad = false;
+  });
+}
+roundedNumber(number){
+  return number?.toFixed(2);
+   
+}
+loadData(event) {
+  this.pageNumber +=1;
+  this.isDataLoad = true;
+  var payloadParamters = {
+    pageSize:50,
+    page: this.pageNumber,
+  }
+  var UrlParameters = `CustomerMarkets/PostMarketSearch?email=${this._appservices.loggedInUserDetails.email}`;
+  console.log(UrlParameters);
+  this._appservices.postDataByHttp(UrlParameters, payloadParamters).subscribe(res => {
+    console.log("PostMarketSearch Response", res);
+    event.target.complete();
+    if(res.data.data.results.length === 0){
+      event.target.disabled = true;
+    }else{
+      this.AllAvailableListings = [...res.data.data.results];
+    }
+    this.isDataLoad = false;
+  }, err => {
+    console.log(err);
+    event.target.disabled = true;
+    this.isDataLoad = false;
+  });
 }
 }

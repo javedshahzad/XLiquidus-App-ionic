@@ -42,6 +42,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { SalesComponent } from './sales-module/sales/sales.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { FilterModalPageModule } from './buying-options-module/filter-modal/filter-modal.module';
+import { UpdateOrderModalPageModule } from './buying-options-module/update-order-modal/update-order-modal.module';
 
 @NgModule({
   imports: [
@@ -54,7 +56,9 @@ import { TranslateModule } from '@ngx-translate/core';
     UserPanelPageRoutingModule,
     BrMaskerModule,
     NgSelectModule,
-    TranslateModule
+    TranslateModule,
+    FilterModalPageModule,
+    UpdateOrderModalPageModule
   ],
   declarations: [
     UserPanelPage,

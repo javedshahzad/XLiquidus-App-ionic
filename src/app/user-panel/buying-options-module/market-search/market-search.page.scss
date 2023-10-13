@@ -45,3 +45,17 @@
     justify-content: center;
     align-items: center;
 }
+.main-box{
+    height: 300px;
+    overflow: auto;
+}
+.image-style{
+    height: 70px;
+    width: 70px;
+}
+.filter-items{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 10px;
+}

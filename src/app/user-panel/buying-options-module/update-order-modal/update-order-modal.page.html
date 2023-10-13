@@ -2,10 +2,10 @@
   <ion-grid class="ion-padding-start ion-padding-end">
     <ion-row class="border-botom">
       <ion-col size="3">
-          <img src="assets/images/bitcoin.png" alt="" class="image">
+          <img [src]="GetSingleListData?.logo" alt="Logo" onerror="this.src='assets/images/bitcoin.png'" alt="" class="image">
       </ion-col>
       <ion-col>
-        <p class="color-tertiary-dark ion-text-start ion-text-capitalize jostDemi size-16 m-b-5 m-t-5 font-weight-800"> Bitcoin offer builk sale </p>
+        <p class="color-tertiary-dark ion-text-start ion-text-capitalize jostDemi size-16 m-b-5 m-t-5 font-weight-800"> {{GetSingleListData?.marketSymbol}} offer {{GetSingleListData?.pricingModel}} sale </p>
       </ion-col>
       <ion-col size="3">
         <div class="ion-text-end" (click)="closeModal()">
@@ -16,7 +16,7 @@
     <ion-row class="border-botom">
       <ion-col class="ion-no-padding">
         <div class="items-centers">
-          <img src="{{data.sellerLocarion}}" alt="">
+          <img [src]="GetSingleListData?.logo" alt="Logo" onerror="this.src='assets/images/bitcoin.png'" class="image">
         </div>
       </ion-col>
       <ion-col class="ion-no-padding">
@@ -28,10 +28,10 @@
       </ion-col>
       <ion-col class="ion-no-padding">
         <p class="darken-color ion-text-end ion-text-uppercase jostDemi size-12 m-b-2 m-t-2 font-weight-600">
-          528 usd
+          {{roundedNumber(GetSingleListData?.currentRate)}} usd
          </p>
-        <p class="color-secondary ion-text-end ion-text-capitalize jostDemi size-14 m-b-2 m-t-2 font-weight-600"> {{data.crypto}} BTC </p>
-        <p class="color-secondary ion-text-end ion-text-capitalize jostDemi size-14 m-b-2 m-t-2 font-weight-600"> {{data.usd}} USD </p>
+        <p class="color-secondary ion-text-end ion-text-capitalize jostDemi size-14 m-b-2 m-t-2 font-weight-600"> {{GetSingleListData?.availableQuantity}} {{GetSingleListData?.marketSymbol}} </p>
+        <p class="color-secondary ion-text-end ion-text-capitalize jostDemi size-14 m-b-2 m-t-2 font-weight-600"> {{roundedNumber(GetSingleListData?.unitPrice)}} USD </p>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -40,8 +40,8 @@
           Amount you want
         </p>
         <ion-item lines="none" class="main-border">
-          <ion-input type="number" value="125.00" slot="start" class="color-secondary font-weight-700 jostDemi size-14 ion-no-margin"></ion-input>
-          <span class="font-weight-700 size-14 jostDemi color-secondary" slot="end">BTC</span>
+          <ion-input type="number" [value]="Quantity" [(ngModel)]="Quantity" slot="start" class="color-secondary font-weight-700 jostDemi size-14 ion-no-margin"></ion-input>
+          <span class="font-weight-700 size-14 jostDemi color-secondary" slot="end">{{GetSingleListData?.marketSymbol}}</span>
         </ion-item>
       </ion-col>
     </ion-row>

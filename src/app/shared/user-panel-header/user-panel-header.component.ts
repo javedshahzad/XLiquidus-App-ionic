@@ -64,27 +64,31 @@ export class UserPanelHeaderComponent implements OnInit {
     // }, (err) => {
     //   this.CartItemCount = 0;
     // });
-    this._appServices.presentLoading();
-    this._appServices.getDataByHttp(`Wallets/GetUserCoinMetrics?${UrlParameters}`).subscribe(resp => {
-      // this._appServices.cartRefresh.next(false);
-      this.historyWalletBalance = resp.status == 200 ? resp.data.totalCost : 0;
-      this.showBadgeInfoIcon = false;
-      this.showicons = true;
-    }, err => {
-      this.historyWalletBalance = 0;
-      this.showBadgeInfoIcon = false;
-      this.showicons = true;
-      console.log('err1', err)
+    this._appServices.presentLoading().then((present:any)=>{
+      this._appServices.getDataByHttp(`Wallets/GetUserCoinMetrics?${UrlParameters}`).subscribe(resp => {
+        // this._appServices.cartRefresh.next(false);
+        this.historyWalletBalance = resp.status == 200 ? resp.data.totalCost : 0;
+        this.showBadgeInfoIcon = false;
+        this.showicons = true;
+        this._appServices.loaderDismiss();
+      }, err => {
+        this.historyWalletBalance = 0;
+        this.showBadgeInfoIcon = false;
+        this.showicons = true;
+        console.log('err 1', err)
+        this._appServices.loaderDismiss();
+      });
+      this._appServices.getDataByHttp(`ShoppingCart/GetCartItemCount?${UrlParameters}`).subscribe(_res => {
+        console.log(_res)
+        this.CartItemCount = _res.status == 200 ? _res.data : [];
+        if (this.CartItemCount.length == 0) {
+          this.CartItemCount = 0;
+        }
+      }, err => {
+        console.log('err 2', err);
+      });
     });
 
-    this._appServices.getDataByHttp(`ShoppingCart/GetCartItemCount?${UrlParameters}`).subscribe(_res => {
-      console.log(_res)
-      this.CartItemCount = _res.status == 200 ? _res.data : [];
-      if (this.CartItemCount.length == 0) {
-        this.CartItemCount = 0;
-      }
-    });
-    this._appServices.loaderDismiss();
   }
 
   gotoWallet() {
