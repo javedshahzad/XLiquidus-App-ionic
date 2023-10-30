@@ -46,8 +46,8 @@ export class ShopingCartComponent implements OnInit {
       if (_res.status == 200) {
         this.showCart = true;
         this.isDataLoad = false;
-        localStorage.setItem('cartId', _res.data.cartId);
-        this.cartDetail = _res.data;
+        localStorage.setItem('cartId', _res.data.data.cart.cartId);
+        this.cartDetail = _res?.data?.data?.cart;
         console.log(this.cartDetail);
       } else if (_res.status == 202) {
         console.log(_res.data.error);

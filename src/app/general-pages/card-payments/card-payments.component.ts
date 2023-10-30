@@ -39,7 +39,7 @@ export class CardPaymentsComponent implements OnInit, AfterContentInit {
       var UrlParameters = `emailAddress=${this._appservices.loggedInUserDetails.email}&clientIpAddress=${this._appservices.ipAddress.ip}`
       this._appservices.getDataByPromissHttp(`Global/GetCountries?${UrlParameters}`).then(res => {
         if (res.status == 200) {
-          this.countries = res.data;
+          this.countries = res.data.data;
           console.log(this.countries);
         }
       });
@@ -96,9 +96,9 @@ export class CardPaymentsComponent implements OnInit, AfterContentInit {
       const result = await this.card?.tokenize();
 
       if (result?.status === 'OK') {
-
+        console.log(result)
         console.log(`Payment token is: ${JSON.stringify(result)}`);
-        localStorage.setItem('nonce', result.card_nonce)
+        localStorage.setItem('nonce', result.token)
         localStorage.setItem('cardNumber', result?.detals?.card?.last4)
         localStorage.setItem('billingInformation', JSON.stringify(this.billingInformation.value))
         this.billingInformation.reset()

@@ -73,6 +73,7 @@ export class CurrentOrderPage implements OnInit {
   isDataLoad:boolean=false;
   AllAvailableListings:any=[];
   pageNumber:any=1;
+  GetCartData: any;
   constructor(
     public _nav: NavController,
     public router: Router,
@@ -84,7 +85,9 @@ export class CurrentOrderPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.GetCartItems();
     this.getAllListings();
+ 
   }
   backtomarktplace() {
     this._nav.navigateRoot(['/user-panel/dashboard']);
@@ -99,6 +102,9 @@ export class CurrentOrderPage implements OnInit {
             data: item
         },
     });
+    modal.onWillDismiss().then((data:any)=>{
+      this.GetCartItems();
+    })
     return await modal.present();
 }
 getAllListings(){
@@ -151,5 +157,30 @@ loadData(event) {
 roundedNumber(number){
   return number?.toFixed(2);
    
+}
+GetCartItems(){
+  this._appservices.getCart(this._appservices.loggedInUserDetails.email).then(_respone =>{
+    console.log('Get cart data:',_respone);
+    if(_respone.status === 200){
+      this.GetCartData = _respone?.data?.data?.cart;
+    }
+  
+  })
+}
+getTotalPrice(type,amount){
+  var SelectedMaketCart = [];
+  var totalRaw = 0;
+  var total = "" ;
+   SelectedMaketCart =  this.GetCartData.summary.currentExchangeRates.filter(data=> data.currencyType === type);
+   console.log(SelectedMaketCart)
+  if(SelectedMaketCart.length > 0){
+    totalRaw = SelectedMaketCart[0].currencyRate * amount;
+     total = totalRaw?.toFixed(2);
+     console.log(total)
+   return total;
+  }
+}
+checkout() {
+  this.router.navigate(['/user-panel/confirm-order']);
 }
 }

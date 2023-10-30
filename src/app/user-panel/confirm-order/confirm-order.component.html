@@ -21,56 +21,52 @@
       </ion-item>
     </ion-list>
     <!--  -->
-    <ion-list class="w-100 p-0" *ngFor="let item of cartDetail?.items">
-      <ion-item class="white-background p-r-12 ion-activatable ripple-parent">
-        <!-- <ion-ripple-effect type="unbounded"></ion-ripple-effect> -->
-        <ion-row>
-          <ion-col size="12" class="m-b--10">
-            <ion-text class="display-block">
-              <img [src]="item?.logo" onerror="this.src='assets/images/wfse.png'" class="item-logo m-t--10 ion-float-left">
-              <div ion-float-right>
-                <h4 class="jostDemi size-19 m-b-0 m-t-5 font-weight-600">
-                  {{item.name}}
-                </h4>
-              </div>
-            </ion-text>
-          </ion-col>
-          <ion-col size="0.5"></ion-col>
-          <ion-col size="5.5">
-            <ion-text class="display-block">
-              <!-- <img src="assets/images/bitcoin.png" class="w-30 m-t--5 ion-float-left"> -->
-              <div ion-float-right>
-                <!-- <h4 class="jostDemi size-19 m-b-0 m-t-5 font-weight-600">
-                  Zcash
-                 
-                </h4> -->
-                <p class="changecolor jostBook font-weight-400 size-12 m-t-0 m-b-0">{{'PRICE' | translate }}</p>
-                <h4 class="color-secondary jostBook size-15 m-b-0 m-t-0 p-t-4 font-weight-400">
-                  ${{item.price}} {{'USD' | translate }}
-                </h4>
-              </div>
-            </ion-text>
-          </ion-col>
-          <ion-col size="3">
-            <ion-text class="display-block ">
-              <p class="changecolor jostBook font-weight-400 size-12 m-t-0 m-b-0">{{'QTY' | translate }}</p>
-              <h4 class="color-secondary jostBook size-15 m-b-0 m-t-5 font-weight-400">
+    <ion-grid class="ion-padding">
+      <ion-row *ngFor="let item of cartDetail?.items" class="border-botom">
+        <ion-col size="12" class="m-b--10">
+          <ion-text class="display-block">
+            <img [src]="item?.logo" onerror="this.src='assets/images/wfse.png'" class="item-logo m-t--10 ion-float-left">
+            <div ion-float-right>
+              <h4 class="jostDemi size-19 m-b-0 m-t-5 font-weight-600">
+                {{item.name}}
+              </h4>
+            </div>
+          </ion-text>
+        </ion-col>
+        <ion-col size="4">
+          <ion-text class="display-block">
+            <!-- <img src="assets/images/bitcoin.png" class="w-30 m-t--5 ion-float-left"> -->
+            <div ion-float-right>
+              <!-- <h4 class="jostDemi size-19 m-b-0 m-t-5 font-weight-600">
+                Zcash
+               
+              </h4> -->
+              <p class="changecolor jostBook font-weight-400 size-12 m-t-0 m-b-0">{{'PRICE' | translate }}</p>
+              <h4 class="color-secondary jostBook size-15 m-b-0 m-t-0 p-t-4 font-weight-400">
+                ${{item.price}} {{'USD' | translate }}
+              </h4>
+            </div>
+          </ion-text>
+        </ion-col>
+        <ion-col size="4">
+          <ion-text class="display-block ">
+            <p class="changecolor jostBook font-weight-400 size-12 m-t-0 m-b-0">{{'QTY' | translate }}</p>
+            <h4 class="color-secondary jostBook size-15 m-b-0 m-t-5 font-weight-400">
 
-                {{item.amount}}
-              </h4>
-            </ion-text>
-          </ion-col>
-          <ion-col size="3">
-            <ion-text class="ion-float-right">
-              <p class="changecolor jostBook font-weight-400 size-12 m-t-0 m-b-0">{{'TOTAL' | translate }}</p>
-              <h4 class="color-secondary jostBook size-18 m-b-0 m-t-5 font-weight-400">
-                ${{item.totalPrice}}
-              </h4>
-            </ion-text>
-          </ion-col>
-        </ion-row>
-      </ion-item>
-    </ion-list>
+              {{item.amount}}
+            </h4>
+          </ion-text>
+        </ion-col>
+        <ion-col size="4">
+          <ion-text class="ion-float-right">
+            <p class="changecolor jostBook font-weight-400 size-12 m-t-0 m-b-0">{{'TOTAL' | translate }}</p>
+            <h4 class="color-secondary jostBook size-18 m-b-0 m-t-5 font-weight-400">
+              ${{item.totalPrice}}
+            </h4>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
     <!--  -->
     <ion-grid class="m-l-30 m-r-15" class="position-relative z-index-10 grid-minheight p-h-25">
       <ion-row>
@@ -142,7 +138,7 @@
       </ion-row>
       <br> -->
       <ion-select
-      interface="popover" (ionChange)="onCurrencyChange($event)" [(ngModel)]="selectedCurrency"
+      interface="action-sheet" (ionChange)="onCurrencyChange($event)" [(ngModel)]="selectedCurrency"
       class="m-l-15 shadownot m-r-15 w-95 ngSelectcontrolBorder liqTypeSelect m-v-h z-index-10" placeholder="Select Currency">
         <ion-select-option *ngFor="let currency of currencies" [value]="currency">{{currency}}</ion-select-option>
     </ion-select>

@@ -34,7 +34,7 @@ export class NoActiveSellerProfilePage implements OnInit {
     this.GetCurrentMarketProfile();
   }
   backtomarktplace() {
-    this._nav.navigateRoot(['/user-panel/dashboard']);
+    this._nav.navigateRoot(['/user-panel/active-seller-profile']);
   }
 
   GetCurrentMarketProfile(){

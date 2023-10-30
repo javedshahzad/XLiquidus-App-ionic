@@ -211,13 +211,25 @@ export class AppService {
   }
 
   async presentToast(msg) {
+      const check = await this._toastController.getTop();
+    if (check) {
+      this._toastController.dismiss();
+    }
     const toast = await this._toastController.create({
       message: msg,
+      duration: 4000,
       position: 'top',
-      color: "primary",
-      keyboardClose: true,
-      duration: 4000
+      color:"primary",
+      buttons: [
+        {
+          icon: 'close',
+          handler: () => {
+            toast.dismiss()
+          }
+        }
+      ]
     });
+
     toast.present();
   }
 
@@ -580,7 +592,6 @@ export class AppService {
   }
 }
 export interface ADD_TO_CART_PAYLOAD {
-
   email: string,
   items: Array<CART_ITEM>,
   type?: string

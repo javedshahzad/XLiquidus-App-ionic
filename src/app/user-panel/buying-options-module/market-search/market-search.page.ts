@@ -47,6 +47,7 @@ export class MarketSearchPage implements OnInit {
   isDataLoad:boolean=false;
   AllAvailableListings:any=[];
   pageNumber:any=1;
+  GetCartData: any;
   constructor(
     public _nav: NavController,
     public router: Router,
@@ -64,6 +65,7 @@ export class MarketSearchPage implements OnInit {
       page: this.pageNumber,
     }
     this.getAllListings(payloadParamters);
+    this.GetCartItems();
   }
   handleChange(event) {
     const str = event.detail.value;
@@ -96,7 +98,7 @@ export class MarketSearchPage implements OnInit {
     }
   }
   backtomarktplace() {
-    this._nav.navigateRoot(['/user-panel/dashboard']);
+    this._nav.navigateRoot(['/user-panel/current-order']);
   }
   async ShowSingleItem(item) {
     const modal = await this.modalController.create({
@@ -108,6 +110,9 @@ export class MarketSearchPage implements OnInit {
             data: item
         },
     });
+    modal.onWillDismiss().then((data:any)=>{
+      this.GetCartItems();
+    })
     return await modal.present();
 }
 async openFilterModal(){
@@ -177,5 +182,32 @@ loadData(event) {
     event.target.disabled = true;
     this.isDataLoad = false;
   });
+}
+GetCartItems(){
+  this._appservices.getCart(this._appservices.loggedInUserDetails.email).then(_respone =>{
+    console.log('Get cart data:',_respone);
+    if(_respone.status === 200){
+      this.GetCartData = _respone?.data?.data?.cart;
+      // let SelectedMaketCart =  this.GetCartData.items.filter(data=> data.marketSymbol === this.GetSingleListData.marketSymbol);
+      // if(SelectedMaketCart.length > 0){
+      //   this.SelectedMaketCart = SelectedMaketCart[0];
+      //   this.Quantity = this.SelectedMaketCart.amount;
+      // }
+    }
+  
+  })
+}
+getTotalPrice(type,amount){
+  var SelectedMaketCart = [];
+  var totalRaw = 0;
+  var total = "" ;
+   SelectedMaketCart =  this.GetCartData.summary.currentExchangeRates.filter(data=> data.currencyType === type);
+   console.log(SelectedMaketCart)
+  if(SelectedMaketCart.length > 0){
+    totalRaw = SelectedMaketCart[0].currencyRate * amount;
+     total = totalRaw?.toFixed(2);
+     console.log(total)
+    return total;
+  }
 }
 }

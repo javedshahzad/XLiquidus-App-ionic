@@ -70,9 +70,9 @@ export class ConfirmOrderComponent implements OnInit {
   async getCartDetails() {
     this._appServices.getCart(this._appServices.loggedInUserDetails.email).then(_res => {
       if (_res.status == 200) {
-        localStorage.setItem('cartId', _res.data.cartId);
+        localStorage.setItem('cartId', _res.data.data.cart.cartId);
         this.isDataLoad = false;
-        this.cartDetail = _res.data;
+        this.cartDetail = _res.data.data.cart;
         console.log(this.cartDetail);
         this.isMFARequired = this.cartDetail?.isMfaRequired;
       }
@@ -101,7 +101,7 @@ export class ConfirmOrderComponent implements OnInit {
     console.log(evt.detail.value)
     this.selectedCurrency = evt.detail.value
     if (this.ischeck && (this.cartDetail?.isMfaRequired || this.selectedCurrency === 'USD')) {
-      this.cnt()
+      this.onSelectedCurrency()
     }
   }
   checkTransactionProfile() {
@@ -189,7 +189,7 @@ export class ConfirmOrderComponent implements OnInit {
       }
       let body = {
         "email": this._appServices.loggedInUserDetails.email,
-        "cartId": this.cartDetail?.id,
+        "cartId": this.cartDetail?.id ? this.cartDetail?.id : this.cartDetail?.cartId,
         "cartType": "XL",
         "paymentCurrency": this.selectedCurrency,
         "nonce": this.nonce,
@@ -223,7 +223,7 @@ export class ConfirmOrderComponent implements OnInit {
       });
     }
   }
-  cnt() {
+  onSelectedCurrency() {
     if (this.selectedCurrency === '') {
       this._appServices.presentToast('Please select a currency first!')
     } else {

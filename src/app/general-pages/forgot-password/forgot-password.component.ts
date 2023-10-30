@@ -84,7 +84,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   reset() {
     this._appServices.presentLoading();
-    var resetPasswordUrl = `Users/GetRequestResetPassword?email=${this.email.value}&ipAddress=${this._appServices.ipAddress.ip}&deviceId=${this.deviceId}`
+    var resetPasswordUrl = `Users/GetRequestResetPassword?email=${this.email.value}&ipAddress=${this._appServices.ipAddress.ip}&deviceId=${this.deviceId}&appInterfaceId=${this._appServices.interfaceID}`
     this._appServices.getDataByHttp(resetPasswordUrl).subscribe(_res => {
       console.log(_res);
       if (_res.status == 200) {
