@@ -68,15 +68,21 @@ export class ConfirmOrderComponent implements OnInit {
   }
 
   async getCartDetails() {
+    this._appServices.simpleLoader();
     this._appServices.getCart(this._appServices.loggedInUserDetails.email).then(_res => {
+      this._appServices.loaderDismiss();
+      this.isDataLoad = false;
       if (_res.status == 200) {
         localStorage.setItem('cartId', _res.data.data.cart.cartId);
-        this.isDataLoad = false;
         this.cartDetail = _res.data.data.cart;
         console.log(this.cartDetail);
         this.isMFARequired = this.cartDetail?.isMfaRequired;
       }
-    });
+    }, err => {
+      console.log(err);
+      this.isDataLoad = false;
+      this._appServices.loaderDismiss();
+    })
   }
 
   // makePayment() {
@@ -172,7 +178,7 @@ export class ConfirmOrderComponent implements OnInit {
     // })
 
 
-
+   
     if (this.selectedCurrency === '') {
       this._appServices.presentToast('Please select a currency first!')
     } else {
@@ -201,9 +207,11 @@ export class ConfirmOrderComponent implements OnInit {
         "saveBillingInformation": false
       }
       console.log('Payload:',body)
+      this._appServices.simpleLoader();
       this._appServices.postCheckout(body).then(res => {
         console.log("responce data", res);
         this.isDataLoad = false;
+        this._appServices.loaderDismiss();
         this._appServices.cartRefresh.next(true);
         if (res.status == 200) {
           let extras: NavigationExtras = {
@@ -220,6 +228,11 @@ export class ConfirmOrderComponent implements OnInit {
           this.global.CreateToast1(errors.message);
           console.log(errors.message,"Here error message");
         }
+
+      }, err => {
+        console.log(err);
+        this._appServices.loaderDismiss();
+        this.isDataLoad = false;
       });
     }
   }
@@ -239,6 +252,7 @@ export class ConfirmOrderComponent implements OnInit {
               cssClass: 'ionic-Custom-alertBox',
               header: 'Alert',
               subHeader: 'One Time Password',
+              mode:"ios",
               message: `A OTP (one-time-pass) code was sent to your email. Please use that code to continue with your ${this.selectedCurrency === 'USD' ? 'Card Transaction' : 'Market Purchase'}.`,
               buttons: [
                 {

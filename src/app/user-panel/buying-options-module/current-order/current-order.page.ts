@@ -85,9 +85,12 @@ export class CurrentOrderPage implements OnInit {
   ) { }
 
   ngOnInit() {
+
+ 
+  }
+  ionViewWillEnter() {
     this.GetCartItems();
     this.getAllListings();
- 
   }
   backtomarktplace() {
     this._nav.navigateRoot(['/user-panel/dashboard']);
@@ -122,11 +125,9 @@ getAllListings(){
     if(res.status === 200){
       this.AllAvailableListings = res.data.data.results;
     }
-    this.isDataLoad = false;
   }, err => {
     console.log(err);
     this._appservices.loaderDismiss();
-    this.isDataLoad = false;
   });
 }
 loadData(event) {
@@ -159,13 +160,17 @@ roundedNumber(number){
    
 }
 GetCartItems(){
+  this.isDataLoad = true;
   this._appservices.getCart(this._appservices.loggedInUserDetails.email).then(_respone =>{
     console.log('Get cart data:',_respone);
     if(_respone.status === 200){
       this.GetCartData = _respone?.data?.data?.cart;
     }
-  
-  })
+    this.isDataLoad = false;
+  }, err => {
+    console.log(err);
+    this.isDataLoad = false;
+  });
 }
 getTotalPrice(type,amount){
   var SelectedMaketCart = [];
@@ -181,6 +186,6 @@ getTotalPrice(type,amount){
   }
 }
 checkout() {
-  this.router.navigate(['/user-panel/confirm-order']);
+  this.router.navigate(['/user-panel/shoping-cart']);
 }
 }

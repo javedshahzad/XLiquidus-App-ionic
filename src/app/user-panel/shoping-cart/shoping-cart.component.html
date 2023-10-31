@@ -4,6 +4,14 @@
 <ion-content>
   <div class="overfolow-y h-100 ">
     <ion-progress-bar type="indeterminate" *ngIf="isDataLoad"></ion-progress-bar>
+    <ion-list class="p-t-0">
+      <ion-item-divider class="height-30 removeborder background-subheader-30">
+        <ion-button slot="start" fill="clear" class="p-0-srart m-t-30" (click)="_appServices?.goBack()">
+          <ion-icon name="chevron-back" class="staticcolor size-32"></ion-icon>
+        </ion-button>
+        <!-- <ion-title class="futuraFontsMedium size-20 text-white font-weight-600 p-0 ion-text-left">BACK TO CART</ion-title> -->
+      </ion-item-divider>
+    </ion-list>
     <!--   *ngIf="cartDetail?.items.length >= 1 && showCart"-->
     <ion-grid *ngIf="cartDetail?.items.length >= 1 && showCart"
       class="position-relative z-index-10 grid-minheight p-h-25">
@@ -133,8 +141,11 @@
         </ion-col>
         <ion-col size="1"></ion-col>
       </ion-row>
+      <br>
+      <br>
     </div>
     <!-- <div class="backgroundimage-footer-shopingcart z-index-0 min-h position-relative" *ngIf="cartDetail?.items.length >= 1 && showCart">
   </div> -->
   </div>
+ 
 </ion-content>

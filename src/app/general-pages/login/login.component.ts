@@ -60,13 +60,14 @@ export class LoginComponent implements OnInit {
   }
 
   Login(url) {
-    this._appServices.presentLoading();
+    this._appServices.simpleLoader();
     this.thirdPartyLogin(url).then(async success => {
       console.log('success', success);
       // this.getUserDetails(success['access_token']);
       this.authtoken = success['access_token'];
       this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token, this.authtoken);
       await this._appServices.deCodeJwtToken(this.authtoken);
+      this._appServices.loaderDismiss();
       this.postSyncUserDetails();
     }, (error) => {
       this._appServices.loaderDismiss();
@@ -80,7 +81,7 @@ export class LoginComponent implements OnInit {
   }
 
  async appleloginwithOauth(url){
-  this._appServices.presentLoading();
+  this._appServices.simpleLoader();
     OAuth2Client.authenticate(
       this._B2C_config.getAzureB2cOAuth2Options()
   ).then(async response => {
@@ -93,6 +94,7 @@ export class LoginComponent implements OnInit {
       this.postSyncUserDetails();
     
   }).catch(reason => {
+    this._appServices.loaderDismiss();
       console.error("OAuth rejected", reason);
   });
   }
@@ -113,10 +115,11 @@ export class LoginComponent implements OnInit {
 
 
   async postSyncUserDetails() {
-    this._appServices.presentLoading();
+    this._appServices.simpleLoader();
     this.geolocation.getCurrentPosition().then((resp) => {
       this.geolocationparam = resp.coords.latitude + ',' + resp.coords.longitude;
     }).catch((error) => {
+      this._appServices.loaderDismiss();
       console.log('Error getting location');
     });
 
@@ -149,8 +152,9 @@ export class LoginComponent implements OnInit {
           console.log(_res1, _res2);
           this.ShowSpinner = false;
           this._encServices.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.communicationAccessKey, _res2.communicationAccessKey);
-          this._nav.navigateRoot(['/user-panel/dashboard']);
           this._appServices.loaderDismiss();
+          this._nav.navigateRoot(['/user-panel/dashboard']);
+         
           // this._nav.navigateRoot(['/user-panel/dashboard']);  
           // this.router.navigate(['/user-panel/dashboard']);
           // this.router.navigate(['/signupconfirm', { email: this._encServices.encrypt(res.data.emailAddress), RegistraionId: this._encServices.encrypt(res.data.registrationId), language: this._encServices.encrypt(res.data.preferredLanguage), prefName: this._encServices.encrypt(res.data.preferredName) }]);

@@ -536,6 +536,7 @@ export class AppService {
   customErrorHandler(err: apiResponse) {
     console.error("eerr message", err);
     if (err.status == 401) {
+      this.loaderDismiss();
       this._nav.navigateRoot('/token-expires');
     }
   }

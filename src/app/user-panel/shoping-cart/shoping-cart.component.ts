@@ -39,10 +39,12 @@ export class ShopingCartComponent implements OnInit {
 
 
   async getCartDetails() {
+    this._appServices.simpleLoader();
     // var UserDetailsUrl = `ShoppingCart/GetActiveCart?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
     this._appServices.getCart(this._appServices.loggedInUserDetails.email).then(_res => {
       console.log(_res.status);
       console.log(_res);
+      this._appServices.loaderDismiss();
       if (_res.status == 200) {
         this.showCart = true;
         this.isDataLoad = false;
@@ -67,8 +69,10 @@ export class ShopingCartComponent implements OnInit {
       }
     }, (err) => {
       this.isDataLoad = false;
+      this._appServices.loaderDismiss();
       console.log(err);
       console.log(err.status)
+      
       if (err.status == 402) {
         var result = JSON.parse(err.error)
         this.getCheckoutCode(result.message);

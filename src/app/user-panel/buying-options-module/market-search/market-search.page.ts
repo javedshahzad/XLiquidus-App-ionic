@@ -48,6 +48,7 @@ export class MarketSearchPage implements OnInit {
   AllAvailableListings:any=[];
   pageNumber:any=1;
   GetCartData: any;
+  filters: any='';
   constructor(
     public _nav: NavController,
     public router: Router,
@@ -59,6 +60,9 @@ export class MarketSearchPage implements OnInit {
   ) { }
 
   ngOnInit() {
+  
+  }
+  ionViewWillEnter() {
     this.pageNumber=1;
     var payloadParamters = {
       pageSize:50,
@@ -66,6 +70,15 @@ export class MarketSearchPage implements OnInit {
     }
     this.getAllListings(payloadParamters);
     this.GetCartItems();
+  }
+  RemoveFilters(){
+    this.filters = "";
+    this.pageNumber=1;
+    var payloadParamters = {
+      pageSize:50,
+      page: this.pageNumber,
+    }
+    this.getAllListings(payloadParamters);
   }
   handleChange(event) {
     const str = event.detail.value;
@@ -78,6 +91,7 @@ export class MarketSearchPage implements OnInit {
       }
       var UrlParameters = `CustomerMarkets/PostMarketSearch?email=${this._appservices.loggedInUserDetails.email}`;
       console.log(UrlParameters);
+      this.isDataLoad = true;
       this._appservices.postDataByHttp(UrlParameters, payloadParamters).subscribe(res => {
         console.log("PostMarketSearch Response", res);
         if(res.status === 200){
@@ -128,11 +142,11 @@ async openFilterModal(){
 modal.onDidDismiss().then((data:any)=>{
   console.log(data)
   if(data.data){
-    var filter = data.data;
+    this.filters = data.data;
     var payloadParamters = {
       pageSize:50,
       page: this.pageNumber,
-      filters:filter
+      filters:this.filters
     }
     this.getAllListings(payloadParamters);
   }
@@ -148,11 +162,9 @@ getAllListings(payload){
     if(res.status === 200){
       this.AllAvailableListings = res.data.data.results;
     }
-    this.isDataLoad = false;
   }, err => {
     console.log(err);
     this._appservices.loaderDismiss();
-    this.isDataLoad = false;
   });
 }
 roundedNumber(number){
@@ -184,18 +196,17 @@ loadData(event) {
   });
 }
 GetCartItems(){
+  this.isDataLoad = true;
   this._appservices.getCart(this._appservices.loggedInUserDetails.email).then(_respone =>{
     console.log('Get cart data:',_respone);
     if(_respone.status === 200){
       this.GetCartData = _respone?.data?.data?.cart;
-      // let SelectedMaketCart =  this.GetCartData.items.filter(data=> data.marketSymbol === this.GetSingleListData.marketSymbol);
-      // if(SelectedMaketCart.length > 0){
-      //   this.SelectedMaketCart = SelectedMaketCart[0];
-      //   this.Quantity = this.SelectedMaketCart.amount;
-      // }
     }
-  
-  })
+    this.isDataLoad = false;
+  }, err => {
+    console.log(err);
+    this.isDataLoad = false;
+  });
 }
 getTotalPrice(type,amount){
   var SelectedMaketCart = [];
@@ -209,5 +220,8 @@ getTotalPrice(type,amount){
      console.log(total)
     return total;
   }
+}
+checkout() {
+  this.router.navigate(['/user-panel/shoping-cart']);
 }
 }

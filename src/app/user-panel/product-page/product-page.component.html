@@ -41,7 +41,7 @@
             </ion-col>
           </ion-row>
         </ion-item>
-          <ion-button expand="block" (click)="customizeorder()" size="large" class="primary-second-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
+          <ion-button *ngIf="productDataFromDashboardPage?.type === 'Currency' " expand="block" (click)="customizeorder()" size="large" class="primary-second-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
             <h5 class="jostHeavy size-12 font-weight-600 m-t-10">customize order</h5>
           </ion-button>
         <ion-item class="white-background p-r-12 ion-activatable ripple-parent">

@@ -53,45 +53,16 @@ export class ProductPageComponent implements OnInit {
     this.initProductPage();
   }
 initProductPage(){
-  this._appservices.presentLoading();
+
   this.currentDateTime =Date.now();
   this.backButtonSubscription = this.platform.backButton.subscribe(() => {
     this._nav.navigateRoot(['user-panel/']);
   });
-  this.isDataLoad = true;
   var proData = this._encServices.decrypt(this.activatedroute.snapshot.paramMap.get('productData'));
   this.productDataFromDashboardPage = JSON.parse(proData);
   console.log(this.productDataFromDashboardPage);
   // if(this.productDataFromDashboardPage.isSaleAvailable){
-  if (this.productDataFromDashboardPage.type == 'Team') {
-    var UrlParameters = `symbol=UCTokens&name=${this.productDataFromDashboardPage.shortName}`
-  } else {
-    var UrlParameters = `symbol=${this.productDataFromDashboardPage.shortName}`
-  }
-  // var UrlParameters = `symbol=BTC&name=BTC`
-  console.log(UrlParameters);
-  this._appservices.getDataByHttp(`Markets/GetProduct?${UrlParameters}`).subscribe(res => {
-    console.log("::::", res);
-    this._appservices.cartRefresh.next(true);
-    this.isDataLoad = false;
-    if (res.status == 200) {
-      this.isProductData = true;
-      this.productDetail = res.data;
-      console.log(this.productDetail)
-    }
-    this._appservices.loaderDismiss();
-  }, err => {
-    this.isDataLoad = false;
-    console.log(err);
-    // if (err.status == 400) {
-      this.isProductData = false;
-    //   var result = JSON.parse(err.toString());
-    //   console.log(result);
-    //   this._appservices.presentToast(result.symbol);
-    // }
-    this._appservices.loaderDismiss();
-  });
-
+  this.GetProduct();
   this.fromDate = new Date();
   this.toDate = new Date();
   let day = document.getElementById('day');
@@ -101,19 +72,59 @@ initProductPage(){
     day.style.borderRadius = '5px'
   }
   this.getGraphData(this.fromDate, this.toDate);
-  if(this.productDataFromDashboardPage.type==="VendorToken" || this.productDataFromDashboardPage.type==="Team"){
-    this.getTokenProfile(this.productDataFromDashboardPage.tokenIndexId);
+
+}
+GetProduct(){
+  this.isDataLoad = true;
+  this._appservices.simpleLoader();
+  if (this.productDataFromDashboardPage.type == 'Team') {
+    var UrlParameters = `symbol=UCTokens&name=${this.productDataFromDashboardPage.shortName}`
+  } else {
+    var UrlParameters = `symbol=${this.productDataFromDashboardPage.shortName}&name=${this.productDataFromDashboardPage.shortName}`
   }
+  // var UrlParameters = `symbol=BTC&name=BTC`
+  console.log(UrlParameters);
+  this._appservices.getDataByHttp(`Markets/GetProduct?${UrlParameters}`).subscribe(res => {
+    console.log("GetProduct : ", res);
+    this._appservices.loaderDismiss();
+    this._appservices.cartRefresh.next(true);
+    this.isDataLoad = false;
+    if (res.status == 200) {
+      this.isProductData = true;
+      this.productDetail = res.data;
+      console.log(this.productDetail)
+    }
+    if(this.productDataFromDashboardPage.type === "VendorToken" || this.productDataFromDashboardPage.type==="Team"){
+      this.getTokenProfile(this.productDataFromDashboardPage.tokenIndexId);
+    }
+  }, err => {
+    this._appservices.loaderDismiss();
+    this.isDataLoad = false;
+    console.log(err);
+    // if (err.status == 400) {
+      this.isProductData = false;
+    //   var result = JSON.parse(err.toString());
+    //   console.log(result);
+    //   this._appservices.presentToast(result.symbol);
+    // }
+    if(this.productDataFromDashboardPage.type === "VendorToken" || this.productDataFromDashboardPage.type === "Team"){
+      this.getTokenProfile(this.productDataFromDashboardPage.tokenIndexId);
+    }
+  });
+
 }
   ionViewDidLeave() {
     this.backButtonSubscription.unsubscribe();
   }
   getTokenProfile(tokenIndexId){
+    this.isDataLoad = true;
+    this._appservices.simpleLoader();
    // https://mobious-xl.usscyber.com/v3/markets/GetTokenProfile?id=5bac2cb0-c5bc-4dcd-94eb-023ab5e28dbd
     var UrlParameters = `markets/GetTokenProfile?id=${tokenIndexId}`;
     console.log(UrlParameters);
     this._appservices.getDataByHttp(UrlParameters).subscribe(res => {
       console.log("markets/GetTokenProfile responseeeeeeeeee",res);
+      this._appservices.loaderDismiss();
       if(res.status == 200){
         this.GetTokenProfileData= res.data;
         this.MileStones=this.GetTokenProfileData.mileStones;
@@ -123,7 +134,7 @@ initProductPage(){
         let y = arrdata.filter((a) => a.type === "Product");
         this.KeyProjectFeatures = y;
       }
-      this._appservices.loaderDismiss();
+    
     }, err => {
       this._appservices.loaderDismiss();
       console.log(err);
@@ -169,13 +180,12 @@ initProductPage(){
       } else if (_res.status == 402) {
 
       }
-      this._appservices.loaderDismiss();
     }, (err) => {
+      this.isDataLoad = false;
       console.log(err)
-      this._appservices.loaderDismiss();
     });
     // }else{
-    //   this._appservices.loaderDismiss();
+    
     //   this._appservices.presentToast('isSaleAvailble false and shortName comming blank');
     // }
   }
@@ -253,7 +263,7 @@ initProductPage(){
 
 
   addtocart() {
-    this._appservices.presentLoading();
+    this._appservices.simpleLoader();
     this.isDataLoad = true;
     // var UrlParameters = `teamId=${this.productDataFromDashboardPage.id}&emailAddress=${encodeURIComponent(this._appservices.loggedInUserDetails['email'])}&amount=1&clientIpAddress=${this._appservices.ipAddress.ip}`;
     // console.log(UrlParameters);
@@ -287,6 +297,8 @@ initProductPage(){
       }
     }, (err) => {
       console.log(err)
+      this.isDataLoad = false;
+      this._appservices.loaderDismiss();
       if (err.status == 402) {
         this.router.navigate(['/user-panel/shoping-cart']);
       } else if (err.status == 402) {

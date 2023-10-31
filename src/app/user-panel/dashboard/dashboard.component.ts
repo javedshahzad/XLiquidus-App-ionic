@@ -47,19 +47,21 @@ export class DashboardComponent implements OnInit {
   }
 
   ionViewWillEnter() {
-    this._appServices.presentLoading();
+   this.OnDashboadInit();
+  }
+
+  OnDashboadInit(){
     this.currentDateTime = new Date();
     this.backButtonSubscription = this.platform.backButton.subscribe(() => { });
-    this.isDataLoad = true;
-
-    if (this.tokenSearchValue == '') {
-      var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.defaultSearchTerm}&lang=EN&take=30&skip=0`
-    } else {
-      var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.tokenSearchValue}&lang=EN&take=30&skip=0`
+    if (this.sub1) {
+      this.sub1.unsubscribe();
     }
-    var UrlParameters1 = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}`
-
-    // var GetHistoricalWallet = this._appServices.getDataByHttp(`Dashboard/GetGetHistoricalWalletBalance?${UrlParameters1}`);
+    if (this.sub2) {
+      this.sub2.unsubscribe();
+    }
+    this.GetMarketTokens();
+    this.getWalletData();
+ // var GetHistoricalWallet = this._appServices.getDataByHttp(`Dashboard/GetGetHistoricalWalletBalance?${UrlParameters1}`);
     // var GetSearch = this._appServices.getDataByHttp(`Search/Get?${UrlParameters}`)
     // console.log('GetSearch', GetSearch, GetHistoricalWallet);
     // forkJoin([GetSearch, GetHistoricalWallet]).subscribe(_res => {
@@ -74,38 +76,40 @@ export class DashboardComponent implements OnInit {
     // }, err => {
     //   console.log('errrrrr', err)
     // });
-
-
-    // Code by Harshit 17/Mar/2022
-
-    if (this.sub1) {
-      this.sub1.unsubscribe();
+  }
+  GetMarketTokens(){
+    this._appServices.simpleLoader();
+    if (this.tokenSearchValue == '') {
+      var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.defaultSearchTerm}&lang=EN&take=30&skip=0`
+    } else {
+      var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.tokenSearchValue}&lang=EN&take=30&skip=0`
     }
-    if (this.sub2) {
-      this.sub2.unsubscribe();
-    }
+    this.sub2 = this._appServices.getDataByHttp(`Search/Get?${UrlParameters}`).subscribe(_res => {
+      this.getSearchResult = _res.status == 200 ? (_res.data ? _res.data.data.data : []) : [];
+      console.log(this.getSearchResult);
+      this._appServices.loaderDismiss();
+    }, err => {
+      this.isDataLoad = false;
+      console.log('err1', err);
+      this._appServices.loaderDismiss();
+    });
+  }
+  getWalletData(){
+    this.isDataLoad = true;
+    var UrlParameters1 = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}`
     this.sub1 = this._appServices.getDataByHttp(`Dashboard/GetGetHistoricalWalletBalance?${UrlParameters1}`).subscribe(resp => {
       console.log('GetGetHistoricalWalletBalance', resp);
       this._appServices.cartRefresh.next(true);
       this.GraphData = resp.status == 200 ? resp.data : [];
       this.showGraph = true;
       this.isDataLoad = false;
-      this._appServices.loaderDismiss();
     }, err => {
       this.GraphData = [];
       this.showGraph = true;
       this.isDataLoad = false;
       console.log('err1', err);
-      this._appServices.loaderDismiss();
     })
-    this.sub2 = this._appServices.getDataByHttp(`Search/Get?${UrlParameters}`).subscribe(_res => {
-      this.getSearchResult = _res.status == 200 ? (_res.data ? _res.data.data.data : []) : [];
-      console.log(this.getSearchResult);
-      this._appServices.loaderDismiss();
-    });
   }
-
-
   gotoProductPage(index,token) {
     let data=this.getSearchResult[index];
     var jsonData = JSON.stringify(data);
@@ -134,15 +138,14 @@ export class DashboardComponent implements OnInit {
         if (res.status == 200) {
           this.getSearchResult = res.data.data.data;
         }
-        this._appServices.loaderDismiss();
       });
     } else if (this.tokenSearchValue.length >= 3) {
-      this._appServices.loaderDismiss();
       this.searchresult();
     }
   }
 
   searchresult() {
+    this._appServices.presentLoading();
     this.isDataLoad = true;
     var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.tokenSearchValue}&lang=EN&take=30&skip=0`
     this._appServices.getDataByHttp(`Search/Get?${UrlParameters}`).subscribe(res => {

@@ -76,8 +76,8 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-grid class="border-botom border-top" *ngIf="GetCartData?.items.length > 0">
-    <ion-row *ngFor="let item of GetCartData?.items">
+  <ion-grid *ngIf="GetCartData?.items.length > 0" class="border-top">
+    <ion-row *ngFor="let item of GetCartData?.items"  class="border-botom">
       <ion-col size="4">
         <p class="darken-color ion-text-center ion-text-uppercase jostDemi size-12 m-b-5 m-t-5 font-weight-600"> {{item.name}} </p>
         <p class="darken-color ion-text-center ion-text-uppercase jostDemi size-16 m-b-5 m-t-5 font-weight-800"> {{item.amount}} </p>

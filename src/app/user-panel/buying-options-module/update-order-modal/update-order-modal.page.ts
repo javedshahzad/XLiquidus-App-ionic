@@ -35,25 +35,31 @@ export class UpdateOrderModalPage implements OnInit {
     this.modalController.dismiss();
   }
   removeCart(){
-    this._appservices.simpleLoader();
-    var UrlParameters = `CloudCart/RemoveFromCart?email=${this._appservices.loggedInUserDetails['email']}&cartType=XL&item=${this.SelectedMaketCart.id}`;
-    console.log(UrlParameters);
-    this._appservices.removeFromCart(this._appservices.loggedInUserDetails['email'],this.SelectedMaketCart.id).then(_res => {
-      this._appservices.loaderDismiss();
-      console.log("RemoveFromCart Response", _res);
-      if(_res.status === 200){
-        this._appservices.presentToast("Item has been removed successfully!");
-        this.closeModal();
-      }
-    }, err => {
-      console.log(err);
-      this._appservices.loaderDismiss();
-    });
+    if(this.SelectedMaketCart.id){
+      this._appservices.simpleLoader();
+      var UrlParameters = `CloudCart/RemoveFromCart?email=${this._appservices.loggedInUserDetails['email']}&cartType=XL&item=${this.SelectedMaketCart.id}`;
+      console.log(UrlParameters);
+      this._appservices.removeFromCart(this._appservices.loggedInUserDetails['email'],this.SelectedMaketCart.id).then(_res => {
+        this._appservices.loaderDismiss();
+        console.log("RemoveFromCart Response", _res);
+        if(_res.status === 200){
+          this._appservices.presentToast("Item has been removed successfully!");
+          this.closeModal();
+        }
+      }, err => {
+        console.log(err);
+        this._appservices.loaderDismiss();
+      });
+    }else{
+      this._appservices.presentToast("This item not available in the cart!");
+    }
+  
   }
   AddOrUpdateCart(){
     if(this.GetSingleListData.id && this.Quantity){
       let checkItemInCart = this.GetCartData?.items.filter(data=> data.listingId === this.GetSingleListData.id);
       if(checkItemInCart?.length > 0){
+        this.SelectedMaketCart=checkItemInCart[0];
        this.updateCart();
       }else{
        this.AddToCart();
@@ -75,9 +81,23 @@ export class UpdateOrderModalPage implements OnInit {
           this.Quantity = this.SelectedMaketCart?.amount;
         }
       }
+      else if(_respone.status === 404){
+      this._appservices.createCart(this._appservices.loggedInUserDetails.email).then(_respone =>{
+      console.log('Create cart:',_respone);
+      if(_respone?.data?.data?.cart?.cartOwnerId){
+
+      }
+    })
+      }
     }, err => {
       console.log(err);
       this._appservices.loaderDismiss();
+        this._appservices.createCart(this._appservices.loggedInUserDetails.email).then(_respone =>{
+      console.log('Create cart:',_respone);
+      if(_respone?.data?.data?.cart?.cartOwnerId){
+        // this.AddToCart();
+      }
+    })
     });
   }
   AddToCart(){
@@ -106,6 +126,7 @@ export class UpdateOrderModalPage implements OnInit {
   }
   }, err => {
     console.log(err);
+      
     this._appservices.loaderDismiss();
   });
   }
