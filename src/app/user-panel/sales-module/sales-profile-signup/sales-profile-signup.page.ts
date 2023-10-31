@@ -392,6 +392,6 @@ export class SalesProfileSignupPage implements OnInit {
         });
       }
       returnBack(){
-        this._nav.navigateRoot(["/user-panel/active-seller-profile"])
+        this._nav.navigateRoot(["/user-panel/no-active-seller-profile"])
       }
 }

@@ -29,7 +29,12 @@ export class ActiveSellerProfilePage implements OnInit {
   backtomarktplace() {
     this._nav.navigateRoot(['/user-panel/dashboard']);
   }
-
+  CreateOffer(){
+  this._nav.navigateRoot(["/user-panel/list-crypto-sales-details"]);
+}
+CheckProfile(){
+  this._nav.navigateRoot(["/user-panel/no-active-seller-profile"]);
+}
   GetCurrentMarketProfile(){
     this._appservices.presentLoading();
     this.isDataLoad=true;

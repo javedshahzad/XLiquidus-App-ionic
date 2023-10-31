@@ -210,28 +210,28 @@
       <ion-row>
         <ion-col>
         <h5 class="ion-text-capitalize color-tertiary-dark jostDemi size-22 m-b-0 m-t-0 m-l-5 font-weight-600">
-          deposit {{ListingDataConfirm.depositRequest.paymentAddress.type}} 
+          deposit {{ListingDataConfirm?.depositRequest?.paymentAddress?.type}} 
         </h5>
       </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
-          <img [src]="ListingDataConfirm.depositRequest.paymentAddress.addressAsQrCode" alt="" onerror="this.src='assets/images/qr-code.PNG'">
+          <img [src]="ListingDataConfirm?.depositRequest?.paymentAddress?.addressAsQrCode" alt="" onerror="this.src='assets/images/qr-code.PNG'">
         </ion-col>
         <ion-col>
            <div class="ion-text-end">
-            <p class="darken-color size-14 m-b-0 m-t-0">{{ListingDataConfirm.depositRequest.paymentAddress.expectedCryptoAmount}}</p>
-            <span class="font-weight-700 size-16 darken-color">{{ListingDataConfirm.depositRequest.paymentAddress.type}}</span>
+            <p class="darken-color size-14 m-b-0 m-t-0">{{ListingDataConfirm?.depositRequest?.paymentAddress?.expectedCryptoAmount}}</p>
+            <span class="font-weight-700 size-16 darken-color">{{ListingDataConfirm?.depositRequest?.paymentAddress?.type}}</span>
            </div>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
           <h5 class="darken-color jostDemi size-22 m-b-0 m-t-0 m-l-5 font-weight-600">
-            {{ListingDataConfirm.depositRequest.paymentAddress.address}}
+            {{ListingDataConfirm?.depositRequest?.paymentAddress?.address}}
           </h5>
           <p class="darken-color jostDemi size-12 m-b-5 m-t-5 font-weight-500">
-            Please send the {{ListingDataConfirm.depositRequest.paymentAddress.type}} deposit to the address
+            Please send the {{ListingDataConfirm?.depositRequest?.paymentAddress?.type}} deposit to the address
             above to continue the process.
           </p>
           <br>

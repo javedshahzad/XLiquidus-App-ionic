@@ -24,7 +24,17 @@
     </ion-col>
   </ion-row>
   <ion-row>
-    <ion-col routerLink="/user-panel/list-crypto-sales-details">
+    <ion-col (click)="CheckProfile()">
+      <ion-button expand="block" size="large"
+        class="height-50 primary-color-background setup-main">
+        <p class="ion-text-capitalize fontFamilysystemUI size-16 m-b-5 m-t-5 font-weight-500">
+          Check Profile Status
+          </p>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col (click)="CreateOffer()">
       <ion-button expand="block" size="large"
         class="height-70 primary-second-color-background setup-main">
         <p class="ion-text-capitalize fontFamilysystemUI size-16 m-b-5 m-t-5 font-weight-500">
