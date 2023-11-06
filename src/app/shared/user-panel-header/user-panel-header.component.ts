@@ -75,18 +75,21 @@ export class UserPanelHeaderComponent implements OnInit {
         this.showicons = true;
         console.log('err 1', err)
       });
-      this._appServices.getDataByHttp(`ShoppingCart/GetCartItemCount?${UrlParameters}`).subscribe(_res => {
-        console.log(_res)
-        this.CartItemCount = _res.status == 200 ? _res.data : [];
-        if (this.CartItemCount.length == 0) {
-          this.CartItemCount = 0;
-        }
-      }, err => {
-        console.log('err 2', err);
-      });
+      this.getCartCountItems();
 
   }
-
+getCartCountItems(){
+  var UrlParameters = `email=${this._appServices.loggedInUserDetails.email}&cartType=XL`
+  this._appServices.getDataByHttp(`CloudCart/GetCartItemCount?${UrlParameters}`).subscribe(_res => {
+    console.log("GetCartItemCount",_res)
+    this.CartItemCount = _res.status == 200 ? _res.data : [];
+    if (this.CartItemCount.length == 0) {
+      this.CartItemCount = 0;
+    }
+  }, err => {
+    console.log('err 2', err);
+  });
+}
   gotoWallet() {
     this._nav.navigateRoot(['/user-panel/wallet-page']);
   }

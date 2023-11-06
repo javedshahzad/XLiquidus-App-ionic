@@ -32,6 +32,9 @@
           <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-14 m-b-2 m-t-2 font-weight-500"> Currency </p>
         </ion-col>
         <ion-col class="ion-no-padding">
+          <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-14 m-b-2 m-t-2 font-weight-500"> accepted payment method </p>
+        </ion-col>
+        <ion-col class="ion-no-padding">
           <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-14 m-b-2 m-t-2 font-weight-500"> offer <br> type </p>
         </ion-col>
         <ion-col class="ion-no-padding">
@@ -40,21 +43,26 @@
         <ion-col></ion-col>
       </ion-row>
       <ion-row class="border-botom" *ngFor="let item of AllAvailableListings" (click)="ShowSingleItem(item)">
-        <ion-col class="ion-no-padding" ssize="2.5">
+        <ion-col class="ion-no-padding">
           <div class="items-centers">
             <img [src]="item.logo" alt="Logo" onerror="this.src='assets/images/bitcoin.png'" class="image-style">
           </div>
         </ion-col>
-        <ion-col class="ion-no-padding" size="3.5">
+        <ion-col class="ion-no-padding">
+          <div class="items-centers">
+            <p class="darken-color ion-text-center ion-text-uppercase jostDemi size-14 m-b-5 m-t-5 font-weight-500"> USD </p>
+          </div>
+        </ion-col>
+        <ion-col class="ion-no-padding">
           <div class="items-centers">
             <p class="darken-color ion-text-center ion-text-uppercase jostDemi size-14 m-b-5 m-t-5 font-weight-500"> {{item.pricingModel}} </p>
           </div>
         </ion-col>
-        <ion-col class="ion-no-padding" size="5">
+        <ion-col class="ion-no-padding" >
           <p class="color-secondary ion-text-center ion-text-capitalize jostDemi size-14 m-b-5 m-t-5 font-weight-600"> {{roundedNumber(item.availableQuantity)}} {{item.marketSymbol}} </p>
           <p class="color-secondary ion-text-center ion-text-capitalize jostDemi size-14 m-b-5 m-t-5 font-weight-600"> {{roundedNumber(item.currentRate)}} USD </p>
         </ion-col>
-        <ion-col class="ion-no-padding" size="1">
+        <ion-col class="ion-no-padding">
           <div class="items-centers">
             <ion-icon name="close-outline" class="size-28 darken-color jostDemi"></ion-icon>
           </div>

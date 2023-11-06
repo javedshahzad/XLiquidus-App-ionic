@@ -180,23 +180,26 @@ export class ShopingCartComponent implements OnInit {
 
   delete(val) {
     this.isDataLoad = true;
+    this._appServices.simpleLoader();
     // this.router.navigate(['/user-panel/kyc']); 
     // var UrlParameters = `teamId=${val.teamId}&emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`;
     console.log(val);
     this._appServices.removeFromCart(this._appServices.loggedInUserDetails.email,val.id).then(res => {
       console.log("responce data", res);
       this._appServices.cartRefresh.next(true);
+      this._appServices.loaderDismiss();
       this.isDataLoad = false;
       this.cartDetail = [];
       if (res.status == 200) {
         this.showCart = true;
-        this.cartDetail = res.data;
+        this.cartDetail = res.data.data.cart;
       } else {
         console.log(res);
       }
     }, (err) => {
       this.showCart = true;
       this.isDataLoad = false;
+      this._appServices.loaderDismiss();
       this.cartDetail = [];
       this.getCartDetails();
       this._appServices.cartRefresh.next(true);

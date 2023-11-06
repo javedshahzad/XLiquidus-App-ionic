@@ -78,13 +78,15 @@ export class UserPanelPage {
   }
 
   getUserDetails() {
+    var ShowAuthenticationModal = localStorage.getItem("ShowAuthenticationModal") ? localStorage.getItem("ShowAuthenticationModal") : "true"; 
     this._appServices.presentLoading();
     var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
     this._appServices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
       if (_res.status == 200) {
         this._appServices.loggedInUserAccountDetails = this.userDetails = _res.data;
-        if (!this.userDetails.enableMultiFactorAuthentication) {
+        if (!this.userDetails.enableMultiFactorAuthentication && ShowAuthenticationModal === "true") {
           this.showModal = true;
+          localStorage.setItem("ShowAuthenticationModal","false");
         }
       }
       this._appServices.loaderDismiss();

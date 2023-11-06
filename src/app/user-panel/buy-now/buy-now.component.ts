@@ -54,14 +54,10 @@ export class BuyNowComponent implements OnInit {
   addtocart() {
     this._appServices.presentLoading();
     this.isDataLoad = true;
-    this.cartItems[0] = {
-      amount:this.productuantity,
-      item:this.productDetailtobuy?.tokenIndexId
-    }
     let payload:ADD_TO_CART_PAYLOAD = {
        email:this._appServices.loggedInUserDetails.email,
        type:'XL',
-       items:this.cartItems
+       items:[{ amount:this.productuantity,item:this.productDetailtobuy?.tokenIndexId,isSecondaryMarketItem:false}]
     }
     this._appServices.addToCart(payload).then(res => {
       console.log("responce data", res);

@@ -269,7 +269,8 @@ GetProduct(){
     // console.log(UrlParameters);
     this.cartItems[0] = {
       amount:1,
-      item:this.productDataFromDashboardPage?.tokenIndexId
+      item:this.productDataFromDashboardPage?.tokenIndexId,
+      isSecondaryMarketItem:false
     }
     let payload:ADD_TO_CART_PAYLOAD = {
        email:this._appservices.loggedInUserDetails.email,

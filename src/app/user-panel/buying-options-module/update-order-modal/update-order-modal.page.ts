@@ -44,6 +44,7 @@ export class UpdateOrderModalPage implements OnInit {
         console.log("RemoveFromCart Response", _res);
         if(_res.status === 200){
           this._appservices.presentToast("Item has been removed successfully!");
+          this._appservices.cartRefresh.next(true);
           this.closeModal();
         }
       }, err => {
@@ -113,6 +114,7 @@ export class UpdateOrderModalPage implements OnInit {
     console.log("AddToCart Response", res);
    if(res.status === 200){
     this._appservices.presentToast("Item has been added to cart successfully!");
+    this._appservices.cartRefresh.next(true);
     this.closeModal();
    } else if(res.status === 404){
     this._appservices.simpleLoader();
@@ -142,6 +144,7 @@ export class UpdateOrderModalPage implements OnInit {
     console.log("UpdateCart Response", _res);
     if(_res.status === 200){
       this._appservices.presentToast("Item has been updated successfully!");
+      this._appservices.cartRefresh.next(true);
       this.closeModal();
     }
     this._appservices.loaderDismiss();
