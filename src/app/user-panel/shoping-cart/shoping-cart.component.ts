@@ -210,25 +210,34 @@ export class ShopingCartComponent implements OnInit {
     this.backButtonSubscription.unsubscribe();
   }
 
-  updateqty(val, qty) {
+  updateqty(val:any, qty) {
     this.isDataLoad = true;
     var UrlParameters = `teamId=${val.teamId}&emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}&amount=${qty}`;
+    var itemsData:any=[]
+    if(val?.isSecondaryMarketItem){
+       itemsData= [{ amount: qty, item: val.listingId,isSecondaryMarketItem:true }]
+    }
+    else{
+      itemsData = [{ amount: qty, item: val.tokenIndexId,isSecondaryMarketItem:false }]
+    }
     let payload:ADD_TO_CART_PAYLOAD = {
       email:this._appServices.loggedInUserDetails['email'],
       type:'XL',
-      items:[{ amount: qty, item: val.tokenIndexId }]
+      items:itemsData
     }
     console.log('val:',val,'Payload:',payload);
 
     this._appServices.updateCart(payload).then(res => {
       console.log("responce data", res);
       this.isDataLoad = false;
-      this.cartDetail = [];
       if (res.status == 200) {
         this._appServices.cartRefresh.next(true);
         this.showCart = true;
-        this.cartDetail = res.data;
+        this.cartDetail = res.data.data.cart;
       }
+    },(err) => {
+      console.log(err)
+      this.isDataLoad = false;
     });
   }
 

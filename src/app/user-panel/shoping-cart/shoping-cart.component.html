@@ -13,7 +13,7 @@
       </ion-item-divider>
     </ion-list>
     <!--   *ngIf="cartDetail?.items.length >= 1 && showCart"-->
-    <ion-grid *ngIf="cartDetail?.items.length >= 1 && showCart"
+    <ion-grid *ngIf="cartDetail?.items?.length >= 1 && showCart"
       class="position-relative z-index-10 grid-minheight p-h-25">
       <!-- <ion-grid> -->
       <ion-row class="m-t-15">
@@ -32,7 +32,7 @@
       </ion-row>
     </ion-grid>
     <!--  -->
-    <ion-list *ngIf="cartDetail?.items.length == 0 && showCart">
+    <ion-list *ngIf="cartDetail?.items?.length == 0 && showCart">
       <ion-item-divider class="height-30 removeborder">
         <ion-title class="jostDemi size-24 color-tertiary-dark font-weight-600 p-0">{{'NO ITEM IN CART' | translate }}
         </ion-title>
@@ -73,7 +73,7 @@
             <ion-text class="display-block">
               <p class="changecolor jostBook size-12 font-weight-400 m-t-0 m-b-0">{{'QTY' | translate }}</p>
               <ion-input class="color-secondary jostBook size-15 m-b-0 m-t--10 font-weight-400" inputmode="numeric"
-                type="tel" [value]="item.amount" (ionBlur)="updateqty(item,$event.target.value)">
+                type="tel" [value]="item.amount" (ionChange)="updateqty(item,$event.target.value)">
 
               </ion-input>
             </ion-text>
@@ -93,7 +93,7 @@
           </ion-item-options> -->
       <!-- </ion-item-sliding> -->
     </ion-list>
-    <div class="border-top-blue" *ngIf="cartDetail?.items.length >= 1 && showCart">
+    <div class="border-top-blue" *ngIf="cartDetail?.items?.length >= 1 && showCart">
       <ion-row class="m-t-10">
         <ion-col size="1"></ion-col>
         <ion-col size="5">
