@@ -37,6 +37,8 @@ export class ProductPageComponent implements OnInit {
   showDetailsIndex: number;
   getSearchedData: any="";
   cartItems:Array<CART_ITEM> = []
+  GetCartData: any;
+  enableDisableBuy: boolean=false;
   constructor(
     public _nav: NavController,
     public router: Router,
@@ -52,6 +54,7 @@ export class ProductPageComponent implements OnInit {
   ionViewWillEnter() {
     this.initProductPage();
   }
+
 initProductPage(){
 
   this.currentDateTime =Date.now();
@@ -72,7 +75,7 @@ initProductPage(){
     day.style.borderRadius = '5px'
   }
   this.getGraphData(this.fromDate, this.toDate);
-
+  this.GetCartItems();
 }
 GetProduct(){
   this.isDataLoad = true;
@@ -141,7 +144,21 @@ GetProduct(){
       this.isDataLoad = false;
     });
   }
-  
+    GetCartItems(){
+    this._appservices.getCart(this._appservices.loggedInUserDetails.email).then(_respone =>{
+      console.log('Get cart data:',_respone);
+      this._appservices.loaderDismiss(); 
+      if(_respone?.status === 200){
+        this.GetCartData = _respone?.data?.data?.cart;
+        let SelectedMaketCart =  this.GetCartData?.items.filter(data=> data.marketSymbol === this.productDataFromDashboardPage.shortName);
+        if(SelectedMaketCart?.length === 0){
+          this.enableDisableBuy = true; 
+        }
+      }
+    }, err => {
+      console.log(err);
+    });
+  }
   getPercentageMilstone(unlockedMeasurement){
    var num=(this.GetTokenProfileData?.maxSupply - this.GetTokenProfileData?.available) / unlockedMeasurement;
    var subNumber=num ? num : 0;
