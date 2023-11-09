@@ -119,7 +119,9 @@
           <img src="../../../assets/images/alerticon.png" class="w-90" />
         </ion-col>
         <ion-col size="10.5" class="ion-text-left">
-          <p class="size-16 m-t-0 m-b-0 jostMedium font-weight-500 ion-text-left text-light-gray">{{'Your transaction is over the normal safety limit.' | translate }} <b>{{'We will be required to provide an MFA key to complete your transaction.' | translate }}</b>
+          <p class="size-16 m-t-0 m-b-0 jostMedium font-weight-500 ion-text-left text-light-gray">{{'Your transaction is over the normal safety limit.' | translate }} 
+            <b *ngIf="selectedCurrency === 'USD'">{{'We will be required to provide an MFA key to complete your transaction.' | translate }}</b>
+            <b *ngIf="selectedCurrency != 'USD'">{{'We may be required to provide a MFA key to complete your transaction.' | translate }}</b>
           </p>
         </ion-col>
       </ion-row>
@@ -149,7 +151,7 @@
       <h4 class="font-weight-600 size-19 jostDemi m-t-10">{{'Proceed' | translate }}</h4>
     </ion-button> -->
 
-    <ion-row *ngIf="otp">
+    <ion-row *ngIf="otp && selectedCurrency === 'USD'">
       <ion-col size="12">
         <ion-item>
           <ion-label position="floating">{{'Verification Code' | translate }}</ion-label>
@@ -158,7 +160,7 @@
       </ion-col>
     </ion-row>
 
-      <ion-button expand="block" size="large" *ngIf="ischeck && selectedCurrency != ''" [disabled]="(cartDetail?.isMfaRequired || selectedCurrency === 'USD') && mfaCode === ''"
+      <ion-button expand="block" size="large" *ngIf="ischeck && selectedCurrency !=''" [disabled]="!selectedCurrency"
         class="m-l-15 shadownot m-r-15 w-80 primary-color-background no-border border-radius-8 p-t-10p  height-60 letter-spacing p-a z-index-10"
         (click)="makePayment()">
         <h4 class="font-weight-600 size-19 jostDemi m-t-10">{{'CHECKOUT' | translate }}</h4>

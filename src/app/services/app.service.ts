@@ -307,7 +307,7 @@ export class AppService {
   getDataByNative(url): Observable<any> {
     return from(this._nativeHttp.get(url, {}, this.getHttpHeaders())).pipe(retry(this.UploadMaxRetryHit), map(results => {
       console.log(results);
-      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) }
+      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) ? JSON.parse(results.data): results }
 
       return _res;
     }, err => {
@@ -322,7 +322,7 @@ export class AppService {
   postDataByNative(url, data): Observable<any> {
     this._nativeHttp.setDataSerializer('json');
     return from(this._nativeHttp.post(url, data, this.getHttpHeaders())).pipe(retry(this.UploadMaxRetryHit), map(results => {
-      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) }
+      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) ? JSON.parse(results.data): results }
       return _res;
     }, err => {
       var _err: apiResponse = { status: err.status, data: err };
@@ -335,7 +335,7 @@ export class AppService {
   putDataByNative(url, data): Observable<any> {
     this._nativeHttp.setDataSerializer('json');
     return from(this._nativeHttp.put(url, data, this.getHttpHeaders())).pipe(retry(this.UploadMaxRetryHit), map(results => {
-      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) }
+      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) ? JSON.parse(results.data): results }
       return _res;
     }, err => {
       var _err: apiResponse = { status: err.status, data: err };
@@ -347,7 +347,7 @@ export class AppService {
 
   deleteDataByNative(url): Observable<any> {
     return from(this._nativeHttp.delete(url, {}, this.getHttpHeaders())).pipe(retry(this.UploadMaxRetryHit), map(results => {
-      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) }
+      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) ? JSON.parse(results.data): results }
       return _res;
     }, err => {
       var _err: apiResponse = { status: err.status, data: err };
@@ -406,7 +406,7 @@ export class AppService {
 
   getDataByNativePromiss(url): Promise<any> {
     return from(this._nativeHttp.get(url, {}, this.getHttpHeaders())).pipe(retry(this.UploadMaxRetryHit)).toPromise().then(results => {
-      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) }
+      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) ? JSON.parse(results.data): results }
       return _res;
     }, err => {
       var _err: apiResponse = { status: err.status, data: err };
@@ -421,7 +421,7 @@ export class AppService {
     url = this.apiUrl + url;
     console.log(url, JSON.stringify(data));
     return from(this._nativeHttp.post(url, data, this.getHttpHeaders())).pipe(retry(this.UploadMaxRetryHit)).toPromise().then(results => {
-      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) }
+      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) ? JSON.parse(results.data): results }
       return _res;
     }, err => {
       console.log('url', url, err)
@@ -436,7 +436,7 @@ export class AppService {
     var urls = this.apiUrl + url;
     console.log(urls, JSON.stringify(data));
     return from(this._nativeHttp.put(urls, data, this.getHttpHeaders())).pipe(retry(this.UploadMaxRetryHit)).toPromise().then(results => {
-      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) }
+      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) ? JSON.parse(results.data): results }
       return _res;
     }, err => {
       var _err: apiResponse = { status: err.status, data: err };
@@ -448,7 +448,7 @@ export class AppService {
 
   deleteDataByNativePromiss(url): Promise<any> {
     return from(this._nativeHttp.delete(url, {}, this.getHttpHeaders())).pipe(retry(this.UploadMaxRetryHit)).toPromise().then(results => {
-      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) }
+      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) ? JSON.parse(results.data): results }
       return _res;
     }, err => {
       var _err: apiResponse = { status: err.status, data: err };
@@ -581,7 +581,7 @@ export class AppService {
     url = this.apiUrl + url;
     console.log(url, JSON.stringify(data));
     return from(this._nativeHttp.post(url, data, this.getHttpHeaders())).pipe(retry(this.UploadMaxRetryHit)).toPromise().then(results => {
-      // var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) }
+      // var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) ? JSON.parse(results.data): results }
       return results;
     }, err => {
       console.log('url', url, err)

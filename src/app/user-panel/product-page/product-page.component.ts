@@ -151,7 +151,7 @@ GetProduct(){
       if(_respone?.status === 200){
         this.GetCartData = _respone?.data?.data?.cart;
         let SelectedMaketCart =  this.GetCartData?.items.filter(data=> data.marketSymbol === this.productDataFromDashboardPage.shortName);
-        if(SelectedMaketCart?.length === 0){
+        if(SelectedMaketCart?.length === 0 && this.productDataFromDashboardPage?.type === 'Currency'){
           this.enableDisableBuy = true; 
         }
       }

@@ -240,7 +240,9 @@ export class ConfirmOrderComponent implements OnInit {
     if (this.selectedCurrency === '') {
       this._appServices.presentToast('Please select a currency first!')
     } else {
-      this.otp = true
+
+      if(this.selectedCurrency === "USD"){
+        this.otp = true
       this.global.presentLoading('').then(() => {
         // if (type === 'BankAccount') {
         this._appServices.getCheckoutCode(this.selectedCurrency === 'USD' ? 'CardTransaction' : 'MarketPurchase').then(async res => {
@@ -278,6 +280,7 @@ export class ConfirmOrderComponent implements OnInit {
         })
         // }
       })
+      }
     }
 
   }

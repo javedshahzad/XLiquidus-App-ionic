@@ -88,9 +88,9 @@ export class ListCryptoSalesDetailsPage implements OnInit {
 	PaymentSource: any = "None";
 	paymentCurrency: any ="";
 	AcceptedPaymentMethodsType = [
-		// {
-		// 	paymentCurrency: "USD"
-		// },
+		{
+			paymentCurrency: "USD"
+		},
 		{
 			paymentCurrency: "BTC"
 		},
