@@ -205,6 +205,13 @@ export class AppService {
     loading.present();
     this.isLoading = false
   }
+  async simpleLoaderWithMsg(msg) {
+    const loading = await this.loadingController.create({
+      message: msg
+    });
+    loading.present();
+    this.isLoading = false
+  }
   async loaderDismiss() {
     this.isLoading = false;
     return await this.loadingController.dismiss();

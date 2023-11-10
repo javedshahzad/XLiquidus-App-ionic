@@ -27,9 +27,9 @@ export class CardPaymentsComponent implements OnInit, AfterContentInit {
       country: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(64)]],
       address: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]],
       // AddnlAddr: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255),Validators.pattern('^[a-zA-Z0-9!@#$&()\\-`.+,/\"][a-zA-Z0-9!@#$&()\\-`.+,/\"_ ]+[a-zA-Z0-9!@#$&()\\-`.+,/\" _]$')]],
-      // state: [null, [Validators.required]],
-      // city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50),Validators.pattern('[a-zA-Z][a-zA-Z_ ]+[a-zA-Z _]$')]],
-      // zipcode: [null, [Validators.required,Validators.minLength(4)]],
+     // state: [null, [Validators.required]],
+      //city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50),Validators.pattern('[a-zA-Z][a-zA-Z_ ]+[a-zA-Z _]$')]],
+      //zipcode: ["", [Validators.required,Validators.minLength(4)]],
     });
     console.log(this.billingInformation.value)
   }
@@ -99,7 +99,7 @@ export class CardPaymentsComponent implements OnInit, AfterContentInit {
         console.log(result)
         console.log(`Payment token is: ${JSON.stringify(result)}`);
         localStorage.setItem('nonce', result.token)
-        localStorage.setItem('cardNumber', result?.detals?.card?.last4)
+        localStorage.setItem('cardNumber', result?.detals?.card?.last4);
         localStorage.setItem('billingInformation', JSON.stringify(this.billingInformation.value))
         this.billingInformation.reset()
         this.card.clear();

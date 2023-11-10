@@ -18,7 +18,8 @@ export class CheckoutTransactionSummaryComponent implements OnInit {
     private global: GlobalService
   ) {
     this.currency = this.activatedRoute.snapshot.paramMap.get('id');
-    this.data = JSON.parse(this.global.router.getCurrentNavigation()?.extras?.state?.data)
+    var dataObj= JSON.parse(this.global.router.getCurrentNavigation()?.extras?.state?.data);
+    this.data = dataObj.data;
     console.log(this.data,"From summary checkout");
     console.log('currency', this.currency, 'passed Data:', this.data)
     if (this.currency != 'USD') {

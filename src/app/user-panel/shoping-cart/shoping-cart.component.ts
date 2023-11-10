@@ -27,7 +27,7 @@ export class ShopingCartComponent implements OnInit {
     this.currentDateTime = new Date();
     this.showCart = false;
     this.backButtonSubscription = this.platform.backButton.subscribe(() => {
-      this._nav.navigateRoot(['user-panel/']);
+      this._nav.navigateRoot(['user-panel/dashboard']);
     });
 
     this.isDataLoad = true;

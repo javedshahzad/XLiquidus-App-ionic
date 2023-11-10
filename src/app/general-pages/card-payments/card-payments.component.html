@@ -101,11 +101,11 @@
                   </div>
                 </ng-container>
               </div>
-            </div>
+            </div> -->
             
-            <div>
+            <!-- <div>
               <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">{{'POSTAL/ZIP CODE' | translate }}</ion-label>
-              <ion-input class="itemclass height-60" formControlName="zipcode"></ion-input>
+              <ion-input type="number" class="itemclass height-60" formControlName="zipcode"></ion-input>
               <div *ngFor="let error of errorMessages?.zipcode" class="errormsg">
                 <ng-container *ngIf="zipcode?.hasError(error.type) && (zipcode?.dirty || zipcode?.touched)">
                   <div class="erroronform">

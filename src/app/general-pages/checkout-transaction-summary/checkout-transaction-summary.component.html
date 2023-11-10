@@ -22,7 +22,7 @@
      
       <ion-row>
         <ion-col class="ion-text-center">
-          <h1 class="size-32  m-t-0  m-b-0 color-black futuraFontsBold">{{data?.paymentCurrency}}</h1>
+          <h1 class="size-32  m-t-0  m-b-0 color-tertiary-dark futuraFontsBold">{{data?.paymentCurrency}}</h1>
         </ion-col>
       </ion-row>
  
@@ -65,15 +65,38 @@
 
 <!-- Crypto Section -->
 
-<ion-row *ngIf="currency != 'USD'">
+<!-- <ion-row *ngIf="currency != 'USD'">
   <ion-col size="6" class="ion-text-right">
     <h1 class="f-s-18 m-t-0 m-b-0 color-black">{{'Expected Crypto Amount' | translate }}:</h1>
   </ion-col>
   <ion-col size="6" class="ion-text-left">
     <h1 class="f-s-18 m-t-0 m-b-0 ">{{paymentAddresses[0]?.expectedCryptoAmount}}</h1>
   </ion-col>
-</ion-row>
+</ion-row> -->
+<!-- <ion-row *ngIf="currency != 'USD'">
+  <ion-col>
+  <h5 class="ion-text-capitalize color-tertiary-dark jostDemi size-22 m-b-0 m-t-0 m-l-5 font-weight-600">
+    deposit {{paymentAddresses[0].type}} 
+  </h5>
+</ion-col>
+</ion-row> -->
 <ion-row *ngIf="currency != 'USD'">
+  <ion-col>
+    <img [src]="paymentAddresses[0].addressAsQrCode" alt="">
+  </ion-col>
+  <ion-col>
+     <div class="ion-text-end">
+      <p class="darken-color size-16 m-b-0 m-t-0">{{paymentAddresses[0].expectedCryptoAmount}}</p>
+      <span class="font-weight-700 size-18 color-tertiary-dark">{{paymentAddresses[0].type}}</span>
+     </div>
+  </ion-col>
+  <ion-col>
+    <h5 class="darken-color jostDemi size-22 m-b-0 m-t-0 m-l-5 font-weight-600">
+      Address: {{paymentAddresses[0].address}}
+    </h5>
+  </ion-col>
+</ion-row>
+<ion-row *ngIf="currency != 'USD' && cryptoCheckoutPaymentDetails?.interactivePaymentFlowUrl">
   <ion-col size="12" class="ion-text-center">
     <h1 class="f-s-18 m-t-0 m-b-0 color-black">{{'Payment URL' | translate }}</h1>
   </ion-col>

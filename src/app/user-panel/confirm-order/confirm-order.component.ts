@@ -31,6 +31,7 @@ export class ConfirmOrderComponent implements OnInit {
   userDetails
   billingInformation
   cardNumber: string = ''
+  postCheckoutData: any;
   constructor(
     public _appServices: AppService,
     public activatedroute: ActivatedRoute,
@@ -84,7 +85,36 @@ export class ConfirmOrderComponent implements OnInit {
       this._appServices.loaderDismiss();
     })
   }
-
+  getCartDetailsFromChechout(){
+    let body={
+      "email": this._appServices.loggedInUserDetails.email,
+      "cartId":  this.cartDetail?.id ? this.cartDetail?.id : this.cartDetail?.cartId,
+      "cartType": "XL",
+      "paymentCurrency": this.selectedCurrency,
+      "ipAddress": this._appServices.ipAddress.ip,
+      "completeCheckout": false,
+      "useExpressService": false,
+      "isService": false,
+      "saveBillingInformation": false
+    }
+    this._appServices.simpleLoaderWithMsg("Calculating your fees, please wait for a moment.");
+    this._appServices.postCheckout(body).then(res => {
+      console.log(res)
+      this._appServices.loaderDismiss();
+      if(res.status === 200){
+        var response = JSON.parse(res.data);
+        this.postCheckoutData = response.data;
+        console.log(response)
+        console.log(this.postCheckoutData)
+        this.cartDetail = this.postCheckoutData.checkoutCart;
+        if (this.ischeck &&  this.selectedCurrency === 'USD') {
+          this.onSelectedCurrency()
+        }
+      }
+    }).catch(err=>{
+      this._appServices.loaderDismiss();
+    })
+  }
   // makePayment() {
   //   this.isDataLoad = true;
   //   var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIp=${this._appServices.ipAddress.ip}&cartId=${this.cartDetail?.cartId}&authCode=${''}`
@@ -105,10 +135,8 @@ export class ConfirmOrderComponent implements OnInit {
 
   async onCurrencyChange(evt) {
     console.log(evt.detail.value)
-    this.selectedCurrency = evt.detail.value
-    if (this.ischeck && (this.cartDetail?.isMfaRequired || this.selectedCurrency === 'USD')) {
-      this.onSelectedCurrency()
-    }
+    this.selectedCurrency = evt.detail.value;
+    this.getCartDetailsFromChechout();
   }
   checkTransactionProfile() {
     return new Promise((resolve, reject) => {
@@ -186,12 +214,12 @@ export class ConfirmOrderComponent implements OnInit {
       let obj = JSON.parse(localStorage.getItem('billingInformation'))
       this.isDataLoad = true;
       let billing = {
-        "name": obj?.name,
-        "address": obj?.address,
-        "city": "City",
-        "state": "State",
-        "zipCode": "Postal Code",
-        "country": obj?.country
+        "name": obj?.fullname ? obj?.fullname : "",
+        "address": obj?.address ? obj?.address : "",
+        "city": obj?.city ? obj?.city : "",
+        "state": obj?.state ? obj?.state : "",
+        "zipCode": obj?.zipcode ? obj?.zipcode : "",
+        "country": obj?.country ? obj?.country : ""
       }
       let body = {
         "email": this._appServices.loggedInUserDetails.email,
@@ -199,11 +227,11 @@ export class ConfirmOrderComponent implements OnInit {
         "cartType": "XL",
         "paymentCurrency": this.selectedCurrency,
         "nonce": this.nonce,
-        "otpCode": this.mfaCode,
+        "otpCode": this.selectedCurrency === "USD" ? this.mfaCode : "",
         "ipAddress": this._appServices.ipAddress.ip,
         "completeCheckout": true,
         "useExpressService": false,
-        "billingInformation": this.selectedCurrency === 'USD' ? billing : null,
+        "billingInformation":  billing,
         "saveBillingInformation": false
       }
       console.log('Payload:',body)
@@ -243,7 +271,7 @@ export class ConfirmOrderComponent implements OnInit {
 
       if(this.selectedCurrency === "USD"){
         this.otp = true
-      this.global.presentLoading('').then(() => {
+      this.global.presentLoading('Calculating your fees, please wait for a moment.').then(() => {
         // if (type === 'BankAccount') {
         this._appServices.getCheckoutCode(this.selectedCurrency === 'USD' ? 'CardTransaction' : 'MarketPurchase').then(async res => {
           console.log('checkout code:', res)
