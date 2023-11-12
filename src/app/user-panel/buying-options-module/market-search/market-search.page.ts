@@ -222,6 +222,6 @@ getTotalPrice(type,amount){
   }
 }
 checkout() {
-  this.router.navigate(['/user-panel/shoping-cart']);
+  this._nav.navigateRoot(['/user-panel/shoping-cart']);
 }
 }

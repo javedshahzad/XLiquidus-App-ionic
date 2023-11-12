@@ -86,6 +86,7 @@ export class ConfirmOrderComponent implements OnInit {
     })
   }
   getCartDetailsFromChechout(){
+  if(this.selectedCurrency){
     let body={
       "email": this._appServices.loggedInUserDetails.email,
       "cartId":  this.cartDetail?.id ? this.cartDetail?.id : this.cartDetail?.cartId,
@@ -114,6 +115,8 @@ export class ConfirmOrderComponent implements OnInit {
     }).catch(err=>{
       this._appServices.loaderDismiss();
     })
+  }
+    
   }
   // makePayment() {
   //   this.isDataLoad = true;
@@ -248,9 +251,10 @@ export class ConfirmOrderComponent implements OnInit {
             }
           }
           this.global.navigateWithExtras('/transaction-summary/' + this.selectedCurrency, extras);
-          this.selectedCurrency = null
-          this.mfaCode = ''
-          this.ischeck = false
+          this.selectedCurrency = "";
+          this.mfaCode = '';
+          this.ischeck = false;
+          localStorage.removeItem("billingInformation")
         } else if (res.status == 400) {
           var errors=JSON.parse(res?.data?.error);
           this.global.CreateToast1(errors.message);
