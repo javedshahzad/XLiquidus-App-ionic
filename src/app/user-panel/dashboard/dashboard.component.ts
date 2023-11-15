@@ -130,9 +130,9 @@ export class DashboardComponent implements OnInit {
   changeval(val) {
     console.log('val', val)
     this.tokenSearchValue = val;
-    if (this.tokenSearchValue == '') {
+    if (this.tokenSearchValue.length === 0) {
       this.isDataLoad = true;
-      var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=Top30&lang=EN&take=30&skip=0`
+      var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.defaultSearchTerm}&lang=EN&take=30&skip=0`
       this._appServices.getDataByHttp(`Search/Get?${UrlParameters}`).subscribe(res => {
         this.isDataLoad = false;
         if (res.status == 200) {
