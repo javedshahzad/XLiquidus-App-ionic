@@ -21,6 +21,8 @@ import { CardPaymentsComponent } from './card-payments/card-payments.component';
 import { CheckoutTransactionSummaryComponent } from './checkout-transaction-summary/checkout-transaction-summary.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
+import { ResetPasswordStepOneComponent } from './reset-password-step-one/reset-password-step-one.component';
+import { ResetPasswordStepTwoComponent } from './reset-password-step-two/reset-password-step-two.component';
 
 const routes: Routes = [
   {
@@ -93,6 +95,16 @@ const routes: Routes = [
     component: CheckoutTransactionSummaryComponent,
     data: { title: 'Transaction Summary' }
   },
+  {
+    path: 'reset-password-setp-one',
+    component: ResetPasswordStepOneComponent,
+    data: { title: 'Reset password' }
+  },
+  {
+    path: 'reset-password-setp-two',
+    component: ResetPasswordStepTwoComponent,
+    data: { title: 'Reset password' }
+  },
 ];
 
 @NgModule({
@@ -109,7 +121,9 @@ const routes: Routes = [
     SignupOptionsComponent,
     ForgotPasswordComponent,
     CardPaymentsComponent,
-    CheckoutTransactionSummaryComponent
+    CheckoutTransactionSummaryComponent,
+    ResetPasswordStepOneComponent,
+    ResetPasswordStepTwoComponent
   ],
   imports: [
     CommonModule,

@@ -213,6 +213,6 @@ export class LoginComponent implements OnInit {
   }
 
   gotoForgotPassword() {
-    this.router.navigate(["/forgot-password", { root: 'Forgot Password' }]);
+    this.router.navigate(["/reset-password-setp-one", { root: 'Forgot Password' }]);
   }
 }
