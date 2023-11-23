@@ -23,6 +23,7 @@ export class ResetPasswordStepTwoComponent implements OnInit {
   PasswodType: string = 'password';
   showConfirmPassword: string = "eye-off";
   ConfirmPasswodType: string = 'password';
+  IsLoginAllowedAsyncData: any;
   constructor(
     public _appServices: AppService,
     public platform: Platform,
@@ -97,7 +98,7 @@ export class ResetPasswordStepTwoComponent implements OnInit {
       if(res.status === 200){
         this.ResetPasswordData = res.data.data;
         if(this.ResetPasswordData.status === "Completed"){
-          this._appServices.presentToast(`Password has been reset successfully. Please login to continue!`);
+          this._appServices.presentToast(`Password has been reset successfully!`);
          // this.IsLoginAllowedAsync();
           this.gotoLogin();
         }else{
@@ -112,15 +113,30 @@ export class ResetPasswordStepTwoComponent implements OnInit {
     });
   }
   gotoLogin() {
-    this._nav.navigateRoot("/login");
-}
+    if (this.rootPage == 'Reset Password') {
+      //this._nav.navigateRoot("/user-panel");
+      this.IsLoginAllowedAsync();
+    } else {
+      this.logout();
+    }
+  }
+  logout() {
+    var deviceID = this._encrypDecrypService.getUUID();
+    localStorage.clear();
+    this._encrypDecrypService.setUUID(deviceID);
+    this._nav.navigateRoot(['/login']);
+  }
 IsLoginAllowedAsync(){
   var UrlParameters = `Auth/IsLoginAllowedAsync?email=${this.RequestData.email}&applicationType=XL`;
   this._appServices.getDataByHttp(UrlParameters).subscribe(res => {
     console.log("Auth/IsLoginAllowedAsync Response", res);
     if(res.status === 200){
-      // this.ConfirmMessage=true;
-      // this.RequestData = res.data.data;
+       this.IsLoginAllowedAsyncData = res.data.data;
+       if(this.IsLoginAllowedAsyncData.isAllowedToLogin){
+        this._nav.navigateRoot("/user-panel");
+       }else{
+        this.logout();
+       }
     }
   }, err => {
     console.log(err);

@@ -51,7 +51,9 @@ export class MyProfilePage implements OnInit {
   }
 
   changePasswordPage() {
-    this.router.navigate(['/forgot-password', { root: 'Reset Password' }]);
+    
+    //this.router.navigate(['/forgot-password', { root: 'Reset Password' }]);
+    this.router.navigate(['/reset-password-setp-one', { root: 'Reset Password' }]);
   }
 
   changePassword(url) {

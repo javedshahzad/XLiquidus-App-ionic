@@ -41,7 +41,17 @@ export class ResetPasswordStepOneComponent implements OnInit {
     ]
   };
   gotoLogin() {
-      this._nav.navigateRoot("/login");
+    if (this.rootPage == 'Reset Password') {
+      this._nav.navigateRoot("/user-panel");
+    } else {
+      this.logout();
+    }
+  }
+  logout() {
+    var deviceID = this._encrypDecrypService.getUUID();
+    localStorage.clear();
+    this._encrypDecrypService.setUUID(deviceID);
+    this._nav.navigateRoot(['/login']);
   }
   reset(){
     this._appServices.simpleLoader();
@@ -63,6 +73,6 @@ export class ResetPasswordStepOneComponent implements OnInit {
     return this.resetPasswordForm.get('email');
   }
   nextbtn(){
-    this._nav.navigateForward("/reset-password-setp-two",{queryParams: { root: 'Password Reset',RequestData: this.RequestData }});
+    this._nav.navigateForward("/reset-password-setp-two",{queryParams: { root: this.rootPage,RequestData: this.RequestData }});
   }
 }
