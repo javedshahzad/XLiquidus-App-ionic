@@ -109,21 +109,21 @@
 
 
 
-<!-- <div class="customModal1" *ngIf="showModal">
+<div class="customModal1" *ngIf="showModal">
   <ion-grid class="modalGrid">
-    <span class="cross" (click)="hideModal()">x</span>
+    <span class="cross" (click)="hideModal()"><ion-icon name="close"></ion-icon></span>
     <ion-row>
       <h1 class="size-32 jostDemi color-main font-weight-600 text-center line-height-50 m-a">REGISTER</h1>
     </ion-row>
     <ion-row>
-      <h2 class="size-34 jostDemi color-main font-weight-600 text-center line-height-30 m-a">
-        Multi-Factor<br>Authentication (MFA)</h2>
+      <h4 class="size-26 jostDemi color-main font-weight-600 text-center line-height-30 m-a">
+        Multi-Factor<br>Authentication (MFA)</h4>
     </ion-row>
     <ion-row>
       <img src="assets/images/shield.png" class="w-30 m-a p-t-20">
     </ion-row>
     <ion-row>
-      <h2 class="size-28 jostDemi color-main font-weight-600 text-center line-height-30 m-a">
+      <h2 class="size-26 jostDemi color-main font-weight-600 text-center line-height-30 m-a">
         For Added Security</h2>
     </ion-row>
     <ion-row>
@@ -135,19 +135,19 @@
     <ion-row class="nowrap baseline">
       <ion-col>
         <ion-button expand="block" size="large" color="primary-contrast" (click)="hideModal()"
-          class="size-15 tertiary-custom-button noShadow shadownot no-border border-radius-8 p-t-10p height-60 jostDemi font-weight-800 letter-spacing">
+          class="size-15 tertiary-custom-button noShadow shadownot no-border border-radius-8 jostDemi font-weight-800 letter-spacing">
           DO LATER</ion-button>
       </ion-col>
       <ion-col>
         <ion-button expand="block" size="large" (click)="showVerifyPage()"
-          class="size-15 primary-color-background noShadow shadownot no-border border-radius-8 p-t-10p height-60 jostDemi font-weight-800 letter-spacing">
+          class="size-15 primary-color-background noShadow shadownot no-border border-radius-8 jostDemi font-weight-800 letter-spacing">
           CREATE MY KEY</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
-</div> -->
+</div>
 
-<ion-modal [isOpen]="showModal">
+<!-- <ion-modal [isOpen]="showModal">
   <ng-template>
     <ion-grid class="modalGrid">
       <span class="cross" (click)="hideModal()"> <ion-icon name="close"></ion-icon> </span>
@@ -185,7 +185,7 @@
       </ion-row>
     </ion-grid>
   </ng-template>
-</ion-modal>
+</ion-modal> -->
 
 
 <div class="customModal1" *ngIf="showVerifyModal">

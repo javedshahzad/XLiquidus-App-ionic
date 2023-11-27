@@ -13,6 +13,7 @@ export class BetaProgramComponent implements OnInit {
   iAgreeToTerms:boolean=true;
   iAgreeToJoinWaitingList:boolean=true;
   iWantToBeNotified:boolean=true;
+  iWantToBeNotifiedDisable:boolean=false;
   GetWaitingListData: any;
   betaProgramBtn:boolean=false;
   constructor(
@@ -23,7 +24,9 @@ export class BetaProgramComponent implements OnInit {
     private router:Router
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getBetaWaitingList();
+  }
   CheckBox(event) {
     this.iWantToBeNotified = event.target.checked;
 }
@@ -41,6 +44,8 @@ JoinBetaProgram(){
     this._appServices.postDataByHttp(UrlParameters, payload).pipe(finalize(() => this._appServices.loaderDismiss())).subscribe(res => {
       console.log("Auth/SendResetPasswordRequestAsync Response", res);
       if(res.status === 200){
+        this.betaProgramBtn = true;
+        this.iWantToBeNotifiedDisable = true;
         this._appServices.presentToast("You joined beta program successfully!")
       }
     }, err => {
@@ -58,6 +63,7 @@ getBetaWaitingList(){
        this.GetWaitingListData = res?.data?.data;
        if(this.GetWaitingListData){
         this.betaProgramBtn = true;
+        this.iWantToBeNotifiedDisable = true;
        }else{
        }
     }

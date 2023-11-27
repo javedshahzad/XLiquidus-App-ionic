@@ -24,6 +24,7 @@ export class AppComponent {
   currentAppVersion: any;
   device: any;
   @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
+  IsLoginAllowedAsyncData: any;
 
   constructor(
     private platform: Platform,
@@ -93,12 +94,31 @@ export class AppComponent {
     var getToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.access_token));
     if (getToken) {
       await this._appServices.deCodeJwtToken(getToken);
-      this._nav.navigateRoot(['/user-panel']);
+      this.IsLoginAllowedAsync();
     } else {
       this._nav.navigateRoot(['.']);
     }
   }
-
+  IsLoginAllowedAsync(){
+    this._appServices.simpleLoader();
+    var UrlParameters = `Auth/IsLoginAllowedAsync?email=${this._appServices.loggedInUserDetails.email}&applicationType=XL`;
+    this._appServices.getDataByHttp(UrlParameters).subscribe(async res => {
+      console.log("Auth/IsLoginAllowedAsync Response", res);
+      this._appServices.loaderDismiss();
+      if(res.status === 200){
+         this.IsLoginAllowedAsyncData = res.data.data;
+         if(this.IsLoginAllowedAsyncData.isAllowedToLogin === true){
+          this._nav.navigateRoot(['/user-panel']);
+         }else{
+          this._appServices.presentToast("You are not allowed to login!")
+          this._nav.navigateRoot(['/beta-program']);
+         }
+      }
+    }, err => {
+      console.log(err);
+      this._appServices.loaderDismiss();
+    });
+  }
   setDeviceID() {
     let deviceId;
     this.uniqueDeviceID.get().then((uuid: any) => {
