@@ -23,6 +23,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
 import { ResetPasswordStepOneComponent } from './reset-password-step-one/reset-password-step-one.component';
 import { ResetPasswordStepTwoComponent } from './reset-password-step-two/reset-password-step-two.component';
+import { BetaProgramComponent } from './beta-program/beta-program.component';
 
 const routes: Routes = [
   {
@@ -105,6 +106,11 @@ const routes: Routes = [
     component: ResetPasswordStepTwoComponent,
     data: { title: 'Reset password' }
   },
+  {
+    path: 'beta-program',
+    component: BetaProgramComponent,
+    data: { title: 'Beta Program' }
+  },
 ];
 
 @NgModule({
@@ -123,7 +129,8 @@ const routes: Routes = [
     CardPaymentsComponent,
     CheckoutTransactionSummaryComponent,
     ResetPasswordStepOneComponent,
-    ResetPasswordStepTwoComponent
+    ResetPasswordStepTwoComponent,
+    BetaProgramComponent
   ],
   imports: [
     CommonModule,

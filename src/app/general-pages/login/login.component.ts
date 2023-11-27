@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   public authtoken: any;
   refreshToken: any;
   IsAppleLogin: boolean;
+  IsLoginAllowedAsyncData: any;
 
   constructor(
     private router: Router,
@@ -141,11 +142,8 @@ export class LoginComponent implements OnInit {
     }
     console.log('postJson', postJson);
     var UrlParameters = `clientIpAddress=${this._appServices.ipAddress.ip}`
-
     await this._appServices.postDataByNativePromiss(`Users/PostSync?${UrlParameters}`, postJson).then(async _res1 => {
-
-      console.log("reesync set data", this._encServices.localstorageGetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.communicationAccessKey));
-      // if(this._appServices.loggedInUserDetails.isFirstTimeLoggedIn){
+      console.log("reesync set data", this._encServices.localstorageGetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.communicationAccessKey))
       if (!this._encServices.localstorageGetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.communicationAccessKey)) {
         postJson['type'] = "Sync";
         await this._appServices.postDataByNativePromiss(`Users/PostSync?${UrlParameters}`, postJson).then(_res2 => {
@@ -153,20 +151,33 @@ export class LoginComponent implements OnInit {
           this.ShowSpinner = false;
           this._encServices.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.communicationAccessKey, _res2.communicationAccessKey);
           this._appServices.loaderDismiss();
-          this._nav.navigateRoot(['/user-panel/dashboard']);
-         
-          // this._nav.navigateRoot(['/user-panel/dashboard']);  
-          // this.router.navigate(['/user-panel/dashboard']);
+          this.IsLoginAllowedAsync();
+
           // this.router.navigate(['/signupconfirm', { email: this._encServices.encrypt(res.data.emailAddress), RegistraionId: this._encServices.encrypt(res.data.registrationId), language: this._encServices.encrypt(res.data.preferredLanguage), prefName: this._encServices.encrypt(res.data.preferredName) }]);
         });
       } else {
         this._appServices.loaderDismiss();
-        this._nav.navigateRoot(['/user-panel/dashboard']);
-        // this._nav.navigateRoot(['/user-panel/dashboard']); 
+        this.IsLoginAllowedAsync(); 
       }
     }, err => console.log('err', err));
   }
-
+IsLoginAllowedAsync(){
+  var UrlParameters = `Auth/IsLoginAllowedAsync?email=${this._appServices.loggedInUserDetails.email}&applicationType=XL`;
+  this._appServices.getDataByHttp(UrlParameters).subscribe(res => {
+    console.log("Auth/IsLoginAllowedAsync Response", res);
+    if(res.status === 200){
+       this.IsLoginAllowedAsyncData = res.data.data;
+       if(this.IsLoginAllowedAsyncData.isAllowedToLogin === true){
+        this._nav.navigateRoot(['/user-panel/dashboard']);
+       }else{
+        this._nav.navigateRoot(['/beta-program']);
+       }
+    }
+  }, err => {
+    console.log(err);
+    this._appServices.loaderDismiss();
+  });
+}
 
   getUrlParameter(name, url) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');

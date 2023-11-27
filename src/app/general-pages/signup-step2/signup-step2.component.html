@@ -49,11 +49,25 @@
               </div>
             </div>
             <div>
-              <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">ADDRESS <span
-                  class="text-gray jostDemi">(STREET AND CITY)</span></ion-label>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">STREET
+                <!-- <span
+                  class="text-gray jostDemi">(STREET)</span> -->
+              </ion-label>
               <ion-input class="itemclass height-60" formControlName="streetAddr"></ion-input>
               <div *ngFor="let error of errorMessages.streetAddr" class="errormsg">
                 <ng-container *ngIf="streetAddr.hasError(error.type) && (streetAddr.dirty || streetAddr.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">CITY
+                </ion-label>
+              <ion-input class="itemclass height-60" formControlName="city"></ion-input>
+              <div *ngFor="let error of errorMessages.city" class="errormsg">
+                <ng-container *ngIf="city.hasError(error.type) && (city.dirty || city.touched)">
                   <div class="erroronform">
                     <small class="error-message jostDemi size-13">{{error.message}}</small>
                   </div>

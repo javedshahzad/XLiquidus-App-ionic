@@ -205,7 +205,7 @@
     </ion-row>
     <ion-row class="itemclass">
       <ion-col size="10" class="ion-no-padding">
-        <ion-select class="height-50 darken-color" interface="action-sheet" placeholder="Choose" [(ngModel)]="paymentCurrency">
+        <ion-select class="height-50 darken-color" (ionChange)="onSelecetPayment($event)"  interface="action-sheet" placeholder="Choose" [(ngModel)]="paymentCurrency">
           <ion-select-option *ngFor="let item of AcceptedPaymentMethodsType" [value]="item">
               {{item.paymentCurrency}}
           </ion-select-option>

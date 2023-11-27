@@ -108,9 +108,9 @@ getUserProfile(){
   //   return this.signupForm2.get('AddnlAddr');
   // }
 
-  // get city() {
-  //   return this.signupForm2.get('city');
-  // }
+  get city() {
+    return this.signupForm2.get('city');
+  }
 
   // get state(){
   //   return this.signupForm2.get('state');
@@ -135,7 +135,7 @@ getUserProfile(){
     streetAddr: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255), Validators.pattern('^[a-zA-Z0-9!@#$&()\\-`.+,/\"][a-zA-Z0-9!@#$&()\\-`.+,/\"_ ]+[a-zA-Z0-9!@#$&()\\-`.+,/\" _]$')]],
     // AddnlAddr: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255),Validators.pattern('^[a-zA-Z0-9!@#$&()\\-`.+,/\"][a-zA-Z0-9!@#$&()\\-`.+,/\"_ ]+[a-zA-Z0-9!@#$&()\\-`.+,/\" _]$')]],
     // state: [null, [Validators.required]],
-    // city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50),Validators.pattern('[a-zA-Z][a-zA-Z_ ]+[a-zA-Z _]$')]],
+    city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50),Validators.pattern('[a-zA-Z][a-zA-Z_ ]+[a-zA-Z _]$')]],
     mobile: ['', [Validators.required, Validators.minLength(18), Validators.pattern(/^[+][1-9]{0}[0-9]+/)]], // /^(\d{10}|\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3}))$/
     // zipcode: [null, [Validators.required,Validators.minLength(4)]],
   });
@@ -170,7 +170,7 @@ getUserProfile(){
       { type: 'pattern', message: 'Enter a valid Address' },
       { type: 'maxlength', message: 'You have reached max characters limit' }
     ]
-    // ,
+    ,
     // AddnlAddr: [
     //   { type: 'required', message: 'Additional Address is required' }, 
     //   { type: 'pattern', message: 'Enter a valid Additional Address'},
@@ -183,10 +183,10 @@ getUserProfile(){
     //   { type: 'required', message: 'ZIP code is required' },
     //   { type: 'minlength', message: 'Enter a valid ZIP Code' }
     // ],
-    // city: [
-    //   { type: 'required', message: 'City is required' },
-    //   { type: 'pattern', message: 'Enter a valid City' } 
-    // ]
+    city: [
+      { type: 'required', message: 'City is required' },
+      { type: 'pattern', message: 'Enter a valid City' } 
+    ]
   };
 
   toggleshowtip() {
@@ -219,7 +219,7 @@ getUserProfile(){
         "streetAddress": this.signupForm2.value.streetAddr,
         // "additionalAddressInfo": this.signupForm2.value.AddnlAddr,
         // "stateProvinceRegion": this.signupForm2.value.state,
-        // "city": this.signupForm2.value.city,
+        "city": this.signupForm2.value.city,
         // "zipPostal": this.signupForm2.value.zipcode,
         "country": this.signupForm2.value.country
       },

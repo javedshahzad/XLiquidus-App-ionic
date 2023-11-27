@@ -1,0 +1,76 @@
+<ion-content class="backgroundimage">
+  <ion-grid class="topContent m-t-20">
+    <ion-row class="justify-center">
+      <div class="p-t-20p ion-text-center">
+        <h1 class="size-30 welcome-color font-weight-600 jostDemi letter-spacing">WELCOME </h1>
+        <h5 class="size-48 welcome-color font-weight-400 jostBook m-t--10 display-block letter-spacing">TO XLIQUIDUS!</h5>
+      </div>
+    </ion-row>
+    <br>
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-start">
+          <p class="welcome-color font-weight-600 jostDemi size-15">We're excited to have you join us as our new app service is in beta testing. As we're still in development, we're currently only inviting select customers to participate in the beta program.
+           <br> <br> If you're interested in joining the waiting list for full access, please click the "Join" button below. We'll notify you as soon as we have more slots available.</p>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="m-t-20 m-b-20">
+          <table>
+            <tr>
+              <td>
+                <ion-checkbox color="primary" [disabled]="true"  [checked]="iAgreeToTerms" slot="start" class="zoom-1-2 m-r-8 m-t-2">
+                </ion-checkbox>
+              </td>
+              <td>
+                <ion-label class="size-14 jostBook font-weight-400 white-space text-overflow">
+                  <span class="text-white p-r-2 font-weight-400 size-15 jostlight ">I have read and agree to
+                    the</span>
+                  <span class="text-white p-r-2 font-weight-400 size-15 jostlight" [routerLink]="['/tnc']"><u>Terms
+                      of Service and Privacy Policy</u></span>
+                </ion-label>
+              </td>
+            </tr>
+            <br>
+            <tr>
+              <td>
+                <ion-checkbox color="primary" [disabled]="true"  [checked]="iAgreeToJoinWaitingList" slot="start" class="zoom-1-2 m-r-8 m-t-2">
+                </ion-checkbox>
+              </td>
+              <td>
+                <ion-label class="size-14 jostBook font-weight-400 white-space text-overflow">
+                  <span class="text-white p-r-2 font-weight-400 size-15 jostlight">I agree to join waiting list.</span>
+                </ion-label>
+              </td>
+            </tr>
+            <br>
+            <tr>
+              <td>
+                <ion-checkbox color="primary" (ionChange)="CheckBox($event)" [checked]="iWantToBeNotified" slot="start" class="zoom-1-2 m-r-8 m-t-2">
+                </ion-checkbox>
+              </td>
+              <td>
+                <ion-label class="size-14 jostBook font-weight-400 white-space text-overflow">
+                  <span class="text-white p-r-2 font-weight-400 size-15 jostlight">I want to be notified.</span>
+                </ion-label>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-center">
+          <ion-button expand="block" size="large" [disabled]="betaProgramBtn"
+          class="height-60 shadownot primary-color-background no-border border-radius-8 p-t-5p letter-spacing ion-activatable ripple-parent box-shadow"
+          (click)="JoinBetaProgram()">
+          <h4 class="size-19 font-weight-600 joshDemi m-t-15 ">JOIN BETA PROGRAM</h4>
+        </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

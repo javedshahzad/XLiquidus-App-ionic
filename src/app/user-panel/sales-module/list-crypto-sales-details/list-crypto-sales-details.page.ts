@@ -212,6 +212,10 @@ export class ListCryptoSalesDetailsPage implements OnInit {
 			this.global.CreateToast("Please fill all details to continue!")
 		}
 	}
+	onSelecetPayment(event){
+		this.paymentCurrency = event.target.value;
+		this.AddpaymentCurrency();
+	}
 	AddpaymentCurrency() {
 		if(this.paymentCurrency){
 			let getExsisting = this.acceptedPaymentMethodsArray.filter((d:any)=> d.paymentCurrency === this.paymentCurrency.paymentCurrency)
