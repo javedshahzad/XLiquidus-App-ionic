@@ -40,7 +40,7 @@ export class AppComponent {
     private uniqueDeviceID: UniqueDeviceID,
     private appVersion: AppVersion
   ) {
-    //this.initializeApp();
+    this.initializeApp();
   }
 
   initializeApp() {
