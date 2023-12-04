@@ -74,6 +74,7 @@ export class CurrentOrderPage implements OnInit {
   AllAvailableListings:any=[];
   pageNumber:any=1;
   GetCartData: any;
+  ProductDetailsData: any;
   constructor(
     public _nav: NavController,
     public router: Router,
@@ -89,6 +90,8 @@ export class CurrentOrderPage implements OnInit {
  
   }
   ionViewWillEnter() {
+    var proData = this._encServices.decrypt(this.activatedroute.snapshot.paramMap.get('buproductData'));
+    this.ProductDetailsData = JSON.parse(proData);
     this.GetCartItems();
     this.getAllListings();
   }
@@ -112,10 +115,14 @@ export class CurrentOrderPage implements OnInit {
 }
 getAllListings(){
   this.pageNumber=1;
+  var filter = "";
+  if(this.ProductDetailsData.shortName){
+    filter=`MarketSymbol@=${this.ProductDetailsData.shortName.toLowerCase()}`
+  }
   var payloadParamters = {
     pageSize:50,
     page: this.pageNumber,
-    //filters:""
+    filters:filter
   }
     this._appservices.simpleLoader();
   var UrlParameters = `CustomerMarkets/PostMarketSearch?email=${this._appservices.loggedInUserDetails.email}`;

@@ -56,6 +56,10 @@ export class SalesProfileSignupPage implements OnInit {
             paymentOption: "USDC",
             FundingOption: "Crypto"
         },
+        {
+            paymentOption: "USDT",
+            FundingOption: "Crypto"
+        },
     ];
     paymentCurrency: any = "";
     isChecked: boolean = false;

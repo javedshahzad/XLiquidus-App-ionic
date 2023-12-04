@@ -216,7 +216,7 @@ GetProduct(){
     this._nav.navigateRoot(['/user-panel/buy-now', { 'buproductData': this._encServices.encrypt(JSON.stringify(this.productDataFromDashboardPage)),'GetTokenProfileData':this._encServices.encrypt(JSON.stringify(this.GetTokenProfileData))}]);
   }
   customizeorder(){
-    this._nav.navigateRoot(["/user-panel/current-order"])
+    this._nav.navigateRoot(["/user-panel/current-order",{ 'buproductData': this._encServices.encrypt(JSON.stringify(this.productDataFromDashboardPage))}])
   }
   getoneDay() {
     document.getElementById('day').style.background = '#60CCF0';

@@ -22,8 +22,11 @@
               </ion-text>
             </ion-col>
             <ion-col size="4">
-              <ion-button [disabled]="enableDisableBuy" expand="block" (click)="buynow()" size="large" class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
+              <ion-button *ngIf="productDataFromDashboardPage?.type != 'Currency'" expand="block" (click)="buynow()" size="large" class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
                 <h5 class="jostHeavy size-15 font-weight-800 m-t-10">BUY NOW</h5>
+              </ion-button>
+              <ion-button *ngIf="productDataFromDashboardPage?.type === 'Currency'" expand="block" (click)="customizeorder()" size="large" class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
+                <h5 class="jostHeavy size-15 font-weight-800 m-t-10">CUSTOMIZE ORDER</h5>
               </ion-button>
             </ion-col>
           </ion-row>
@@ -41,9 +44,6 @@
             </ion-col>
           </ion-row>
         </ion-item>
-          <ion-button *ngIf="productDataFromDashboardPage?.type === 'Currency' " expand="block" (click)="customizeorder()" size="large" class="primary-second-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
-            <h5 class="jostHeavy size-12 font-weight-600 m-t-10">customize order</h5>
-          </ion-button>
         <ion-item class="white-background p-r-12 ion-activatable ripple-parent">
           <ion-ripple-effect type="unbounded"></ion-ripple-effect>
           <ion-row>
@@ -242,11 +242,11 @@
         <ion-row>
           <ion-col>
             <!-- [disabled]="!productDataFromDashboardPage?.isSaleAvailable"  -->
-            <ion-button expand="block" *ngIf="productDataFromDashboardPage?.isSaleAvailable" (click)="addtocart()" size="large" class="primary-color-background shadownot no-border border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-95 letter-spacing">
+            <ion-button expand="block" *ngIf="productDataFromDashboardPage?.isSaleAvailable && productDataFromDashboardPage?.type != 'Currency'" (click)="addtocart()" size="large" class="primary-color-background shadownot no-border border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-95 letter-spacing">
               <h5 class="jostHeavy size-15 font-weight-800 m-t-10">ADD TO CART</h5>
             </ion-button>
-            <ion-button expand="block" size="large" [hidden]="productDataFromDashboardPage?.isSaleAvailable" [disabled]="true" class="m-l-a m-r-a shadownot static-butto-color w-95 no-border border-radius-8 p-t-10p  height-50 letter-spacing ">
-              <h5 class="font-weight-800 size-15 jostHeavy m-t-10">ADD TO CART</h5>
+            <ion-button expand="block" *ngIf="productDataFromDashboardPage?.isSaleAvailable && productDataFromDashboardPage?.type === 'Currency'" (click)="customizeorder()" size="large" class="primary-color-background shadownot no-border border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-95 letter-spacing">
+              <h5 class="jostHeavy size-15 font-weight-800 m-t-10">CUSTOMIZE ORDER</h5>
             </ion-button>
           </ion-col>
         </ion-row>
@@ -286,11 +286,12 @@
             </ion-button>
           </ion-col>
           <ion-col>
-            <ion-button expand="block" (click)="addtocart()" *ngIf="productDataFromDashboardPage?.isSaleAvailable" size="large" class="primary-color-background no-border shadownot border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
+            
+            <ion-button expand="block" (click)="addtocart()" *ngIf="productDataFromDashboardPage?.isSaleAvailable && productDataFromDashboardPage?.type != 'Currency'" size="large" class="primary-color-background no-border shadownot border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
               <h5 class="jostHeavy size-15 font-weight-800 m-t-10">ADD TO CART</h5>
             </ion-button>
-            <ion-button expand="block" size="large" [hidden]="productDataFromDashboardPage?.isSaleAvailable" [disabled]="true" class="m-l-a m-r-a shadownot static-butto-color w-85 no-border border-radius-8 p-t-10p  height-50 letter-spacing ">
-              <h5 class="jostHeavy size-15 font-weight-800 m-t-10">ADD TO CART</h5>
+            <ion-button expand="block" (click)="customizeorder()" *ngIf="productDataFromDashboardPage?.isSaleAvailable && productDataFromDashboardPage?.type === 'Currency'" size="large" class="primary-color-background no-border shadownot border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
+              <h5 class="jostHeavy size-15 font-weight-800 m-t-10">CUSTOMIZE ORDER</h5>
             </ion-button>
           </ion-col>
         </ion-row>

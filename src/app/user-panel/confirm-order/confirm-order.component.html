@@ -136,7 +136,7 @@
         <ion-col size="10.5" class="ion-text-left">
           <p class="size-16 m-t-0 m-b-0 jostMedium font-weight-500 ion-text-left text-light-gray">{{'Your transaction is over the normal safety limit.' | translate }} 
             <b *ngIf="selectedCurrency === 'USD'">{{'We will be required to provide an MFA key to complete your transaction.' | translate }}</b>
-            <b *ngIf="selectedCurrency != 'USD'">{{'We may be required to provide a MFA key to complete your transaction.' | translate }}</b>
+            <b *ngIf="selectedCurrency != 'USD'">{{'You will require an OTP code sent to your email to complete your transaction.' | translate }}</b>
           </p>
         </ion-col>
       </ion-row>
@@ -168,10 +168,11 @@
 
     <ion-row *ngIf="otp && selectedCurrency === 'USD'">
       <ion-col size="12">
-        <ion-item>
-          <ion-label position="floating">{{'Verification Code' | translate }}</ion-label>
-          <ion-input [(ngModel)]="mfaCode" type="text"></ion-input>
-        </ion-item>
+        <div>
+          <ion-label class="m-t-25 m-b-10 size-13 font-weight-600 l-h-0 m-l-15  level-color display-block jostDemi">
+            VERIFICATION CODE</ion-label>
+          <ion-input class="itemclass height-60" [(ngModel)]="mfaCode" type="text"></ion-input>
+        </div>
       </ion-col>
     </ion-row>
 

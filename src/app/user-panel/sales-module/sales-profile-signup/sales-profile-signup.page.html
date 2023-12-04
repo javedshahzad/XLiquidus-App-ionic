@@ -157,7 +157,10 @@
    
             <div>
               <ion-label class="m-t-25 m-b-10 size-13 font-weight-600 l-h-0 level-color display-block jostDemi">
-                EMAIL</ion-label>
+                EMAIL
+                <span
+                  class="text-gray jostDemi">{{"( You cannot change your email address)"}}</span>
+              </ion-label>
               <ion-input class="itemclass height-60" formControlName="email"></ion-input>
               <div *ngFor="let error of errorMessages.email" class="errormsg">
                 <ng-container *ngIf="email.hasError(error.type) && (email.dirty || email.touched)">
@@ -195,7 +198,10 @@
             </div>
             <div>
               <ion-label class="m-t-25 m-b-10 size-13 font-weight-600 l-h-0 level-color display-block jostDemi">
-                COUNTRY</ion-label>
+                COUNTRY
+                <span
+                class="text-gray jostDemi" *ngIf="userDetails.addressCountryName">{{"(You cannot change your Country)"}}</span>
+              </ion-label>
               <ion-select class="itemclass height-60" interface="action-sheet" formControlName="country"
                 placeholder="Choose Country" [disabled]="userDetails.addressCountryName ? true : false">
                 <ion-select-option>

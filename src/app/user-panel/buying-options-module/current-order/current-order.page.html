@@ -12,9 +12,9 @@
   </div>
   <ion-grid class="ion-padding-start ion-padding-end">
     <ion-row>
-      <ion-col>
+      <ion-col (click)="ShowSingleItem('item')">
         <div class="ion-text-center">
-          <h5 class="ion-text-uppercase color-tertiary-dark jostDemi size-28 m-b-0 m-t-5 font-weight-600"> Current order </h5>
+          <h5 class="ion-text-uppercase color-tertiary-dark jostDemi size-28 m-b-0 m-t-5 font-weight-600"> Available on the Market </h5>
         </div>
       </ion-col>
     </ion-row>
@@ -64,7 +64,7 @@
         </ion-col>
         <ion-col class="ion-no-padding">
           <div class="items-centers">
-            <ion-icon name="eye-outline" class="size-28 darken-color jostDemi"></ion-icon>
+            <ion-button size="small" class="ion-text-capitalize">View Offer</ion-button>
           </div>
         </ion-col>
       </ion-row>

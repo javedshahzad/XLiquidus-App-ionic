@@ -35,14 +35,40 @@
       </ion-col>
     </ion-row>
     <ion-row>
+      <ion-col class="ion-no-padding">
+        <ion-item lines="none">
+          <p class="color-secondary jostDemi size-12 m-b-2 m-t-2 font-weight-500"> SHOW AMOUNT IN DOLLARS </p>
+          <ion-toggle slot="end" mode="ios" [checked]="ShowAmountInDollars" (ionChange)="OnChangeAmount($event)"></ion-toggle>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
       <ion-col>
         <p class="color-tertiary-dark ion-text-start jostDemi size-16 m-b-0 m-t-0 font-weight-800">
           Amount you want
         </p>
-        <ion-item lines="none" class="main-border">
-          <ion-input type="number" [value]="Quantity" [(ngModel)]="Quantity" slot="start" class="color-secondary font-weight-700 jostDemi size-14 ion-no-margin"></ion-input>
-          <span class="font-weight-700 size-14 jostDemi color-secondary" slot="end">{{GetSingleListData?.marketSymbol}}</span>
-        </ion-item>
+          <ng-container *ngIf="ShowAmountInDollars">
+            <ion-item lines="none" class=" itemclass">
+              <ion-input type="number" [value]="ValueInUsd" [(ngModel)]="ValueInUsd" (ionChange)="OnChangeValueUSD($event)" slot="start" class="color-secondary font-weight-700 jostDemi size-14 ion-no-margin"></ion-input>
+              <span class="font-weight-700 size-14 jostDemi color-secondary" slot="end">USD</span>
+            </ion-item>
+            <br>
+            <ion-item lines="none" class="border-botom border-top">
+              <p class="color-secondary jostDemi size-12 m-b-2 m-t-2 font-weight-500" slot="start">{{Quantity}}</p>
+              <p class="color-secondary jostDemi size-12 m-b-2 m-t-2 font-weight-500" slot="end">{{GetSingleListData?.marketSymbol}}</p>
+            </ion-item>
+          </ng-container>
+          <ng-container *ngIf="!ShowAmountInDollars">
+            <ion-item lines="none" class=" itemclass">
+              <ion-input type="number" [value]="Quantity" [(ngModel)]="Quantity" (ionChange)="OnChangeValueCrypto($event)" slot="start" class="color-secondary font-weight-700 jostDemi size-14 ion-no-margin"></ion-input>
+              <span class="font-weight-700 size-14 jostDemi color-secondary" slot="end">{{GetSingleListData?.marketSymbol}}</span>
+            </ion-item>
+            <br>
+            <ion-item lines="none" class="border-botom border-top">
+              <p class="color-secondary jostDemi size-12 m-b-2 m-t-2 font-weight-500" slot="start">{{ ValueInUsd | currency:'USD' }}</p>
+              <p class="color-secondary jostDemi size-12 m-b-2 m-t-2 font-weight-500" slot="end">USD</p>
+            </ion-item>
+          </ng-container>
       </ion-col>
     </ion-row>
     <ion-row>

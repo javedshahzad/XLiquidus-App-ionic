@@ -13,9 +13,11 @@ import { EncryptionDecryptionService } from 'src/app/services/encryption.service
 export class UpdateOrderModalPage implements OnInit {
   GetSingleListData:any="";
   data: any;
-  Quantity: any;
+  Quantity: any=1;
   GetCartData: any;
   SelectedMaketCart: any = "";
+  ShowAmountInDollars:boolean=true;
+  ValueInUsd:any=1;
   constructor(
     public _nav: NavController,
     public router: Router,
@@ -165,7 +167,7 @@ export class UpdateOrderModalPage implements OnInit {
       console.log("GetListingById Response", res);
       if(res.status === 200){
         this.GetSingleListData = res.data.data;
-        this.Quantity = this.GetSingleListData?.availableQuantity;
+       // this.Quantity = this.GetSingleListData?.availableQuantity;
         this.GetCartItems();
       }
     }, err => {
@@ -173,5 +175,20 @@ export class UpdateOrderModalPage implements OnInit {
       this._appservices.loaderDismiss();
     });
   }
-
+  OnChangeAmount(event){
+    console.log(event)
+    this.ShowAmountInDollars = event.detail.checked;
+  }
+  OnChangeValueUSD(event){
+    var value = parseInt(event.target.value);
+    this.ValueInUsd = value;
+    this.Quantity = value * this.GetSingleListData?.currentPrice ?  this.GetSingleListData?.currentPrice : 0.000024;
+    console.log(this.Quantity)
+  }
+  OnChangeValueCrypto(event){
+    var value =  parseInt(event.target.value);
+    this.Quantity = value;
+    this.ValueInUsd = value * this.GetSingleListData.currentPrice ?  this.GetSingleListData.currentPrice : 0.000024;
+    console.log(this.ValueInUsd)
+  }
 }
