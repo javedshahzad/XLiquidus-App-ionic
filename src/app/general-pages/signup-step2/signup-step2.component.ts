@@ -136,7 +136,7 @@ getUserProfile(){
     // AddnlAddr: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255),Validators.pattern('^[a-zA-Z0-9!@#$&()\\-`.+,/\"][a-zA-Z0-9!@#$&()\\-`.+,/\"_ ]+[a-zA-Z0-9!@#$&()\\-`.+,/\" _]$')]],
     // state: [null, [Validators.required]],
     city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50),Validators.pattern('[a-zA-Z][a-zA-Z_ ]+[a-zA-Z _]$')]],
-    mobile: ['', [Validators.required, Validators.minLength(18), Validators.pattern(/^[+][1-9]{0}[0-9]+/)]], // /^(\d{10}|\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3}))$/
+    mobile: ['', [Validators.required, Validators.maxLength(18), Validators.pattern(/^[+][1-9]{0}[0-9]+/)]], // /^(\d{10}|\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3}))$/
     // zipcode: [null, [Validators.required,Validators.minLength(4)]],
   });
 

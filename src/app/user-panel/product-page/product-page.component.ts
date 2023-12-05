@@ -126,6 +126,7 @@ GetProduct(){
     var UrlParameters = `markets/GetTokenProfile?id=${tokenIndexId}`;
     console.log(UrlParameters);
     this._appservices.getDataByHttp(UrlParameters).subscribe(res => {
+      this.isDataLoad = false;
       console.log("markets/GetTokenProfile responseeeeeeeeee",res);
       this._appservices.loaderDismiss();
       if(res.status == 200){

@@ -15,18 +15,18 @@
         <ion-item class="white-background ion-activatable ripple-parent">
           <ion-ripple-effect type="unbounded"></ion-ripple-effect>
           <ion-row class="w-100" *ngIf="productDataFromDashboardPage?.isSaleAvailable">
-            <ion-col size="8">
+            <ion-col size="7" class="ion-no-padding">
               <ion-text class="display-block">
                 <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left p-t-20">Last Updated:</p>
                 <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left">{{currentDateTime | date:'MMM-d-y, h:mm a' :'UTC +0'}} UTC</p>
               </ion-text>
             </ion-col>
-            <ion-col size="4">
-              <ion-button *ngIf="productDataFromDashboardPage?.type != 'Currency'" expand="block" (click)="buynow()" size="large" class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
-                <h5 class="jostHeavy size-15 font-weight-800 m-t-10">BUY NOW</h5>
+            <ion-col size="5" class="ion-no-padding">
+              <ion-button *ngIf="productDataFromDashboardPage?.type != 'Currency'" expand="block" (click)="buynow()" size="small" class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
+                <h5 class="jostHeavy size-14 font-weight-700 m-t-10">BUY NOW</h5>
               </ion-button>
-              <ion-button *ngIf="productDataFromDashboardPage?.type === 'Currency'" expand="block" (click)="customizeorder()" size="large" class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
-                <h5 class="jostHeavy size-15 font-weight-800 m-t-10">CUSTOMIZE ORDER</h5>
+              <ion-button *ngIf="productDataFromDashboardPage?.type === 'Currency'" expand="block" (click)="customizeorder()" size="small" class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
+                <h5 class="jostHeavy size-12 font-weight-700 m-t-10">CUSTOMIZE ORDER</h5>
               </ion-button>
             </ion-col>
           </ion-row>

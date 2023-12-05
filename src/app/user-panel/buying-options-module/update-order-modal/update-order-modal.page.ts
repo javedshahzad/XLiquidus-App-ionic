@@ -13,11 +13,11 @@ import { EncryptionDecryptionService } from 'src/app/services/encryption.service
 export class UpdateOrderModalPage implements OnInit {
   GetSingleListData:any="";
   data: any;
-  Quantity: any=1;
+  Quantity: any=0;
   GetCartData: any;
   SelectedMaketCart: any = "";
   ShowAmountInDollars:boolean=true;
-  ValueInUsd:any=1;
+  ValueInUsd:any=0;
   constructor(
     public _nav: NavController,
     public router: Router,
@@ -30,6 +30,7 @@ export class UpdateOrderModalPage implements OnInit {
 
   ngOnInit() {
     this.data = this.navParams.get("data");
+    this.OnChangeValueUSD(this.Quantity)
     this.GetListingById(this.data.id);
     
   }
@@ -82,11 +83,14 @@ export class UpdateOrderModalPage implements OnInit {
         if(SelectedMaketCart?.length > 0){
           this.SelectedMaketCart = SelectedMaketCart[0];
           this.Quantity = this.SelectedMaketCart?.amount;
+         this.ValueInUsd = this.Quantity * this.GetSingleListData?.currentRate;
+         this.ValueInUsd = this.roundedNumberToFive(this.ValueInUsd)
         }
       }
       else if(_respone.status === 404){
       this._appservices.createCart(this._appservices.loggedInUserDetails.email).then(_respone =>{
       console.log('Create cart:',_respone);
+      this.GetCartData = _respone?.data?.data?.cart;
       if(_respone?.data?.data?.cart?.cartOwnerId){
 
       }
@@ -97,6 +101,7 @@ export class UpdateOrderModalPage implements OnInit {
       this._appservices.loaderDismiss();
         this._appservices.createCart(this._appservices.loggedInUserDetails.email).then(_respone =>{
       console.log('Create cart:',_respone);
+      this.GetCartData = _respone?.data?.data?.cart;
       if(_respone?.data?.data?.cart?.cartOwnerId){
         // this.AddToCart();
       }
@@ -104,6 +109,7 @@ export class UpdateOrderModalPage implements OnInit {
     });
   }
   AddToCart(){
+
     this._appservices.simpleLoader();  
     let payload:ADD_TO_CART_PAYLOAD = {
     email:this._appservices.loggedInUserDetails['email'],
@@ -159,6 +165,10 @@ export class UpdateOrderModalPage implements OnInit {
     return number?.toFixed(2);
      
   }
+  roundedNumberToFive(number){
+    return number?.toFixed(5);
+     
+  }
   GetListingById(id:any){
       this._appservices.simpleLoader();
     var UrlParameters = `CustomerMarkets/GetListingById?id=${id}`;
@@ -167,7 +177,7 @@ export class UpdateOrderModalPage implements OnInit {
       console.log("GetListingById Response", res);
       if(res.status === 200){
         this.GetSingleListData = res.data.data;
-       // this.Quantity = this.GetSingleListData?.availableQuantity;
+        //this.Quantity = this.GetSingleListData?.availableQuantity;
         this.GetCartItems();
       }
     }, err => {
@@ -179,16 +189,16 @@ export class UpdateOrderModalPage implements OnInit {
     console.log(event)
     this.ShowAmountInDollars = event.detail.checked;
   }
-  OnChangeValueUSD(event){
-    var value = parseInt(event.target.value);
+  OnChangeValueUSD(eventVal){
+    var value = parseFloat(eventVal);
     this.ValueInUsd = value;
-    this.Quantity = value * this.GetSingleListData?.currentPrice ?  this.GetSingleListData?.currentPrice : 0.000024;
-    console.log(this.Quantity)
+    var price = value / this.GetSingleListData?.currentRate;
+    this.Quantity = this.roundedNumberToFive(price);
   }
-  OnChangeValueCrypto(event){
-    var value =  parseInt(event.target.value);
+  OnChangeValueCrypto(eventVal){
+    var value = parseFloat(eventVal);
     this.Quantity = value;
-    this.ValueInUsd = value * this.GetSingleListData.currentPrice ?  this.GetSingleListData.currentPrice : 0.000024;
-    console.log(this.ValueInUsd)
+    var price = value * this.GetSingleListData.currentRate;
+    this.ValueInUsd = price;
   }
 }

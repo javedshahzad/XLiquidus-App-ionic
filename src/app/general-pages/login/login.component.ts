@@ -162,9 +162,11 @@ export class LoginComponent implements OnInit {
     }, err => console.log('err', err));
   }
 IsLoginAllowedAsync(){
+  this._appServices.simpleLoader();
   var UrlParameters = `Auth/IsLoginAllowedAsync?email=${this._appServices.loggedInUserDetails.email}&applicationType=XL`;
   this._appServices.getDataByHttp(UrlParameters).subscribe(res => {
     console.log("Auth/IsLoginAllowedAsync Response", res);
+    this._appServices.loaderDismiss();
     if(res.status === 200){
        this.IsLoginAllowedAsyncData = res.data.data;
        if(this.IsLoginAllowedAsyncData.isAllowedToLogin === true){

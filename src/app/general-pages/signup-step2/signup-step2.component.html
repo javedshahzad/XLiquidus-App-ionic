@@ -77,8 +77,8 @@
 
             <div>
               <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">MOBILE NUMBER</ion-label>
-              <ion-input class="itemclass height-60" inputmode="numeric" placeholder='+XX (XXX) XXX-XXXX'
-                [brmasker]="{mask:'+00 (000) 000-0000', len:18}" maxlength="18" autocomplete="off"
+              <ion-input class="itemclass height-60" inputmode="numeric" placeholder='+XX (XXX) XXX-XXXXX'
+                [brmasker]="{mask:'+00 (000) 000-00000', len:18}" maxlength="18" autocomplete="off"
                 formControlName="mobile" autocomplete="new-password" type="tel"></ion-input>
               <div *ngFor="let error of errorMessages.mobile" class="errormsg">
                 <ng-container *ngIf="mobile.hasError(error.type) && (mobile.dirty || mobile.touched)">

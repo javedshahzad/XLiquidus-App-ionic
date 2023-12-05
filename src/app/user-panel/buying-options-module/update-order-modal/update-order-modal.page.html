@@ -49,18 +49,18 @@
         </p>
           <ng-container *ngIf="ShowAmountInDollars">
             <ion-item lines="none" class=" itemclass">
-              <ion-input type="number" [value]="ValueInUsd" [(ngModel)]="ValueInUsd" (ionChange)="OnChangeValueUSD($event)" slot="start" class="color-secondary font-weight-700 jostDemi size-14 ion-no-margin"></ion-input>
+              <ion-input type="number" [value]="ValueInUsd" [(ngModel)]="ValueInUsd" (ionChange)="OnChangeValueUSD($event.target.value)" slot="start" class="color-secondary font-weight-700 jostDemi size-14 ion-no-margin"></ion-input>
               <span class="font-weight-700 size-14 jostDemi color-secondary" slot="end">USD</span>
             </ion-item>
             <br>
             <ion-item lines="none" class="border-botom border-top">
-              <p class="color-secondary jostDemi size-12 m-b-2 m-t-2 font-weight-500" slot="start">{{Quantity}}</p>
+              <p class="color-secondary jostDemi size-12 m-b-2 m-t-2 font-weight-500" slot="start">{{ Quantity > 0 ? Quantity : '0.00'}}</p>
               <p class="color-secondary jostDemi size-12 m-b-2 m-t-2 font-weight-500" slot="end">{{GetSingleListData?.marketSymbol}}</p>
             </ion-item>
           </ng-container>
           <ng-container *ngIf="!ShowAmountInDollars">
             <ion-item lines="none" class=" itemclass">
-              <ion-input type="number" [value]="Quantity" [(ngModel)]="Quantity" (ionChange)="OnChangeValueCrypto($event)" slot="start" class="color-secondary font-weight-700 jostDemi size-14 ion-no-margin"></ion-input>
+              <ion-input type="number" [value]="Quantity" [(ngModel)]="Quantity" (ionChange)="OnChangeValueCrypto($event.target.value)" slot="start" class="color-secondary font-weight-700 jostDemi size-14 ion-no-margin"></ion-input>
               <span class="font-weight-700 size-14 jostDemi color-secondary" slot="end">{{GetSingleListData?.marketSymbol}}</span>
             </ion-item>
             <br>

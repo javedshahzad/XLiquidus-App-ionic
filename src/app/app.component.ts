@@ -116,6 +116,10 @@ export class AppComponent {
       }
     }, err => {
       console.log(err);
+      var deviceID = this._encrypDecrypService.getUUID();
+      localStorage.clear();
+      this._encrypDecrypService.setUUID(deviceID);
+      this._nav.navigateRoot('/token-expires');
       this._appServices.loaderDismiss();
     });
   }
