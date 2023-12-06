@@ -177,6 +177,7 @@ IsLoginAllowedAsync(){
     }
   }, err => {
     console.log(err);
+    this._appServices.presentToast("There is an error while login! Please try again later.");
     this._appServices.loaderDismiss();
   });
 }
