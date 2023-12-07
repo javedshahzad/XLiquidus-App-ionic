@@ -13,9 +13,9 @@
 		</dict>
 	</array>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>App requires GPS to track Location</string>
+	<string>We use your location for full functionality of certain app features.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>App requires GPS to track Location</string>
+	<string>We use your location for full functionality of certain app features.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
