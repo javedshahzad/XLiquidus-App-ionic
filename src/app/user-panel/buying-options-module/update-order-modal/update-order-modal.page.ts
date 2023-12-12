@@ -192,13 +192,17 @@ export class UpdateOrderModalPage implements OnInit {
   OnChangeValueUSD(eventVal){
     var value = parseFloat(eventVal);
     this.ValueInUsd = value;
-    var price = value / this.GetSingleListData?.currentRate;
+    var price = (value / this.GetSingleListData?.unitPrice) * this.GetSingleListData?.availableQuantity;
+    console.log(price)
     this.Quantity = this.roundedNumberToFive(price);
+    console.log(this.Quantity)
   }
   OnChangeValueCrypto(eventVal){
     var value = parseFloat(eventVal);
     this.Quantity = value;
-    var price = value * this.GetSingleListData.currentRate;
+    var price = value * this.GetSingleListData?.unitPrice;
+    console.log(price)
     this.ValueInUsd = price;
+    console.log(this.ValueInUsd)
   }
 }

@@ -99,6 +99,12 @@ export class AppComponent {
       this._nav.navigateRoot(['.']);
     }
   }
+  logout() {
+    var deviceID = this._encrypDecrypService.getUUID();
+    localStorage.clear();
+    this._encrypDecrypService.setUUID(deviceID);
+    this._nav.navigateRoot('/token-expires');
+  }
   IsLoginAllowedAsync(){
     this._appServices.simpleLoader();
     var UrlParameters = `Auth/IsLoginAllowedAsync?email=${this._appServices.loggedInUserDetails.email}&applicationType=XL`;
@@ -115,6 +121,9 @@ export class AppComponent {
          }
       }
     }, err => {
+      if(err.status === 401){
+        this.logout();
+      }
       console.log(err);
       this._appServices.presentToast("You are not allowed to login!");
       this._appServices.loaderDismiss();
