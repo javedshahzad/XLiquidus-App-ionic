@@ -24,7 +24,7 @@ export class CheckoutTransactionSummaryComponent implements OnInit {
     console.log('currency', this.currency, 'passed Data:', this.data)
     if (this.currency != 'USD') {
       this.cryptoCheckoutPaymentDetails = this.data?.cryptoCheckoutPaymentDetails
-      this.paymentAddresses = (this.data?.cryptoCheckoutPaymentDetails?.paymentAddresses as Array<any>)?.filter((x) => x.type === this.currency)
+      this.paymentAddresses = (this.data?.cryptoCheckoutPaymentDetails?.paymentAddresses as Array<any>)?.filter((x) => x.type === this.data?.cryptoCheckoutPaymentDetails?.paymentCurrency)
       console.log('cryptoCheckoutPaymentDetails', this.cryptoCheckoutPaymentDetails, ' paymentAddresses:', this.paymentAddresses)
 
     }

@@ -14,11 +14,6 @@
             _appServices?.loggedInUserAccountDetails?.preferredName : "User" :
             _appServices?.loggedInUserAccountDetails?.firstName}}!</h5>
         </ion-col>
-        <!-- <ion-col size="4">
-          <ion-button expand="block" size="large"
-            class="size-16 primary-color-background no-border border-radius-8 p-t-20p  height-50 futuraFontsBold letter-spacing">
-            BUY NOW</ion-button>
-        </ion-col> -->
       </ion-row>
       <ion-row>
         <ion-col>
@@ -26,20 +21,16 @@
             <p class="p-l-10 m-t-0 font-weight-400 jostBook size-15">
               As of {{currentDateTime | date:'MMM-d-y, h:mm a' :'UTC +0'}} UTC
             </p>
-            <ion-card style="min-height: 250px;border-radius: 8px;padding: 30px 0px;">
+            <!-- <ion-card style="min-height: 250px;border-radius: 8px;padding: 30px 0px;">
               <app-graph *ngIf="showGraph" [totalWalletBalnce]="GraphData" [pageName]="dashboardpage"></app-graph>
-            </ion-card>
+            </ion-card> -->
           </ion-text>
         </ion-col>
       </ion-row>
-      <!-- <ion-item class="white-background ion-activatable ripple-parent">
-        <ion-button expand="block" (click)="customizeorder()" size="large" slot="end" class="ion-text-right primary-second-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
-          <h5 class="jostHeavy size-12 font-weight-600 m-t-10">customize order</h5>
-        </ion-button>
-      </ion-item> -->
       <div class="market-movers">
         <ion-row class="p-l-10 p-r-10">
           <ion-col size="9">
+            <!-- color-tertiary-dark -->
             <h4 class="jostDemi size-18 color-tertiary-dark font-weight-600">MARKETPLACE MOVERS</h4>
           </ion-col>
           <ion-col size="3" class="ion-text-right m-t-10">

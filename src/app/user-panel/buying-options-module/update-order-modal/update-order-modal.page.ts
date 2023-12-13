@@ -192,7 +192,7 @@ export class UpdateOrderModalPage implements OnInit {
   OnChangeValueUSD(eventVal){
     var value = parseFloat(eventVal);
     this.ValueInUsd = value;
-    var price = (value / this.GetSingleListData?.unitPrice) * this.GetSingleListData?.availableQuantity;
+    var price = (value / this.GetSingleListData?.unitPrice) * 1;
     console.log(price)
     this.Quantity = this.roundedNumberToFive(price);
     console.log(this.Quantity)

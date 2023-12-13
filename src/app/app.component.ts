@@ -121,12 +121,15 @@ export class AppComponent {
          }
       }
     }, err => {
-      if(err.status === 401){
-        this.logout();
-      }
       console.log(err);
-      this._appServices.presentToast("You are not allowed to login!");
-      this._appServices.loaderDismiss();
+      if(err.status === 401){
+        this._appServices.loaderDismiss();
+        this.logout();
+        this._appServices.presentToast("Your token has been expired!");
+      }else{
+        this._appServices.presentToast("You are not allowed to login!");
+      }
+     
     });
   }
   setDeviceID() {
