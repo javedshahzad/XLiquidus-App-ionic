@@ -49,6 +49,7 @@ export class MarketSearchPage implements OnInit {
   pageNumber:any=1;
   GetCartData: any;
   filters: any='';
+  ProductDetailsData: any;
   constructor(
     public _nav: NavController,
     public router: Router,
@@ -63,6 +64,8 @@ export class MarketSearchPage implements OnInit {
   
   }
   ionViewWillEnter() {
+    var proData = this._encServices.decrypt(this.activatedroute.snapshot.paramMap.get('SelectedProductData'));
+    this.ProductDetailsData = JSON.parse(proData);
     this.pageNumber=1;
     var payloadParamters = {
       pageSize:50,
@@ -112,7 +115,7 @@ export class MarketSearchPage implements OnInit {
     }
   }
   backtomarktplace() {
-    this._nav.navigateRoot(['/user-panel/current-order']);
+    this._nav.navigateRoot(['/user-panel/current-order',{ 'SelectedProductData': this._encServices.encrypt(JSON.stringify(this.ProductDetailsData))}]);
   }
   async ShowSingleItem(item) {
     const modal = await this.modalController.create({

@@ -29,16 +29,16 @@
     <ion-grid class="ion-padding-start ion-padding-end">
       <ion-row class="border-botom ion-text-center">
         <ion-col class="ion-no-padding">
-          <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-14 m-b-2 m-t-2 font-weight-500"> Currency </p>
+          <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-12 m-b-2 m-t-2 font-weight-500"> Currency </p>
         </ion-col>
         <ion-col class="ion-no-padding">
-          <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-14 m-b-2 m-t-2 font-weight-500"> accepted payment method </p>
+          <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-12 m-b-2 m-t-2 font-weight-500"> accepted payment method </p>
         </ion-col>
         <ion-col class="ion-no-padding">
-          <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-14 m-b-2 m-t-2 font-weight-500"> offer <br> type </p>
+          <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-12 m-b-2 m-t-2 font-weight-500"> offer <br> type </p>
         </ion-col>
         <ion-col class="ion-no-padding">
-          <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-14 m-b-2 m-t-2 font-weight-500"> details </p>
+          <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-12 m-b-2 m-t-2 font-weight-500"> details </p>
         </ion-col>
         <ion-col></ion-col>
       </ion-row>
@@ -50,21 +50,22 @@
         </ion-col>
         <ion-col class="ion-no-padding">
           <div [class.items-centers]="item?.acceptedPaymentMethods.length <=2">
-            <p class="darken-color ion-text-center ion-text-uppercase jostDemi size-14 m-b-5 m-t-5 font-weight-500" ><span *ngFor="let paymentMethod of item?.acceptedPaymentMethods; let i = index">{{paymentMethod.paymentCurrency}} <span *ngIf="i != item?.acceptedPaymentMethods.length-1 ">,</span></span> </p>
+            <p class="darken-color ion-text-center ion-text-uppercase jostDemi size-12 m-b-5 m-t-5 font-weight-500" ><span *ngFor="let paymentMethod of item?.acceptedPaymentMethods; let i = index">{{paymentMethod.paymentCurrency}} <span *ngIf="i != item?.acceptedPaymentMethods.length-1 ">,</span></span> </p>
           </div>
         </ion-col>
         <ion-col class="ion-no-padding">
           <div class="items-centers">
-            <p class="darken-color ion-text-center ion-text-uppercase jostDemi size-14 m-b-5 m-t-5 font-weight-500"> {{item.pricingModel}} </p>
+            <p class="darken-color ion-text-center ion-text-uppercase jostDemi size-12 m-b-5 m-t-5 font-weight-500"> {{item.pricingModel}} </p>
           </div>
         </ion-col>
-        <ion-col class="ion-no-padding" >
-          <p class="color-secondary ion-text-center ion-text-capitalize jostDemi size-14 m-b-5 m-t-5 font-weight-600"> {{roundedNumber(item.unitPrice)}} {{item.marketSymbol}} </p>
-          <p class="color-secondary ion-text-center ion-text-capitalize jostDemi size-14 m-b-5 m-t-5 font-weight-600"> {{roundedNumber(item.currentRate)}} USD </p>
+        <ion-col class="ion-no-padding" size="3">
+          <p class="color-secondary ion-text-center ion-text-capitalize jostDemi size-12 m-b-5 m-t-5 font-weight-600"> {{roundedNumber(item.unitPrice)}} USD</p>
+          <p class="color-secondary ion-text-center ion-text-capitalize jostDemi size-12 m-b-5 m-t-5 font-weight-600"> {{roundedNumber(item.currentRate)}} USD </p>
+          <p class="color-secondary ion-text-center ion-text-capitalize jostDemi size-12 m-b-5 m-t-5 font-weight-600">Avail. {{roundedNumber(item.availableQuantity)}}  {{item.marketSymbol}} </p>
         </ion-col>
         <ion-col class="ion-no-padding">
           <div class="items-centers">
-            <ion-button size="small" class="ion-text-capitalize">View Offer</ion-button>
+            <ion-button size="small" class="ion-text-capitalize" shape="round"> <span>View <br> Offer</span> </ion-button>
           </div>
         </ion-col>
       </ion-row>

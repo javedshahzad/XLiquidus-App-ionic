@@ -11,5 +11,15 @@
   top: -6px;
 }
 .market-movers{
-  margin-top: 150px;
+  margin-top: 30px;
+}
+.bg-img-container{
+  height: 210px;
+  width: 100%;
+  position: absolute;
+  img{
+    height: 100%;
+    width: 100%;
+    object-fit: fill;
+  }
 }

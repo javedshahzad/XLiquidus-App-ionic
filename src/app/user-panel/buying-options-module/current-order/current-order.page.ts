@@ -90,7 +90,7 @@ export class CurrentOrderPage implements OnInit {
  
   }
   ionViewWillEnter() {
-    var proData = this._encServices.decrypt(this.activatedroute.snapshot.paramMap.get('buproductData'));
+    var proData = this._encServices.decrypt(this.activatedroute.snapshot.paramMap.get('SelectedProductData'));
     this.ProductDetailsData = JSON.parse(proData);
     this.GetCartItems();
     this.getAllListings();
@@ -193,6 +193,6 @@ getTotalPrice(type,amount){
   }
 }
 checkout() {
-  this._nav.navigateRoot(['/user-panel/shoping-cart']);
+  this._nav.navigateRoot(['/user-panel/shoping-cart',{ 'SelectedProductData': this._encServices.encrypt(JSON.stringify(this.ProductDetailsData))}]);
 }
 }
