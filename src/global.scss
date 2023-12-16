@@ -536,6 +536,9 @@ ion-refresher {
 .p-t-4 {
   padding-top: 4px;
 }
+.p-t-2 {
+  --padding-top: 2px;
+}
 
 .p-t-25 {
   padding-top: 25px;
@@ -1016,6 +1019,9 @@ ion-refresher {
 .w-15 {
   width: 15%;
 }
+.w-60-px {
+  width: 60px;
+}
 
 .italic {
   font-style: italic;
@@ -1092,6 +1098,9 @@ ion-refresher {
 
 .border-radius-8 {
   border-radius: 8px;
+}
+.border-radius-10 {
+  --border-radius: 10px;
 }
 
 .v-lign-b {

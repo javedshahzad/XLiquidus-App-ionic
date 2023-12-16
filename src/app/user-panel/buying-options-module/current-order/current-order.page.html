@@ -20,13 +20,13 @@
     </ion-row>
     <ion-row>
       <ion-col class="ion-padding">
-        <ion-button routerLink="/user-panel/market-search" expand="block" fill="outline" size="small" class="jostDemi shadownot capitalize height-40 letter-spacing size-14 alredy-member no-border border-radius-12 ion-activatable ripple-parent box-shadow font-weight-700"> Market Search </ion-button>
+        <ion-button (click)="GotoMarketSearch()" expand="block" fill="outline" size="small" class="jostDemi shadownot capitalize height-40 letter-spacing size-14 alredy-member no-border border-radius-12 ion-activatable ripple-parent box-shadow font-weight-700"> Market Search </ion-button>
         <p class="darken-color ion-text-center jostDemi size-12 m-b-2 m-t-2 font-weight-400"> Click on an item to enter the amount you would like to buy or to see more details </p>
       </ion-col>
     </ion-row>
   </ion-grid>
   <div class="main-box"  *ngIf="AllAvailableListings.length > 0">
-    <ion-grid class="ion-padding-start ion-padding-end">
+    <ion-grid>
       <ion-row class="border-botom ion-text-center">
         <ion-col class="ion-no-padding">
           <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-12 m-b-2 m-t-2 font-weight-500"> Currency </p>
@@ -37,10 +37,10 @@
         <ion-col class="ion-no-padding">
           <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-12 m-b-2 m-t-2 font-weight-500"> offer <br> type </p>
         </ion-col>
-        <ion-col class="ion-no-padding">
+        <ion-col class="ion-no-padding" size="3">
           <p class="color-tertiary-dark ion-text-center ion-text-uppercase jostDemi size-12 m-b-2 m-t-2 font-weight-500"> details </p>
         </ion-col>
-        <ion-col></ion-col>
+        <ion-col size="2.5"></ion-col>
       </ion-row>
       <ion-row class="border-botom" *ngFor="let item of AllAvailableListings" (click)="ShowSingleItem(item)">
         <ion-col class="ion-no-padding">
@@ -49,7 +49,7 @@
           </div>
         </ion-col>
         <ion-col class="ion-no-padding">
-          <div [class.items-centers]="item?.acceptedPaymentMethods.length <=2">
+          <div class="items-centers">
             <p class="darken-color ion-text-center ion-text-uppercase jostDemi size-12 m-b-5 m-t-5 font-weight-500" ><span *ngFor="let paymentMethod of item?.acceptedPaymentMethods; let i = index">{{paymentMethod.paymentCurrency}} <span *ngIf="i != item?.acceptedPaymentMethods.length-1 ">,</span></span> </p>
           </div>
         </ion-col>
@@ -58,14 +58,14 @@
             <p class="darken-color ion-text-center ion-text-uppercase jostDemi size-12 m-b-5 m-t-5 font-weight-500"> {{item.pricingModel}} </p>
           </div>
         </ion-col>
-        <ion-col class="ion-no-padding" size="3">
+        <ion-col class="ion-no-padding" size="4">
           <p class="color-secondary ion-text-center ion-text-capitalize jostDemi size-12 m-b-5 m-t-5 font-weight-600"> {{roundedNumber(item.unitPrice)}} USD</p>
           <p class="color-secondary ion-text-center ion-text-capitalize jostDemi size-12 m-b-5 m-t-5 font-weight-600"> {{roundedNumber(item.currentRate)}} USD </p>
           <p class="color-secondary ion-text-center ion-text-capitalize jostDemi size-12 m-b-5 m-t-5 font-weight-600">Avail. {{roundedNumber(item.availableQuantity)}}  {{item.marketSymbol}} </p>
         </ion-col>
-        <ion-col class="ion-no-padding">
+        <ion-col class="ion-no-padding" size="1.9">
           <div class="items-centers">
-            <ion-button size="small" class="ion-text-capitalize" shape="round"> <span>View <br> Offer</span> </ion-button>
+            <ion-button class="ion-text-uppercase margin-right border-radius-10 height-40 w-60-px"> <span>View <br> Offer</span> </ion-button>
           </div>
         </ion-col>
       </ion-row>

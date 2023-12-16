@@ -98,6 +98,10 @@ export class CurrentOrderPage implements OnInit {
   backtomarktplace() {
     this._nav.navigateRoot(['/user-panel/dashboard']);
   }
+  GotoMarketSearch() {
+    this._nav.navigateRoot(['/user-panel/market-search', { 'SelectedProductData': this._encServices.encrypt(JSON.stringify(this.ProductDetailsData))}]);
+  }
+ 
   async ShowSingleItem(item) {
     const modal = await this.modalController.create({
         component: UpdateOrderModalPage,
@@ -193,6 +197,6 @@ getTotalPrice(type,amount){
   }
 }
 checkout() {
-  this._nav.navigateRoot(['/user-panel/shoping-cart',{ 'SelectedProductData': this._encServices.encrypt(JSON.stringify(this.ProductDetailsData))}]);
+  this._nav.navigateRoot(['/user-panel/shoping-cart']);
 }
 }
