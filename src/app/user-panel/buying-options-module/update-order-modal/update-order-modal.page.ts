@@ -83,8 +83,8 @@ export class UpdateOrderModalPage implements OnInit {
         if(SelectedMaketCart?.length > 0){
           this.SelectedMaketCart = SelectedMaketCart[0];
           this.Quantity = this.SelectedMaketCart?.amount;
-         this.ValueInUsd = this.Quantity * this.GetSingleListData?.currentRate;
-         this.ValueInUsd = this.roundedNumberToFive(this.ValueInUsd)
+         this.ValueInUsd = this.Quantity * this.GetSingleListData?.unitPrice;
+         this.ValueInUsd = this.roundedNumber(this.ValueInUsd)
         }
       }
       else if(_respone.status === 404){
@@ -166,7 +166,7 @@ export class UpdateOrderModalPage implements OnInit {
      
   }
   roundedNumberToFive(number){
-    return number?.toFixed(5);
+    return number?.toFixed(8);
      
   }
   GetListingById(id:any){

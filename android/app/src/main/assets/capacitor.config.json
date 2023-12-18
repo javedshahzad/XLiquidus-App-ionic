@@ -1,5 +1,5 @@
 {
-	"appId": "com.usscyber.xl",
+	"appId": "com.usscyber.xliquiduss.app",
 	"appName": "XLiquidus",
 	"webDir": "www",
 	"bundledWebRuntime": false,
@@ -8,8 +8,11 @@
 		"SplashScreen": {
 			"showSpinner": true,
 			"launchShowDuration": 6000,
+			"launchFadeOutDuration": 3000,
 			"launchAutoHide": true,
 			"spinnerColor": "#001b47",
+			"layoutName": "launch_screen",
+			"androidScaleType": "CENTER_CROP",
 			"splashFullScreen": true
 		}
 	},

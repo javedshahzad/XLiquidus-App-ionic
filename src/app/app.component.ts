@@ -1,6 +1,5 @@
 import { Component, QueryList, VERSION, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { NavController, Platform, IonRouterOutlet, ToastController } from '@ionic/angular';
 import { AppEnum } from './appEnum/appenum';
@@ -10,7 +9,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import { v4 as uuidv4 } from 'uuid';
 import { AppVersion } from '@ionic-native/app-version/ngx';
-
+import { SplashScreen } from '@capacitor/splash-screen';
 
 @Component({
   selector: 'app-root',
@@ -30,7 +29,6 @@ export class AppComponent {
     private platform: Platform,
     public toast: ToastController,
     public router: Router,
-    private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private _nav: NavController,
     public _encrypDecrypService: EncryptionDecryptionService,
@@ -43,13 +41,14 @@ export class AppComponent {
     this.initializeApp();
   }
 
-  initializeApp() {
-
+  async initializeApp() {
+    await SplashScreen.show({
+      autoHide: false,
+    });
     this.platform.ready().then(async () => {
       this.device = await this.platform.platforms();
       console.log(this.device)
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
       this.backButtonEvent();
       this.setDeviceID();
 
@@ -62,6 +61,7 @@ export class AppComponent {
       } else {
         this.getSettings();
       }
+      await SplashScreen.hide();
     });
   }
 
@@ -122,8 +122,8 @@ export class AppComponent {
       }
     }, err => {
       console.log(err);
+      this._appServices.loaderDismiss();
       if(err.status === 401){
-        this._appServices.loaderDismiss();
         this.logout();
         this._appServices.presentToast("Your token has been expired!");
       }else{

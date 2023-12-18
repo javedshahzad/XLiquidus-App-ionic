@@ -6,8 +6,8 @@ android {
         applicationId "com.usscyber.xliquiduss.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdk 33
-        versionCode 109
-        versionName '1.0.9'
+        versionCode 110
+        versionName '1.0.10'
          manifestPlaceholders = [appAuthRedirectScheme: 'com.usscyber.xliquiduss.app']
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
