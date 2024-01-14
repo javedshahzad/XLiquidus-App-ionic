@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import { Platform, NavController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
 import { AppService } from 'src/app/services/app.service';
@@ -24,7 +23,6 @@ export class ResetPasswordStepOneComponent implements OnInit {
     public _nav: NavController,
     private formBuilder: FormBuilder,
     private _encrypDecrypService: EncryptionDecryptionService,
-    private uniqueDeviceID: UniqueDeviceID,
     private activatedroute: ActivatedRoute,
     private router:Router
   ) { this.rootPage = this.activatedroute.snapshot.paramMap.get('root'); }

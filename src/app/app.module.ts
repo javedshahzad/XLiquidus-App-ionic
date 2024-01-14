@@ -15,7 +15,6 @@ import { B2C_config_setting } from './B2C_config_setting';
 import { httpClientInterceptor } from './interceptor/httpClient.interceptor';
 import { EncryptionDecryptionService } from './services/encryption.service';
 import { AppEnum } from './appEnum/appenum';
-import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NgChartsModule } from 'ng2-charts';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -57,7 +56,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppService,
     B2C_config_setting,
     NetworkInterface,
-    UniqueDeviceID,
     Geolocation,
     AppVersion,
     NgChartsModule,

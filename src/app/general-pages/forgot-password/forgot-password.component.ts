@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import { Platform, NavController } from '@ionic/angular';
 import { AppService } from 'src/app/services/app.service';
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
+import { Device } from '@capacitor/device';
 
 @Component({
   selector: 'app-forgot-password',
@@ -29,13 +29,12 @@ export class ForgotPasswordComponent implements OnInit {
     public _nav: NavController,
     private formBuilder: FormBuilder,
     private _encrypDecrypService: EncryptionDecryptionService,
-    private uniqueDeviceID: UniqueDeviceID,
     private activatedroute: ActivatedRoute
   ) {
     this.rootPage = this.activatedroute.snapshot.paramMap.get('root');
 
-    this.uniqueDeviceID.get().then((uuid: any) => {
-      this.deviceId = uuid;
+    Device.getId().then((uuid) => {
+      this.deviceId = uuid.identifier;
       console.log(this.deviceId);
     }).catch((error: any) => {
       this.deviceId = this._encrypDecrypService.getUUID();

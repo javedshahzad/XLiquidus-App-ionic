@@ -90,7 +90,7 @@ export class DashboardComponent implements OnInit {
       this._appServices.loaderDismiss();
     }, err => {
       this.isDataLoad = false;
-      console.log('err1', err);
+      console.log('GetMarketTokens error', err);
       this._appServices.loaderDismiss();
     });
   }

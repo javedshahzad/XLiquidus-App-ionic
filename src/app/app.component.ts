@@ -5,11 +5,10 @@ import { NavController, Platform, IonRouterOutlet, ToastController } from '@ioni
 import { AppEnum } from './appEnum/appenum';
 import { AppService } from './services/app.service';
 import { EncryptionDecryptionService } from './services/encryption.service';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import { v4 as uuidv4 } from 'uuid';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { Device } from '@capacitor/device';
 
 @Component({
   selector: 'app-root',
@@ -34,8 +33,6 @@ export class AppComponent {
     public _encrypDecrypService: EncryptionDecryptionService,
     public _appnum: AppEnum,
     public _appServices: AppService,
-    public geolocation: Geolocation,
-    private uniqueDeviceID: UniqueDeviceID,
     private appVersion: AppVersion
   ) {
     this.initializeApp();
@@ -47,20 +44,12 @@ export class AppComponent {
     });
     this.platform.ready().then(async () => {
       this.device = await this.platform.platforms();
-      console.log(this.device)
       this.statusBar.styleDefault();
       this.backButtonEvent();
       this.setDeviceID();
-
+      await this._encrypDecrypService.getUserCurrentLocartion();
       this._appServices.checkConnection();
-      this.geolocation.getCurrentPosition().then((resp) => {
-      }).catch((error) => {
-      });
-      if (!this.device) {
-        this.checkUserloggedInOrNot();
-      } else {
-        this.getSettings();
-      }
+      this.getSettings();
       await SplashScreen.hide();
     });
   }
@@ -110,12 +99,13 @@ export class AppComponent {
     var UrlParameters = `Auth/IsLoginAllowedAsync?email=${this._appServices.loggedInUserDetails.email}&applicationType=XL`;
     this._appServices.getDataByHttp(UrlParameters).subscribe(async res => {
       console.log("Auth/IsLoginAllowedAsync Response", res);
-      this._appServices.loaderDismiss();
       if(res.status === 200){
          this.IsLoginAllowedAsyncData = res.data.data;
          if(this.IsLoginAllowedAsyncData.isAllowedToLogin === true){
-          this._nav.navigateRoot(['/user-panel']);
+          this.postSyncUserDetails();
+        
          }else{
+          this._appServices.loaderDismiss();
           this._appServices.presentToast("You are not allowed to login!")
           this._nav.navigateRoot(['/beta-program']);
          }
@@ -134,8 +124,8 @@ export class AppComponent {
   }
   setDeviceID() {
     let deviceId;
-    this.uniqueDeviceID.get().then((uuid: any) => {
-      deviceId = uuid;
+    Device.getId().then((uuid) => {
+      deviceId = uuid.identifier;
     }).catch((error: any) => {
       deviceId = this._encrypDecrypService.getUUID();
       if (!deviceId) {
@@ -144,7 +134,49 @@ export class AppComponent {
       }
     });
   }
+  async postSyncUserDetails() {
+    this._encrypDecrypService.AppBundeID();
+    this._encrypDecrypService.GetDeviceID();
+    this._encrypDecrypService.DeviceDetails();
+   await this._encrypDecrypService.getUserCurrentLocartion();
+   var postJson = {
+    "userObjectId": this._appServices.loggedInUserDetails.oid,
+    "emailAddress": this._appServices.loggedInUserDetails.email,
+    "date": this._appServices.getAppDateTime(new Date()),
+    "appId":this._encrypDecrypService.PackageName,
+    "deviceId": this._encrypDecrypService.deviceId,
+    "deviceOs": this.platform.is('android') ? 'android' : 'ios',
+    "deviceName": this._encrypDecrypService.DeviceName,
+    "locationGeoTag": this._encrypDecrypService.geolocationparam,
+    "signature": "",
+    "status": "NewRequest",
+    "type": "ReSync",
+    "networkInterface": " XLiquidusExchange",
+    "nonce": ((new Date().getTime() * 10000) + 621355968000000000)
+  }
+    console.log('POST SYNC PAULOAD = ', postJson);
+    var UrlParameters = `clientIpAddress=${this._appServices.ipAddress.ip}`
+    await this._appServices.postDataByNativePromiss(`Users/PostSync?${UrlParameters}`, postJson).then(async (_res1:any) => {
+      console.log("Stwp one data response",_res1)
+      console.log("reesync set data", this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.communicationAccessKey))
+      if (!this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.communicationAccessKey)) {
+        postJson['type'] = "Sync";
+        await this._appServices.postDataByNativePromiss(`Users/PostSync?${UrlParameters}`, postJson).then(_res2 => {
+          console.log("step two = ",_res1, _res2);
+          console.log("POST SYNC Data here")
+          this._encrypDecrypService.localstorageSetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.communicationAccessKey, _res2.communicationAccessKey);
+          this._appServices.loaderDismiss();
+            this._nav.navigateRoot(['/user-panel']);
 
+          // this.router.navigate(['/signupconfirm', { email: this._encServices.encrypt(res.data.emailAddress), RegistraionId: this._encServices.encrypt(res.data.registrationId), language: this._encServices.encrypt(res.data.preferredLanguage), prefName: this._encServices.encrypt(res.data.preferredName) }]);
+        });
+      } else {
+        console.log("POST RESYNC Data there...")
+        this._appServices.loaderDismiss();
+          this._nav.navigateRoot(['/user-panel']); 
+      }
+    }, err => console.log('err', err));
+  }
   backButtonEvent() {
     this.platform.backButton.subscribe(async () => {
       this.routerOutlets.forEach((outlet: IonRouterOutlet) => {

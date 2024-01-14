@@ -6,8 +6,6 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { AppService } from 'src/app/services/app.service';
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
 import { AppEnum } from 'src/app/appEnum/appenum';
-import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
 import {OAuth2Client} from "@byteowls/capacitor-oauth2";
 
 @Component({
@@ -17,7 +15,6 @@ import {OAuth2Client} from "@byteowls/capacitor-oauth2";
 })
 export class LoginComponent implements OnInit {
   ShowSpinner = false;
-  public deviceId;
   public geolocationparam;
   public authtoken: any;
   refreshToken: any;
@@ -33,21 +30,20 @@ export class LoginComponent implements OnInit {
     public platform: Platform,
     public _B2C_config: B2C_config_setting,
     public _encrypDecrypService: EncryptionDecryptionService,
-    private geolocation: Geolocation,
-    private uniqueDeviceID: UniqueDeviceID,
-    public _encServices: EncryptionDecryptionService
+   
+  
   ) {
 
-    this.uniqueDeviceID.get().then((uuid: any) => {
-      this.deviceId = uuid;
-    }).catch((error: any) => {
-      this.deviceId = this._encServices.getUUID();
-    });
+
   }
 
 
 
   ngOnInit() {
+    this._encrypDecrypService.getUserCurrentLocartion();
+    this._encrypDecrypService.AppBundeID();
+    this._encrypDecrypService.GetDeviceID();
+    this._encrypDecrypService.DeviceDetails();
       if(this.platform.is("ios")){
         this.IsAppleLogin=true;
       }else{
@@ -117,45 +113,40 @@ export class LoginComponent implements OnInit {
 
   async postSyncUserDetails() {
     this._appServices.simpleLoader();
-    this.geolocation.getCurrentPosition().then((resp) => {
-      this.geolocationparam = resp.coords.latitude + ',' + resp.coords.longitude;
-    }).catch((error) => {
-      this._appServices.loaderDismiss();
-      console.log('Error getting location');
-    });
-
+    this._encrypDecrypService.getUserCurrentLocartion();
     var postJson = {
       "userObjectId": this._appServices.loggedInUserDetails.oid,
       "emailAddress": this._appServices.loggedInUserDetails.email,
       "date": this._appServices.getAppDateTime(new Date()),
-      "appId": "com.usscyber.xliquidus",
-      "deviceId": this.deviceId,
-      // "deviceOs": this._platform.is('android') ? 'android' : 'ios',
-      "deviceOs": 'android',
-      "deviceName": "Samsung",
-      "locationGeoTag": this.geolocationparam,
+      "appId":this._encrypDecrypService.PackageName,
+      "deviceId": this._encrypDecrypService.deviceId,
+      "deviceOs": this.platform.is('android') ? 'android' : 'ios',
+      "deviceName": this._encrypDecrypService.DeviceName,
+      "locationGeoTag": this._encrypDecrypService.geolocationparam,
       "signature": "",
       "status": "NewRequest",
       "type": "ReSync",
       "networkInterface": " XLiquidusExchange",
       "nonce": ((new Date().getTime() * 10000) + 621355968000000000)
     }
-    console.log('postJson', postJson);
+    console.log('POST SYNC PAULOAD = ', postJson);
     var UrlParameters = `clientIpAddress=${this._appServices.ipAddress.ip}`
     await this._appServices.postDataByNativePromiss(`Users/PostSync?${UrlParameters}`, postJson).then(async _res1 => {
-      console.log("reesync set data", this._encServices.localstorageGetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.communicationAccessKey))
-      if (!this._encServices.localstorageGetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.communicationAccessKey)) {
+      console.log("reesync set data", this._encrypDecrypService.localstorageGetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.communicationAccessKey))
+      if (!this._encrypDecrypService.localstorageGetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.communicationAccessKey)) {
         postJson['type'] = "Sync";
         await this._appServices.postDataByNativePromiss(`Users/PostSync?${UrlParameters}`, postJson).then(_res2 => {
           console.log(_res1, _res2);
+          console.log("POST SYNC Data here")
           this.ShowSpinner = false;
-          this._encServices.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.communicationAccessKey, _res2.communicationAccessKey);
+          this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.communicationAccessKey, _res2.communicationAccessKey);
           this._appServices.loaderDismiss();
           this.IsLoginAllowedAsync();
 
           // this.router.navigate(['/signupconfirm', { email: this._encServices.encrypt(res.data.emailAddress), RegistraionId: this._encServices.encrypt(res.data.registrationId), language: this._encServices.encrypt(res.data.preferredLanguage), prefName: this._encServices.encrypt(res.data.preferredName) }]);
         });
       } else {
+        console.log("POST RESYNC Data there...")
         this._appServices.loaderDismiss();
         this.IsLoginAllowedAsync(); 
       }

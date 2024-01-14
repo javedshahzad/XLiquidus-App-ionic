@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AppService } from 'src/app/services/app.service';
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
-import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import { forkJoin } from 'rxjs';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Platform } from '@ionic/angular';
 import { AppEnum } from 'src/app/appEnum/appenum';
+import { Device } from '@capacitor/device';
 
 @Component({
   selector: 'app-sign-up',
@@ -22,7 +22,7 @@ export class SignUpComponent implements OnInit {
   data: any;
   geolocationparam: any= '28.482098,77.0851379';
   countriesList: any=[];
-  constructor(private router: Router, private geolocation: Geolocation, private uniqueDeviceID: UniqueDeviceID,
+  constructor(private router: Router, private geolocation: Geolocation,
     public _appservices: AppService, private formBuilder: FormBuilder, public _platform: Platform,
     public _encServices: EncryptionDecryptionService, public _appEnum: AppEnum) {
 
@@ -41,8 +41,8 @@ export class SignUpComponent implements OnInit {
     this.getUserLocation();
     this.getLanguages();
    
-    this.uniqueDeviceID.get().then((uuid: any) => {
-      this.deviceId = uuid;
+    Device.getId().then((uuid) => {
+      this.deviceId = uuid.identifier;
     }).catch((error: any) => {
       this.deviceId = this._encServices.getUUID();
     });

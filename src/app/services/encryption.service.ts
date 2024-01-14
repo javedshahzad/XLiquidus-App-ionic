@@ -1,15 +1,26 @@
 import { Injectable } from '@angular/core';
+import { AppVersion } from '@ionic-native/app-version/ngx';
 import * as CryptoJS from 'crypto-js';
-// import { CookieService } from 'ngx-cookie-service';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Device } from '@capacitor/device';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EncryptionDecryptionService {
   secretKey = "comusscyberxliquidus";
+  public deviceId: string;
+  public geolocationparam: string;
+  public PackageName: string;
+  public DeviceName: string;
   constructor(
-    // private cookieService: CookieService
-  ) { }
+    public _appVersion:AppVersion,
+    private geolocation: Geolocation,
+  ) {
+    this.AppBundeID();
+    this.GetDeviceID();
+    this.DeviceDetails();
+   }
 
   hashValueConversion(value: any) {
     var hash = CryptoJS.MD5(value);
@@ -78,5 +89,35 @@ export class EncryptionDecryptionService {
     });
 
     return decrypted.toString(CryptoJS.enc.Utf8);
+  }
+  async DeviceDetails(){
+    const info = await Device.getInfo();
+    const DeviceID = await Device.getId();
+    console.log(DeviceID)
+    console.log(info);
+    this.DeviceName = `${info.manufacturer},${info.name},${info.model}`;
+    console.log(this.DeviceName)
+  }
+  AppBundeID(){
+    this._appVersion.getPackageName().then((response)=>{
+     this.PackageName = response;
+     console.log(response)
+    })
+  }
+   async GetDeviceID(){
+   await Device.getId().then((uuid) => {
+      console.log(uuid)
+      this.deviceId = uuid.identifier;
+    }).catch((error: any) => {
+      console.log("Unique device id",error)
+      this.deviceId = this.getUUID();
+    });
+  }
+  getUserCurrentLocartion(){
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.geolocationparam = resp.coords.latitude + ',' + resp.coords.longitude;
+    }).catch((error) => {
+      console.log('Error getting location');
+    });
   }
 }
