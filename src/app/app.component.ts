@@ -1,6 +1,5 @@
 import { Component, QueryList, VERSION, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { NavController, Platform, IonRouterOutlet, ToastController } from '@ionic/angular';
 import { AppEnum } from './appEnum/appenum';
 import { AppService } from './services/app.service';
@@ -9,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Device } from '@capacitor/device';
+import { StatusBar, Style } from '@capacitor/status-bar';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +28,6 @@ export class AppComponent {
     private platform: Platform,
     public toast: ToastController,
     public router: Router,
-    private statusBar: StatusBar,
     private _nav: NavController,
     public _encrypDecrypService: EncryptionDecryptionService,
     public _appnum: AppEnum,
@@ -39,17 +38,14 @@ export class AppComponent {
   }
 
   async initializeApp() {
-    await SplashScreen.show({
-      autoHide: false,
-    });
     this.platform.ready().then(async () => {
       this.device = await this.platform.platforms();
-      this.statusBar.styleDefault();
       this.backButtonEvent();
       this.setDeviceID();
       await this._encrypDecrypService.getUserCurrentLocartion();
       this._appServices.checkConnection();
       this.getSettings();
+      await StatusBar.setStyle({ style: Style.Default });
       await SplashScreen.hide();
     });
   }

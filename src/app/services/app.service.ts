@@ -101,7 +101,7 @@ export class AppService {
     return new Promise(function (resolve, reject) {
       if (token) {
         ths.access_token = token;
-        var decoded = jwt_decode(token);
+        var decoded:any = jwt_decode(token);
         var decodedHeader = jwt_decode(token, { header: true });
         console.log(decodedHeader, decoded);
         if (decoded['emails']) {
@@ -111,7 +111,7 @@ export class AppService {
               name: decoded['name'],
               given_name: decoded['given_name'],
               family_name: decoded['family_name'],
-              oid: decoded['oid']
+              oid: decoded['oid'] ? decoded['oid'] : decoded['sub']
             }
             Object.assign(ths.loggedInUserDetails, userDetails);
           }
@@ -121,7 +121,7 @@ export class AppService {
             name: decoded['name'],
             given_name: decoded['given_name'],
             family_name: decoded['family_name'],
-            oid: decoded['oid']
+            oid: decoded['oid'] ? decoded['oid'] : decoded['sub']
           }
           Object.assign(ths.loggedInUserDetails, userDetails);
         }

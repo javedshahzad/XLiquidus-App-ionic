@@ -6,7 +6,6 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppService } from './services/app.service';
 import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { NetworkInterface } from '@ionic-native/network-interface/ngx';
@@ -51,7 +50,6 @@ export function HttpLoaderFactory(http: HttpClient) {
   providers: [
     HTTP,
     AppEnum,
-    StatusBar,
     EncryptionDecryptionService,
     AppService,
     B2C_config_setting,

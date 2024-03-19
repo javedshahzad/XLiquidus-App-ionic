@@ -66,4 +66,62 @@ export class B2C_config_setting {
                 }
         };
       }
+      public kindeLoginDetails() {
+        return {
+            appId:`8b1dcb3742824495b941df08b03a02e8`,
+            client_id:"8b1dcb3742824495b941df08b03a02e8",
+            authorizationBaseUrl:`https://xlapp.kinde.com/oauth2/auth`,
+            scope:"email profile openid offline", // See Azure Portal -> API permission
+            accessTokenEndpoint:"",
+            resourceUrl: "",
+            responseType: "code token id_token",
+            redirect_uri:`com.usscyber.xliquiduss.app://kinde_callback`,
+            pkceEnabled: true,
+            logsEnabled: true,
+            //state:`US`,
+            additionalParameters: {
+                p: this.AppleSignInPolicy,
+                prompt: this.loginPrompt,
+                nonce:"defaultNonce"
+              },
+            ios: {
+                pkceEnabled: true,
+                responseType: "code token id_token",
+                redirectUrl: this.appleRedirect_uri,
+                },
+                android: {
+                  responseType: "code token id_token", // if you configured a android app in google dev console the value must be "code"
+                  redirectUrl: "com.usscyber.xliquiduss.app://kinde_callback" //"com.usscyber.xliquiduss.app:/" // package name from google dev console
+                },
+        };
+      }
+      public kindeLoginDetailsIOS() {
+        return {
+            appId:`8b1dcb3742824495b941df08b03a02e8`,
+            client_id:"8b1dcb3742824495b941df08b03a02e8",
+            authorizationBaseUrl:`https://xlapp.kinde.com/oauth2/auth`,
+            scope:"email profile openid offline", // See Azure Portal -> API permission
+            accessTokenEndpoint:"",
+            resourceUrl: "",
+            responseType: "code token id_token",
+            redirect_uri:`msauth.com.usscyber.xl://kinde_callback`,
+            pkceEnabled: true,
+            logsEnabled: true,
+            //state:`US`,
+            additionalParameters: {
+                p: this.AppleSignInPolicy,
+                prompt: this.loginPrompt,
+                nonce:"defaultNonce"
+              },
+            ios: {
+                pkceEnabled: true,
+                responseType: "code token id_token",
+                redirectUrl: `msauth.com.usscyber.xl://kinde_callback`,
+                },
+                android: {
+                  responseType: "code token id_token", // if you configured a android app in google dev console the value must be "code"
+                  redirectUrl: "com.usscyber.xliquiduss.app://kinde_callback" //"com.usscyber.xliquiduss.app:/" // package name from google dev console
+                },
+        };
+      }
 }

@@ -114,6 +114,7 @@ export class LoginComponent implements OnInit {
   async postSyncUserDetails() {
     this._appServices.simpleLoader();
     this._encrypDecrypService.getUserCurrentLocartion();
+    console.log(this._appServices.getHttpHeaders(),"Headers")
     var postJson = {
       "userObjectId": this._appServices.loggedInUserDetails.oid,
       "emailAddress": this._appServices.loggedInUserDetails.email,
@@ -168,11 +169,32 @@ IsLoginAllowedAsync(){
     }
   }, err => {
     console.log(err);
-    this._appServices.presentToast("There is an error while login! Please try again later.");
+    this._appServices.presentToast("You are not allowed to login!.");
     this._appServices.loaderDismiss();
   });
 }
-
+async LoginWithKinde(url){
+  this._appServices.simpleLoader();
+  let paramters = this.platform.is("ios") === true ? this._B2C_config.kindeLoginDetailsIOS() : this._B2C_config.kindeLoginDetails();
+    OAuth2Client.authenticate(
+      paramters
+  ).then(async response => {
+    console.log(response);
+    if(this.platform.is("ios")){
+      this.authtoken = response['id_token'];
+    }else{
+      this.authtoken = response.authorization_response['id_token'];
+    }
+      this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token, this.authtoken);
+      await this._appServices.deCodeJwtToken(this.authtoken);
+      this._appServices.loaderDismiss();
+      this.postSyncUserDetails();
+    
+  }).catch(reason => {
+    this._appServices.loaderDismiss();
+      console.error("OAuth rejected", reason);
+  });
+  }
   getUrlParameter(name, url) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     var regex = new RegExp('[\\#?&]' + name + '=([^&#]*)');

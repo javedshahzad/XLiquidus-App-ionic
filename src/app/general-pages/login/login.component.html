@@ -8,7 +8,14 @@
       </div>
     </ion-row>
     <ion-row class="p-t-10p p-h-25 ion-text-center memBtn">
-      
+      <!--  Kinde login below buttons -->
+      <ion-button expand="block" size="large"
+      class="height-60 shadownot primary-color-background no-border border-radius-8 p-t-5p letter-spacing ion-activatable ripple-parent box-shadow"
+      (click)="LoginWithKinde(_B2C_config.B2CloginUrl)">
+      <h4 class="size-19 font-weight-600 joshDemi m-t-15 ">MEMBER LOGIN KINDE</h4>
+    </ion-button>
+    <!-- microsoft azure login below buttons -->
+
       <ion-button *ngIf="!IsAppleLogin" expand="block" size="large"
         class="height-60 shadownot primary-color-background no-border border-radius-8 p-t-5p letter-spacing ion-activatable ripple-parent box-shadow"
         (click)="Login(_B2C_config.B2CloginUrl)">
