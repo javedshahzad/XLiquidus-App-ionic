@@ -113,7 +113,7 @@ export class EncryptionDecryptionService {
       this.deviceId = this.getUUID();
     });
   }
-  getUserCurrentLocartion(){
+  async getUserCurrentLocartion(){
     this.geolocation.getCurrentPosition().then((resp) => {
       this.geolocationparam = resp.coords.latitude + ',' + resp.coords.longitude;
     }).catch((error) => {

@@ -73,6 +73,7 @@ export class AppComponent {
       console.log(err);
       this.checkUserloggedInOrNot();
     });
+    this.HandleCache();
   }
 
   async checkUserloggedInOrNot() {
@@ -201,5 +202,15 @@ export class AppComponent {
       position: "bottom"
     });
     toast.present();
+  }
+  HandleCache(){
+    var UrlParameters = `AppGlobalSettings/XL`;
+    this._appServices.getDataByHttp(UrlParameters).subscribe(async res => {
+      console.log("AppGlobalSettings/XL Response", res);
+      
+    }, err => {
+      console.log(err);
+     
+    });
   }
 }

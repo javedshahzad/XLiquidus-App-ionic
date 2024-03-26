@@ -165,12 +165,17 @@ export class SalesProfileSignupPage implements OnInit {
                     this.isDataLoad = false;
                 }, err => {
                     console.log(err);
+                    if (err.error) {
+                        var errorsMsg = JSON.parse(err.error);
+                        this._appservices.presentToast(errorsMsg?.message);
+                    }
                     this._appservices.loaderDismiss();
                     this.isDataLoad = false;
-                    if (err.status === 400) {
-                        this.global.CreateToast('Seems like your profile is not completed yet. Please complete your profile to continue!');
-                        this._nav.navigateRoot("/user-panel/myprofile")
-                    } else if (err.status != 400) {
+                    // if (err.status === 400) {
+                    //     this.global.CreateToast('Seems like your profile is not completed yet. Please complete your profile to continue!');
+                    //     this._nav.navigateRoot("/user-panel/myprofile")
+                    // } else 
+                    if (err.status != 400) {
                         if (err.error) {
                             var errorsMsg = JSON.parse(err.error);
                             this._appservices.presentToast(errorsMsg?.message);

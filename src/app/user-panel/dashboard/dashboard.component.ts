@@ -48,6 +48,7 @@ export class DashboardComponent implements OnInit {
 
   ionViewWillEnter() {
    this.OnDashboadInit();
+   this.HandleCache();
   }
 
   OnDashboadInit(){
@@ -189,5 +190,15 @@ export class DashboardComponent implements OnInit {
     this.checkbackground = false;
     // this.checkbackgroundTransfer = false;
     this.backButtonSubscription.unsubscribe();
+  }
+  HandleCache(){
+    var UrlParameters = `AppGlobalSettings/XL`;
+    this._appServices.getDataByHttp(UrlParameters).subscribe(async res => {
+      console.log("AppGlobalSettings/XL Response", res);
+      
+    }, err => {
+      console.log(err);
+     
+    });
   }
 }
