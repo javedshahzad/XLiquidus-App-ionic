@@ -80,9 +80,10 @@ export class AppComponent {
     var getToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.access_token));
     if (getToken) {
       await this._appServices.deCodeJwtToken(getToken);
-      this.IsLoginAllowedAsync();
+     // this.postSyncUserDetails()
+     this.IsLoginAllowedAsync();
     } else {
-      this._nav.navigateRoot(['.']);
+      this._nav.navigateRoot(['/']);
     }
   }
   logout() {
@@ -100,7 +101,6 @@ export class AppComponent {
          this.IsLoginAllowedAsyncData = res.data.data;
          if(this.IsLoginAllowedAsyncData.isAllowedToLogin === true){
           this.postSyncUserDetails();
-        
          }else{
           this._appServices.loaderDismiss();
           this._appServices.presentToast("You are not allowed to login!")

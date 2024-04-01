@@ -99,6 +99,10 @@ getCartCountItems(){
   }
 
   ngOnDestroy() {
-    this.subscriptionCart.unsubscribe()
+   // this.subscriptionCart.unsubscribe()
+  }
+  roundedNumber(number){
+    return number?.toFixed(2);
+     
   }
 }

@@ -4,6 +4,7 @@ import { GlobalService } from 'src/app/services/global.service';
 import { AfterContentInit, Component, NgZone, OnInit } from '@angular/core';
 import * as Square from '@square/web-sdk';
 import { ageValidator } from '../signup-step2/signup-step2.component';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-card-payments',
@@ -20,6 +21,7 @@ export class CardPaymentsComponent implements OnInit, AfterContentInit {
   billingInformation: FormGroup
   constructor(private global: GlobalService,
     private ngZone: NgZone,
+    private modalCtrl:ModalController,
     private _appservices: AppService,
     private formBuilder: FormBuilder) {
     this.billingInformation = this.formBuilder.group({
@@ -92,22 +94,29 @@ export class CardPaymentsComponent implements OnInit, AfterContentInit {
 
   async pay() {
     try {
-
+      this._appservices.presentLoading();
       const result = await this.card?.tokenize();
 
       if (result?.status === 'OK') {
         console.log(result)
         console.log(`Payment token is: ${JSON.stringify(result)}`);
-        localStorage.setItem('nonce', result.token)
-        localStorage.setItem('cardNumber', result?.detals?.card?.last4);
-        localStorage.setItem('billingInformation', JSON.stringify(this.billingInformation.value))
+        let data ={
+          billingInformation:this.billingInformation.value,
+          nonce:result.token,
+          cardNumber:result?.details?.card?.last4
+        }
         this.billingInformation.reset()
         this.card.clear();
-        this.global.navigate('/user-panel/confirm-order')
+        this._appservices.loaderDismiss();
+        this.modalCtrl.dismiss(data);
+       // this.global.navigate('/user-panel/confirm-order')
+      }else{
+        this._appservices.loaderDismiss();
       }
 
     } catch (e) {
       this.global.CreateToast(e)
+      this._appservices.loaderDismiss();
       console.error(e);
     }
   }

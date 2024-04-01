@@ -29,7 +29,7 @@ export class ConfirmOrderComponent implements OnInit {
   ]
   selectedCurrency: string
   userDetails
-  billingInformation
+  billingInformation:any;
   cardNumber: string = ''
   postCheckoutData: any;
   constructor(
@@ -40,7 +40,8 @@ export class ConfirmOrderComponent implements OnInit {
     public router: Router,
     public _encServices: EncryptionDecryptionService,
     private userPanel: UserPanelPage,
-    private global: GlobalService
+    private global: GlobalService,
+    public modalController: ModalController
   ) { 
     // this.cardNumber = localStorage.getItem('cardNumber').length === 4 ? localStorage.getItem('cardNumber') : ''
   }
@@ -66,6 +67,9 @@ export class ConfirmOrderComponent implements OnInit {
         console.log(this.userDetails)
       }
     });
+    this.selectedCurrency = "";
+    this.mfaCode = '';
+    this.ischeck = false;
   }
 
   async getCartDetails() {
@@ -211,18 +215,21 @@ export class ConfirmOrderComponent implements OnInit {
 
    
     if (this.selectedCurrency === '') {
-      this._appServices.presentToast('Please select a currency first!')
-    } else {
-      this.nonce = localStorage.getItem('nonce')
-      let obj = JSON.parse(localStorage.getItem('billingInformation'))
+      this._appServices.presentToast('Please select a currency first!');
+      return false;
+    } 
+    if(this.selectedCurrency == "USD" && this.mfaCode == ""){
+      this._appServices.presentToast('Verification code is required for Card Transactions!');
+      return false;
+    }
       this.isDataLoad = true;
       let billing = {
-        "name": obj?.fullname ? obj?.fullname : "",
-        "address": obj?.address ? obj?.address : "",
-        "city": obj?.city ? obj?.city : "",
-        "state": obj?.state ? obj?.state : "",
-        "zipCode": obj?.zipcode ? obj?.zipcode : "",
-        "country": obj?.country ? obj?.country : ""
+        "name": this.billingInformation?.fullname ? this.billingInformation?.fullname : "",
+        "address": this.billingInformation?.address ? this.billingInformation?.address : "",
+        "city": this.billingInformation?.city ? this.billingInformation?.city : "",
+        "state": this.billingInformation?.state ? this.billingInformation?.state : "",
+        "zipCode": this.billingInformation?.zipcode ? this.billingInformation?.zipcode : "",
+        "country": this.billingInformation?.country ? this.billingInformation?.country : ""
       }
       let body = {
         "email": this._appServices.loggedInUserDetails.email,
@@ -254,7 +261,7 @@ export class ConfirmOrderComponent implements OnInit {
           this.selectedCurrency = "";
           this.mfaCode = '';
           this.ischeck = false;
-          localStorage.removeItem("billingInformation")
+          this.billingInformation=""
         } else if (res.status == 400) {
           var errors=JSON.parse(res?.data?.error);
           this.global.CreateToast1(errors.message);
@@ -266,7 +273,7 @@ export class ConfirmOrderComponent implements OnInit {
         this._appServices.loaderDismiss();
         this.isDataLoad = false;
       });
-    }
+    
   }
   onSelectedCurrency() {
     if (this.selectedCurrency === '') {
@@ -294,7 +301,8 @@ export class ConfirmOrderComponent implements OnInit {
                   cssClass: ['confirmation_ok_button', 'confirmation_popup_button'],
                   handler: () => {
                     if (this.selectedCurrency === 'USD') {
-                      this.global.navigate('/card-payments')
+                     // this.global.navigate('/card-payments')
+                     this.showCardPayment();
                     }
                   }
                 }]
@@ -316,6 +324,25 @@ export class ConfirmOrderComponent implements OnInit {
     }
 
   }
+  async showCardPayment() {
+    const modal = await this.modalController.create({
+        component: CardPaymentsComponent,
+        cssClass: 'card-payments',
+        mode: "md",
+        backdropDismiss:false,
+        componentProps: {
+            data: "empty"
+        },
+    });
+    modal.onWillDismiss().then((data:any)=>{
+      console.log(data)
+      this.billingInformation = data.data.billingInformation;
+      this.nonce = data.data.nonce;
+      this.cardNumber = data.data.cardNumber;
+  
+    })
+    return await modal.present();
+}
   // confirm() {
   //   if (this.mfaCode === '') {
   //     this._appServices.presentToast('Please put the verification code first!')

@@ -21,7 +21,7 @@
           <h4 class="text-white jostBook size-14 cartbadge" *ngIf="CartItemCount > 100">
             99+</h4>
           <h4 class="text-white jostBook size-14 cartbadge" *ngIf="CartItemCount > 0 && CartItemCount < 100">
-            {{CartItemCount}}</h4>
+            {{roundedNumber(CartItemCount)}}</h4>
         </ion-text>
       </ion-buttons>
     </div>
