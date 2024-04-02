@@ -102,7 +102,17 @@ getCartCountItems(){
    // this.subscriptionCart.unsubscribe()
   }
   roundedNumber(number){
-    return number?.toFixed(2);
-     
+    var isfloat =  this.isFloat(number);
+    if(isfloat){
+      return number?.toFixed(3);
+    }else{
+      return number;
+    }
+  }
+  isFloat(n) {
+    if (!n) {
+      return false
+    }
+    return !isNaN(n % 1) && n % 1 !== 0;
   }
 }

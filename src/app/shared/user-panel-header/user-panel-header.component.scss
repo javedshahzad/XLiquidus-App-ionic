@@ -21,18 +21,23 @@
     padding-left: 10px;
     padding-right: 10px;
     margin-right: 5px;
+    position: relative;
 }
 
 
 .cartbadge {
     position: absolute;
-      right: 0;
-      top: -9px;
-      border-radius: 50px;
-      padding: 3px 3px 3px 3px;
-      font-size: 13px;
-      text-align: center;
-      background: orange;
+    right: -15px;
+    top: -25px;
+    border-radius: 50px;
+    font-size: 10px;
+    text-align: center;
+    background: orange;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
 .w-45{

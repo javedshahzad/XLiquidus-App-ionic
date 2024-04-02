@@ -29,7 +29,7 @@ export class TransactionHistoryComponent implements OnInit {
     this.backButtonSubscription = this.platform.backButton.subscribe(() => {
       this._nav.navigateRoot(['user-panel/']);
     });
-    // this.currentUserTransaction();
+   // this.currentUserTransaction();
     this.fetchUserTransaction();
   }
 
@@ -39,6 +39,7 @@ export class TransactionHistoryComponent implements OnInit {
     this.transactionPageSettings = { skip: 0, take: 25, itemlength: 25 };
     var CurrentUserTransactionsDetailsUrl = `Wallets/GetCurrentUserTransactions?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
     this._appServices.getDataByHttp(CurrentUserTransactionsDetailsUrl).subscribe(_res => {
+      console.log(_res)
       if (_res.status == 200) {
         this.CurrentUserTransactionsDetails = _res.data;
         console.log("CurrentUserTransactionsDetailsUrl", this.CurrentUserTransactionsDetails);
@@ -46,13 +47,18 @@ export class TransactionHistoryComponent implements OnInit {
         this.fetchUserTransaction(e);
       }
       this._appServices.loaderDismiss();
-    });
+    },error=>{
+      console.log(error,"GetCurrentUserTransactions")
+    }
+    );
   }
 
   fetchUserTransaction(e = null) {
     this._appServices.presentLoading();
+    this.transactionPageSettings.skip = 0
     var UserTransactionsDetailsUrl = `Wallets/GetUserTransactions?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}&skip=${this.transactionPageSettings.skip}&take=${this.transactionPageSettings.take}`;
     this._appServices.getDataByHttp(UserTransactionsDetailsUrl).subscribe(_res => {
+      console.log(_res)
       this._appServices.loaderDismiss();
       if (_res.status == 200) {
         this.transactionPageSettings.skip = this.transactionPageSettings.skip + this.transactionPageSettings.take;
