@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import { forkJoin } from 'rxjs';
 import { AppService } from 'src/app/services/app.service';
 
@@ -18,7 +18,7 @@ export class UserPanelHeaderComponent implements OnInit {
   showBadgeInfoIcon = false;
   showicons = false;
   public subscriptionCart;
-  constructor(public _appServices: AppService, public _nav: NavController) { }
+  constructor(public _appServices: AppService, public _nav: NavController,public platform:Platform) { }
 
   ngOnInit() {
     this.subscriptionCart = this._appServices.cartRefresh.subscribe(res => {
