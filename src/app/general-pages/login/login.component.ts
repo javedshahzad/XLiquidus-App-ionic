@@ -7,6 +7,7 @@ import { AppService } from 'src/app/services/app.service';
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
 import { AppEnum } from 'src/app/appEnum/appenum';
 import {OAuth2Client} from "@byteowls/capacitor-oauth2";
+import LogtoClient from '@logto/capacitor';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,8 @@ export class LoginComponent implements OnInit {
   refreshToken: any;
   IsAppleLogin: boolean;
   IsLoginAllowedAsyncData: any;
+  CloudLoginConfig: any;
+  logtoClient: any;
 
   constructor(
     private router: Router,
@@ -40,17 +43,30 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit() {
+
+
+    this.logtoClient = new LogtoClient({
+    endpoint: 'https://nvtiqu.logto.app/',
+    appId: '6ifq29u6jqfmuryupsy4d',
+    });
     this._encrypDecrypService.getUserCurrentLocartion();
     this._encrypDecrypService.AppBundeID();
     this._encrypDecrypService.GetDeviceID();
     this._encrypDecrypService.DeviceDetails();
+    this.getCloudConfig();
       if(this.platform.is("ios")){
         this.IsAppleLogin=true;
       }else{
         this.IsAppleLogin=false;
       }
   }
-
+  getCloudConfig(){
+    let url = "https://dyse8jtzjt9yv.cloudfront.net/xl/xl-app-config.json";
+    this._appServices.getDataByNative(url).subscribe((response:any)=>{
+      console.log(response);
+      this.CloudLoginConfig = response.data;
+    });
+  }
   goToCreateAccount() {
     // this.router.navigate(['/signup']);
     this.router.navigate(['/signup-options']);
@@ -195,6 +211,31 @@ async LoginWithKinde(url){
       console.error("OAuth rejected", reason);
   });
   }
+  async LoginWithLogto(url){
+      await this.logtoClient.signIn('com.usscyber.xliquiduss.app://kinde_callback');
+      console.log(await this.logtoClient.isAuthenticated()); // true
+      console.log(await this.logtoClient.getIdTokenClaims()); // { sub: '...', ... }
+    // this._appServices.simpleLoader();
+    // let paramters = this.platform.is("ios") === true ? this._B2C_config.LogtoLoginDetailsIOS() : this._B2C_config.LogtoLoginDetails();
+    //   OAuth2Client.authenticate(
+    //     paramters
+    // ).then(async response => {
+    //   console.log(response);
+    //   if(this.platform.is("ios")){
+    //     this.authtoken = response['id_token'];
+    //   }else{
+    //     this.authtoken = response.authorization_response['id_token'];
+    //   }
+    //     this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token, this.authtoken);
+    //     await this._appServices.deCodeJwtToken(this.authtoken);
+    //     this._appServices.loaderDismiss();
+    //     this.postSyncUserDetails();
+      
+    // }).catch(reason => {
+    //   this._appServices.loaderDismiss();
+    //     console.error("OAuth rejected", reason);
+    // });
+    }
   getUrlParameter(name, url) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     var regex = new RegExp('[\\#?&]' + name + '=([^&#]*)');

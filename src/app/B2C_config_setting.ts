@@ -68,9 +68,9 @@ export class B2C_config_setting {
       }
       public kindeLoginDetails() {
         return {
-            appId:`8b1dcb3742824495b941df08b03a02e8`,
-            client_id:"8b1dcb3742824495b941df08b03a02e8",
-            authorizationBaseUrl:`https://xlapp.kinde.com/oauth2/auth`,
+            appId: `a7ac7503b855436eab5e4a1f87d124c9`,  //`8b1dcb3742824495b941df08b03a02e8`,
+            client_id:`a7ac7503b855436eab5e4a1f87d124c9`, //"8b1dcb3742824495b941df08b03a02e8",
+            authorizationBaseUrl:`https://usscyberinc.kinde.com/oauth2/auth`, //`https://xlapp.kinde.com/oauth2/auth`,
             scope:"email profile openid offline", // See Azure Portal -> API permission
             accessTokenEndpoint:"",
             resourceUrl: "",
@@ -97,9 +97,68 @@ export class B2C_config_setting {
       }
       public kindeLoginDetailsIOS() {
         return {
-            appId:`8b1dcb3742824495b941df08b03a02e8`,
-            client_id:"8b1dcb3742824495b941df08b03a02e8",
-            authorizationBaseUrl:`https://xlapp.kinde.com/oauth2/auth`,
+            appId: `a7ac7503b855436eab5e4a1f87d124c9`,  //`8b1dcb3742824495b941df08b03a02e8`,
+            client_id:`a7ac7503b855436eab5e4a1f87d124c9`, //"8b1dcb3742824495b941df08b03a02e8",
+            authorizationBaseUrl:`https://usscyberinc.kinde.com/oauth2/auth`, //`https://xlapp.kinde.com/oauth2/auth`,
+            scope:"email profile openid offline", // See Azure Portal -> API permission
+            accessTokenEndpoint:"",
+            resourceUrl: "",
+            responseType: "code token id_token",
+            redirect_uri:`msauth.com.usscyber.xl://kinde_callback`,
+            pkceEnabled: true,
+            logsEnabled: true,
+            //state:`US`,
+            additionalParameters: {
+                p: this.AppleSignInPolicy,
+                prompt: this.loginPrompt,
+                nonce:"defaultNonce"
+              },
+            ios: {
+                pkceEnabled: true,
+                responseType: "code token id_token",
+                redirectUrl: `msauth.com.usscyber.xl://kinde_callback`,
+                },
+                android: {
+                  responseType: "code token id_token", // if you configured a android app in google dev console the value must be "code"
+                  redirectUrl: "com.usscyber.xliquiduss.app://kinde_callback" //"com.usscyber.xliquiduss.app:/" // package name from google dev console
+                },
+        };
+      }
+
+      public LogtoLoginDetails() {
+        return {
+            appId: `6ifq29u6jqfmuryupsy4d`,  //`8b1dcb3742824495b941df08b03a02e8`,
+            //client_id:`6ifq29u6jqfmuryupsy4d`, //"8b1dcb3742824495b941df08b03a02e8",
+            authorizationBaseUrl:`https://nvtiqu.logto.app/`, //`https://xlapp.kinde.com/oauth2/auth`,
+            scope:"email profile openid offline", // See Azure Portal -> API permission
+            accessTokenEndpoint:"",
+            resourceUrl: "",
+            responseType: "code token id_token",
+            redirect_uri:`com.usscyber.xliquiduss.app://callback`,
+            pkceEnabled: true,
+            logsEnabled: true,
+            //state:`US`,
+            additionalParameters: {
+                p: this.AppleSignInPolicy,
+                prompt: this.loginPrompt,
+                nonce:"defaultNonce"
+              },
+            ios: {
+                pkceEnabled: true,
+                responseType: "code token id_token",
+                redirectUrl: this.appleRedirect_uri,
+                },
+                android: {
+                  responseType: "code token id_token", // if you configured a android app in google dev console the value must be "code"
+                  redirectUrl: "com.usscyber.xliquiduss.app://callback" //"com.usscyber.xliquiduss.app:/" // package name from google dev console
+                },
+        };
+      }
+      public LogtoLoginDetailsIOS() {
+        return {
+            appId: `6ifq29u6jqfmuryupsy4d`,  //`8b1dcb3742824495b941df08b03a02e8`,
+            client_id:`6ifq29u6jqfmuryupsy4d`, //"8b1dcb3742824495b941df08b03a02e8",
+            authorizationBaseUrl:`https://nvtiqu.logto.app/oidc/auth`, //`https://xlapp.kinde.com/oauth2/auth`,
             scope:"email profile openid offline", // See Azure Portal -> API permission
             accessTokenEndpoint:"",
             resourceUrl: "",

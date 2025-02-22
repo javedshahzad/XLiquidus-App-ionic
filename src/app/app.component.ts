@@ -23,6 +23,7 @@ export class AppComponent {
   device: any;
   @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
   IsLoginAllowedAsyncData: any;
+  CloudLoginConfig: any;
 
   constructor(
     private platform: Platform,
@@ -40,6 +41,7 @@ export class AppComponent {
   async initializeApp() {
     this.platform.ready().then(async () => {
       this.device = await this.platform.platforms();
+      this.getCloudConfig();
       this.backButtonEvent();
       this.setDeviceID();
       await this._encrypDecrypService.getUserCurrentLocartion();
@@ -49,7 +51,13 @@ export class AppComponent {
       await SplashScreen.hide();
     });
   }
-
+  getCloudConfig(){
+    let url = "https://dyse8jtzjt9yv.cloudfront.net/xl/xl-app-config.json";
+    this._appServices.getDataByNative(url).subscribe((response:any)=>{
+      this.CloudLoginConfig = response.data;
+      this._appServices.apiUrl =this.CloudLoginConfig.ServiceUrl+"/v3/";
+    });
+  }
   getSettings() {
     let vn = this.appVersion.getVersionNumber();
     vn.then(res => {
