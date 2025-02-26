@@ -127,25 +127,23 @@ export class B2C_config_setting {
 
       public LogtoLoginDetails() {
         return {
-            appId: `6ifq29u6jqfmuryupsy4d`,  //`8b1dcb3742824495b941df08b03a02e8`,
-            //client_id:`6ifq29u6jqfmuryupsy4d`, //"8b1dcb3742824495b941df08b03a02e8",
-            authorizationBaseUrl:`https://nvtiqu.logto.app/`, //`https://xlapp.kinde.com/oauth2/auth`,
-            scope:"email profile openid offline", // See Azure Portal -> API permission
+            client_id:`em5nk725e3ujfr20v740y`,
+            appId: `em5nk725e3ujfr20v740y`,  //`8b1dcb3742824495b941df08b03a02e8`,
+            authorizationBaseUrl:`https://upfbti.logto.app/oidc/auth`, //`https://xlapp.kinde.com/oauth2/auth`,
+            scope:"openid profile", // See Azure Portal -> API permission
             accessTokenEndpoint:"",
             resourceUrl: "",
             responseType: "code token id_token",
             redirect_uri:`com.usscyber.xliquiduss.app://callback`,
-            pkceEnabled: true,
-            logsEnabled: true,
-            //state:`US`,
+            pkceEnabled: false,
+            logsEnabled: false,
+            state:``,
             additionalParameters: {
-                p: this.AppleSignInPolicy,
-                prompt: this.loginPrompt,
-                nonce:"defaultNonce"
+                prompt: "consent",
               },
             ios: {
                 pkceEnabled: true,
-                responseType: "code token id_token",
+                responseType: "code",
                 redirectUrl: this.appleRedirect_uri,
                 },
                 android: {

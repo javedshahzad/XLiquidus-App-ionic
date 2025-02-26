@@ -4,6 +4,9 @@
 	"webDir": "www",
 	"bundledWebRuntime": false,
 	"version": "1.0.0",
+	"server": {
+		"androidScheme": "https"
+	},
 	"plugins": {
 		"SplashScreen": {
 			"showSpinner": true,

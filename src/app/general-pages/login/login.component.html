@@ -15,7 +15,11 @@
       (click)="LoginWithLogto(_B2C_config.B2CloginUrl)">
       <h4 class="size-19 font-weight-600 joshDemi m-t-15 ">MEMBER LOGIN</h4>
     </ion-button>
-    
+    <ion-button expand="block" size="large"
+    class="height-60 shadownot primary-color-background no-border border-radius-8 p-t-5p letter-spacing ion-activatable ripple-parent box-shadow"
+    (click)="signOut(_B2C_config.B2CloginUrl)">
+    <h4 class="size-19 font-weight-600 joshDemi m-t-15 ">SignOut</h4>
+  </ion-button>
     <!-- microsoft azure login below buttons -->
 
     <ng-container *ngIf="CloudLoginConfig?.SecurityMode.UseMicrosoft == true">

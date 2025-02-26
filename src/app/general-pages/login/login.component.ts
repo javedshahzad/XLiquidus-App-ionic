@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   IsAppleLogin: boolean;
   IsLoginAllowedAsyncData: any;
   CloudLoginConfig: any;
-  logtoClient: any;
+  logtoClient: LogtoClient;
 
   constructor(
     private router: Router,
@@ -46,8 +46,8 @@ export class LoginComponent implements OnInit {
 
 
     this.logtoClient = new LogtoClient({
-    endpoint: 'https://nvtiqu.logto.app/',
-    appId: '6ifq29u6jqfmuryupsy4d',
+    endpoint: 'https://upfbti.logto.app/',
+    appId: 'em5nk725e3ujfr20v740y',
     });
     this._encrypDecrypService.getUserCurrentLocartion();
     this._encrypDecrypService.AppBundeID();
@@ -210,6 +210,14 @@ async LoginWithKinde(url){
     this._appServices.loaderDismiss();
       console.error("OAuth rejected", reason);
   });
+  }
+  async signOut(url){
+    console.log(await this.logtoClient.isAuthenticated());
+    if(await this.logtoClient.isAuthenticated()){
+      console.log(await this.logtoClient.getAccessToken())
+    }
+  
+    await this.logtoClient.signOut("com.usscyber.xliquiduss.app://kinde_callback")
   }
   async LoginWithLogto(url){
       await this.logtoClient.signIn('com.usscyber.xliquiduss.app://kinde_callback');
