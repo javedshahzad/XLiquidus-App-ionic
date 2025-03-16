@@ -1,5 +1,5 @@
-import { Component, QueryList, VERSION, ViewChildren } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, NgZone, QueryList, VERSION, ViewChildren } from '@angular/core';
+import { NavigationExtras, Router } from '@angular/router';
 import { NavController, Platform, IonRouterOutlet, ToastController } from '@ionic/angular';
 import { AppEnum } from './appEnum/appenum';
 import { AppService } from './services/app.service';
@@ -9,6 +9,7 @@ import { AppVersion } from '@ionic-native/app-version/ngx';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Device } from '@capacitor/device';
 import { StatusBar, Style } from '@capacitor/status-bar';
+import { App, URLOpenListenerEvent } from '@capacitor/app';
 
 @Component({
   selector: 'app-root',
@@ -33,11 +34,28 @@ export class AppComponent {
     public _encrypDecrypService: EncryptionDecryptionService,
     public _appnum: AppEnum,
     public _appServices: AppService,
-    private appVersion: AppVersion
+    private appVersion: AppVersion,
+    private zone:NgZone
   ) {
     this.initializeApp();
   }
-
+  initializeDeeppLink() {
+    App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
+        this.zone.run(() => {
+          console.log(event)
+            // const slug = event.url.split(".app").pop();
+            // let que = slug.split("&");
+            // let id= que[0].split("=");
+            // let un= que[1].split("=");
+            // const navigation: NavigationExtras = {
+            //   state : {
+            //       id: id[1],
+            //       un:un[1]
+            //   }
+            // };
+        });
+    });
+}
   async initializeApp() {
     this.platform.ready().then(async () => {
       this.device = await this.platform.platforms();
@@ -49,6 +67,7 @@ export class AppComponent {
       this.getSettings();
       await StatusBar.setStyle({ style: Style.Default });
       await SplashScreen.hide();
+      this.initializeDeeppLink();
     });
   }
   getCloudConfig(){

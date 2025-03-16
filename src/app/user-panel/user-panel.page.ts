@@ -1,10 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonTabs, MenuController, NavController, ToastController } from '@ionic/angular';
+import { IonTabs, MenuController, NavController, Platform, ToastController } from '@ionic/angular';
 import { AppEnum } from '../appEnum/appenum';
 import { AppService } from '../services/app.service';
 import { EncryptionDecryptionService } from '../services/encryption.service';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { B2C_config_setting } from '../B2C_config_setting';
 
 @Component({
   selector: 'app-user-panel',
@@ -58,6 +59,8 @@ export class UserPanelPage {
     private router: Router,
     private clipboard: Clipboard,
     public toast: ToastController,
+    public _B2C_config: B2C_config_setting,
+    private platform:Platform
   ) {
     if (!this.router.url.includes('user-panel/dashboard')) {
       this.showModal = false;
@@ -119,7 +122,9 @@ export class UserPanelPage {
     this.menu.close();
   }
 
-  logout() {
+ async  logout() {
+    var call_back_url = this.platform.is("ios") === true ? this._B2C_config.LogtoLoginDetails().iOS_logout_call_Back : this._B2C_config.LogtoLoginDetails().android_logout_call_back;
+   await this._appServices.InitLogtoIo().signOut(call_back_url)
     var deviceID = this._encrypDecrypService.getUUID();
     localStorage.clear();
     this._encrypDecrypService.setUUID(deviceID);

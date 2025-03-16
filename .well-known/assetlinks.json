@@ -1,0 +1,10 @@
+[
+    {
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.usscyber.xliquiduss.app",
+        "sha256_cert_fingerprints": ["96:AC:8C:9B:C7:4D:87:F8:4F:79:43:3B:99:46:05:CA:6E:79:E1:23:F7:04:B0:34:BB:01:C2:F0:BA:D4:BD:9A"]
+      }
+    }
+  ]

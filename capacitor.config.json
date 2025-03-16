@@ -5,7 +5,10 @@
 	"bundledWebRuntime": false,
 	"version": "1.0.0",
 	"server": {
-		"androidScheme": "https"
+		"hostname":"localhost:8100",
+		"androidScheme": "https",
+		"iosScheme":"https",
+		"cleartext":true
 	  },
 	"plugins": {
 		"SplashScreen": {
@@ -16,6 +19,9 @@
 		  "layoutName": "launch_screen",
 		  "androidScaleType": "CENTER_CROP",
 		  "splashFullScreen": true
+		},
+		"CapacitorBrowser":{
+			"enable":true
 		}
 	  },
 	  "cordova": {

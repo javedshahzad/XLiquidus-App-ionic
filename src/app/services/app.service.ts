@@ -10,6 +10,7 @@ import jwt_decode from "jwt-decode";
 import { Location } from '@angular/common';
 import { Network } from '@ionic-native/network/ngx';
 import Swal from 'sweetalert2';
+import LogtoClient from '@logto/capacitor';
 
 interface apiResponse {
   status: number,
@@ -597,6 +598,13 @@ export class AppService {
       this.customErrorHandler(_err);
       return _err;
     });
+  }
+  InitLogtoIo(){
+     const logtoClient = new LogtoClient({
+      endpoint: 'https://upfbti.logto.app/',
+      appId: 'em5nk725e3ujfr20v740y',
+    });
+    return logtoClient;
   }
 }
 export interface ADD_TO_CART_PAYLOAD {

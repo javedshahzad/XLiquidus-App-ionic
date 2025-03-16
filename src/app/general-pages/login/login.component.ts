@@ -7,7 +7,6 @@ import { AppService } from 'src/app/services/app.service';
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
 import { AppEnum } from 'src/app/appEnum/appenum';
 import {OAuth2Client} from "@byteowls/capacitor-oauth2";
-import LogtoClient from '@logto/capacitor';
 
 @Component({
   selector: 'app-login',
@@ -22,8 +21,6 @@ export class LoginComponent implements OnInit {
   IsAppleLogin: boolean;
   IsLoginAllowedAsyncData: any;
   CloudLoginConfig: any;
-  logtoClient: LogtoClient;
-
   constructor(
     private router: Router,
     public _nav: NavController,
@@ -43,12 +40,6 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit() {
-
-
-    this.logtoClient = new LogtoClient({
-    endpoint: 'https://upfbti.logto.app/',
-    appId: 'em5nk725e3ujfr20v740y',
-    });
     this._encrypDecrypService.getUserCurrentLocartion();
     this._encrypDecrypService.AppBundeID();
     this._encrypDecrypService.GetDeviceID();
@@ -211,38 +202,28 @@ async LoginWithKinde(url){
       console.error("OAuth rejected", reason);
   });
   }
-  async signOut(url){
-    console.log(await this.logtoClient.isAuthenticated());
-    if(await this.logtoClient.isAuthenticated()){
-      console.log(await this.logtoClient.getAccessToken())
-    }
-  
-    await this.logtoClient.signOut("com.usscyber.xliquiduss.app://kinde_callback")
-  }
   async LoginWithLogto(url){
-      await this.logtoClient.signIn('com.usscyber.xliquiduss.app://kinde_callback');
-      console.log(await this.logtoClient.isAuthenticated()); // true
-      console.log(await this.logtoClient.getIdTokenClaims()); // { sub: '...', ... }
-    // this._appServices.simpleLoader();
-    // let paramters = this.platform.is("ios") === true ? this._B2C_config.LogtoLoginDetailsIOS() : this._B2C_config.LogtoLoginDetails();
-    //   OAuth2Client.authenticate(
-    //     paramters
-    // ).then(async response => {
-    //   console.log(response);
-    //   if(this.platform.is("ios")){
-    //     this.authtoken = response['id_token'];
-    //   }else{
-    //     this.authtoken = response.authorization_response['id_token'];
-    //   }
-    //     this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token, this.authtoken);
-    //     await this._appServices.deCodeJwtToken(this.authtoken);
-    //     this._appServices.loaderDismiss();
-    //     this.postSyncUserDetails();
-      
-    // }).catch(reason => {
-    //   this._appServices.loaderDismiss();
-    //     console.error("OAuth rejected", reason);
-    // });
+    this._appServices.simpleLoader();
+   var call_back_url = this.platform.is("ios") === true ? this._B2C_config.LogtoLoginDetails().iOS_login_call_back : this._B2C_config.LogtoLoginDetails().android_login_call_back;
+   var Login = await this._appServices.InitLogtoIo().signIn(call_back_url).then(async (onSuccess)=>{
+    var isAuthenticated =  await this._appServices.InitLogtoIo().isAuthenticated();
+    var getIdTokenClaims = await this._appServices.InitLogtoIo().getIdTokenClaims();
+    var user = await this._appServices.InitLogtoIo().fetchUserInfo();
+    var access_token_claims = await this._appServices.InitLogtoIo().getAccessTokenClaims();
+    var access_token = await this._appServices.InitLogtoIo().getAccessToken();
+    var id_token = await this._appServices.InitLogtoIo().getIdToken();
+    console.log("id_token=",id_token);
+    console.log("user=",user);
+    console.log("access_token=",access_token);
+    this.authtoken = id_token;
+    this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token, this.authtoken);
+    await this._appServices.deCodeJwtToken(this.authtoken);
+     this._appServices.loaderDismiss();
+     this.postSyncUserDetails();
+   }).catch(error=>{
+    this._appServices.loaderDismiss();
+      console.error("error=", error);
+   });
     }
   getUrlParameter(name, url) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');

@@ -9,6 +9,8 @@
 			<array>
 				<!-- msauth.BUNDLE_ID -->
 				<string>msauth.com.usscyber.xl</string>
+				<string>com.usscyber.xl</string>
+				
 			</array>
 		</dict>
 	</array>
