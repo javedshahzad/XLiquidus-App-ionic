@@ -10,7 +10,7 @@ import jwt_decode from "jwt-decode";
 import { Location } from '@angular/common';
 import { Network } from '@ionic-native/network/ngx';
 import Swal from 'sweetalert2';
-import LogtoClient from '@logto/capacitor';
+import LogtoClient, { Prompt } from '@logto/capacitor';
 
 interface apiResponse {
   status: number,
@@ -603,6 +603,8 @@ export class AppService {
      const logtoClient = new LogtoClient({
       endpoint: 'https://upfbti.logto.app/',
       appId: 'em5nk725e3ujfr20v740y',
+      scopes:['email profile phone roles'],
+      prompt:Prompt.Consent
     });
     return logtoClient;
   }
