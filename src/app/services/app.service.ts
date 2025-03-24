@@ -24,7 +24,8 @@ interface apiResponse {
 export class AppService {
   //public apiUrl = "https://inverse-xl.usscyber.com/v3/";    //development url
  //public apiUrl = "https://mobious-xl.usscyber.com/v3/";    //production url
- public apiUrl ="https://2ufet3xaskyqtigo43ifmqri7q0vynew.lambda-url.us-east-1.on.aws/v3/";
+ //public apiUrl ="https://2ufet3xaskyqtigo43ifmqri7q0vynew.lambda-url.us-east-1.on.aws/v3/";
+ public apiUrl = "https://tj3t29vpbt.us-east-1.awsapprunner.com/api/"
  // public apiUrl = "https://inverse.usscyber.com/v3/";
   public blockChainTransactionBaseUrl = "https://explorer.usscyber.com/transaction/";
   public ipAddress: any = { "ip": '127.0.0.1' };
@@ -600,9 +601,11 @@ export class AppService {
     });
   }
   InitLogtoIo(){
+    //https://upfbti.logto.app/
+    //em5nk725e3ujfr20v740y
      const logtoClient = new LogtoClient({
-      endpoint: 'https://upfbti.logto.app/',
-      appId: 'em5nk725e3ujfr20v740y',
+      endpoint: 'https://5r5a7r.logto.app/',
+      appId: 'f735kvyigqox8gip81pal',
       scopes:['email profile phone roles'],
       prompt:Prompt.Consent
     });

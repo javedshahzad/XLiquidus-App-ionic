@@ -121,7 +121,6 @@ export class LoginComponent implements OnInit {
   async postSyncUserDetails() {
     this._appServices.simpleLoader();
     this._encrypDecrypService.getUserCurrentLocartion();
-    console.log(this._appServices.getHttpHeaders(),"Headers")
     var postJson = {
       "userObjectId": this._appServices.loggedInUserDetails.oid,
       "emailAddress": this._appServices.loggedInUserDetails.email,
@@ -219,8 +218,15 @@ async LoginWithKinde(url){
     this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token, this.authtoken);
     await this._appServices.deCodeJwtToken(this.authtoken);
      this._appServices.loaderDismiss();
-     this.postSyncUserDetails();
-   }).catch(error=>{
+     this.TestAuthPublic();
+     //this.postSyncUserDetails();
+   }).catch(async (error)=>{
+    var isAuthenticated =  await this._appServices.InitLogtoIo().isAuthenticated();
+    var getIdTokenClaims = await this._appServices.InitLogtoIo().getIdTokenClaims();
+    var user = await this._appServices.InitLogtoIo().fetchUserInfo();
+    var access_token_claims = await this._appServices.InitLogtoIo().getAccessTokenClaims();
+    var access_token = await this._appServices.InitLogtoIo().getAccessToken();
+    var id_token = await this._appServices.InitLogtoIo().getIdToken();
     this._appServices.loaderDismiss();
       console.error("error=", error);
    });
@@ -231,7 +237,15 @@ async LoginWithKinde(url){
     var results = regex.exec(url);
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   };
+  TestAuthPublic(){
+    this._appServices.getData('authtest/public').subscribe((response)=>{
+      console.log("postData TestAuthPublic = ",response)
+    })
+    this._appServices.getData('authtest/protected').subscribe((response)=>{
+      console.log("postData protected = ",response)
+    })
 
+  }
 
   thirdPartyLogin(url) {
     var ths = this;
