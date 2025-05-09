@@ -10,7 +10,8 @@ enum LogLevel {
 
 enum localStorageKeys {
     access_token = "access_token",
-    communicationAccessKey = "communicationAccessKey"
+    communicationAccessKey = "communicationAccessKey",
+    idToken="idToken"
 }
 
 enum CookieKeys {

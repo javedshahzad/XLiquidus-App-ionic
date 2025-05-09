@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   IsAppleLogin: boolean;
   IsLoginAllowedAsyncData: any;
   CloudLoginConfig: any;
+  access_token: string;
   constructor(
     private router: Router,
     public _nav: NavController,
@@ -175,6 +176,9 @@ IsLoginAllowedAsync(){
     }
   }, err => {
     console.log(err);
+    setTimeout(() => {
+      this._appServices.loaderDismiss();
+    }, 2000);
     this._appServices.presentToast("You are not allowed to login!.");
     this._appServices.loaderDismiss();
   });
@@ -209,16 +213,24 @@ async LoginWithKinde(url){
     var getIdTokenClaims = await this._appServices.InitLogtoIo().getIdTokenClaims();
     var user = await this._appServices.InitLogtoIo().fetchUserInfo();
     var access_token_claims = await this._appServices.InitLogtoIo().getAccessTokenClaims();
-    var access_token = await this._appServices.InitLogtoIo().getAccessToken();
+    var access_token = await this._appServices.InitLogtoIo().getAccessToken(this._appServices.apiResource);
     var id_token = await this._appServices.InitLogtoIo().getIdToken();
     console.log("id_token=",id_token);
     console.log("user=",user);
     console.log("access_token=",access_token);
+    console.log("getIdTokenClaims=",getIdTokenClaims);
+    console.log("access_token_claims=",access_token_claims);
+    console.log("access_token=",access_token);
     this.authtoken = id_token;
-    this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token, this.authtoken);
+    this._appServices.access_token = this.authtoken;
+    this.access_token = access_token;
+    this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token, this.access_token);
+    this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.idToken, this.authtoken);
     await this._appServices.deCodeJwtToken(this.authtoken);
      this._appServices.loaderDismiss();
-     this.TestAuthPublic();
+     setTimeout(() => {
+      this.TestAuthPublic();
+     }, 1000);
      //this.postSyncUserDetails();
    }).catch(async (error)=>{
     var isAuthenticated =  await this._appServices.InitLogtoIo().isAuthenticated();
@@ -238,12 +250,22 @@ async LoginWithKinde(url){
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   };
   TestAuthPublic(){
-    this._appServices.getData('authtest/public').subscribe((response)=>{
-      console.log("postData TestAuthPublic = ",response)
-    })
-    this._appServices.getData('authtest/protected').subscribe((response)=>{
-      console.log("postData protected = ",response)
-    })
+    var url = `${this._appServices.apiUrl}authtest/public`
+    this._appServices.getDataByHttp(`auth/public`).subscribe((response)=>{
+      console.log("GET Data TestAuthPublic response = ",response)
+      console.log("public = ",JSON.stringify(response))
+    }, error=>{
+      console.log(error,"TestAuthPublic error")
+    }
+  )
+    this._appServices.getDataByHttp(`auth/protected`).subscribe((response)=>{
+      console.log("GET Data protected response= ",response)
+      console.log("protected = ",JSON.stringify(response))
+    },error=>{
+      console.log("GET Data protected error = ",error)
+      console.log("GET Data protected error = ",error.error)
+    }
+  )
 
   }
 

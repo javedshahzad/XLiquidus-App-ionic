@@ -11,6 +11,8 @@ import { Location } from '@angular/common';
 import { Network } from '@ionic-native/network/ngx';
 import Swal from 'sweetalert2';
 import LogtoClient, { Prompt } from '@logto/capacitor';
+import { EncryptionDecryptionService } from './encryption.service';
+import { AppEnum } from '../appEnum/appenum';
 
 interface apiResponse {
   status: number,
@@ -25,7 +27,7 @@ export class AppService {
   //public apiUrl = "https://inverse-xl.usscyber.com/v3/";    //development url
  //public apiUrl = "https://mobious-xl.usscyber.com/v3/";    //production url
  //public apiUrl ="https://2ufet3xaskyqtigo43ifmqri7q0vynew.lambda-url.us-east-1.on.aws/v3/";
- public apiUrl = "https://tj3t29vpbt.us-east-1.awsapprunner.com/api/"
+ public apiUrl = "https://casqebmtbp.us-east-1.awsapprunner.com/api/";
  // public apiUrl = "https://inverse.usscyber.com/v3/";
   public blockChainTransactionBaseUrl = "https://explorer.usscyber.com/transaction/";
   public ipAddress: any = { "ip": '127.0.0.1' };
@@ -38,6 +40,7 @@ export class AppService {
   public UploadMaxRetryHit = 3;
   public cartRefresh = new BehaviorSubject(false);
   public connectionPopup = false;
+  apiResource ="https://casqebmtbp.us-east-1.awsapprunner.com";
 
   constructor(
     public http: HttpClient,
@@ -52,6 +55,8 @@ export class AppService {
     public _alertController: AlertController,
     public networkInterface: NetworkInterface,
     private network: Network,
+    public _encrypDecrypService: EncryptionDecryptionService,
+    public _appEnum: AppEnum,
   ) {
 
   }
@@ -103,6 +108,45 @@ export class AppService {
     return new Promise(function (resolve, reject) {
       if (token) {
         ths.access_token = token;
+        var decoded:any = jwt_decode(token);
+        var decodedHeader = jwt_decode(token, { header: true });
+        console.log(decodedHeader, decoded);
+        if (decoded['emails']) {
+          if (decoded['emails'].length > 0) {
+            var userDetails = {
+              email: decoded['emails'][0],
+              name: decoded['name'],
+              given_name: decoded['given_name'],
+              family_name: decoded['family_name'],
+              oid: decoded['oid'] ? decoded['oid'] : decoded['sub']
+            }
+            Object.assign(ths.loggedInUserDetails, userDetails);
+          }
+        } else if (decoded['email']) {
+          var userDetails = {
+            email: decoded['email'],
+            name: decoded['name'] ? decoded['name'] :decoded['username'] ,
+            given_name: decoded['given_name'],
+            family_name: decoded['family_name'],
+            oid: decoded['oid'] ? decoded['oid'] : decoded['sub']
+          }
+          Object.assign(ths.loggedInUserDetails, userDetails);
+        }
+        if (ths.loggedInUserDetails['email'] && ths.loggedInUserDetails['email'] != '') {
+          console.log('loggedInUserDetails', ths.loggedInUserDetails)
+          resolve(ths.loggedInUserDetails);
+        } else {
+          reject("error in payload in ");
+        }
+      } else {
+        reject("error in payload in ");
+      }
+    });
+  }
+  deCodeJwtIdToken(token) {
+    var ths = this;
+    return new Promise(function (resolve, reject) {
+      if (token) {
         var decoded:any = jwt_decode(token);
         var decodedHeader = jwt_decode(token, { header: true });
         console.log(decodedHeader, decoded);
@@ -243,8 +287,9 @@ export class AppService {
   }
 
   getHttpHeaders() {
-    const authToken = this.access_token;
-    console.log("Access token=",authToken);
+    const authToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token));
+    //const authToken =  this._encrypDecrypService.localstorageGetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token);
+    console.log("Access token from getHttpHeaders()=",authToken);
     var headers;
     if (authToken) {
       headers = {
@@ -274,9 +319,9 @@ export class AppService {
   }
 
   getDataByHttp(url) {
-    url = this.apiUrl + url;
-    console.log(url);
-    return this.platform.is('cordova') ? this.getDataByNative(url) : this.getData(url);
+    var apiurl = this.apiUrl + url;
+    console.log(apiurl);
+    return this.platform.is('cordova') ? this.getDataByNative(apiurl) : this.getData(apiurl);
   }
 
   postDataByHttp(url, data) {
@@ -368,7 +413,7 @@ export class AppService {
 
   getData(url): Observable<any> {
     console.log(url);
-    return this.http.get(url)
+    return this.http.get(url,this.getHttpHeaders())
       .pipe(retry(this.UploadMaxRetryHit), map(results => {
         console.log(results);
         return results;
@@ -381,7 +426,7 @@ export class AppService {
 
   postData(url, data): Observable<any> {
     console.log(url, JSON.stringify(data));
-    return this.http.post(url, data)
+    return this.http.post(url, data,this.getHttpHeaders())
       .pipe(retry(this.UploadMaxRetryHit), map(results => {
         console.log(results);
         return results;
@@ -605,9 +650,10 @@ export class AppService {
     //em5nk725e3ujfr20v740y
      const logtoClient = new LogtoClient({
       endpoint: 'https://5r5a7r.logto.app/',
-      appId: 'f735kvyigqox8gip81pal',
-      scopes:['email profile phone roles'],
-      prompt:Prompt.Consent
+      appId: 'nu451xjzb2pz6manbtt01',
+      scopes:['email openid profile phone roles'],
+      prompt:Prompt.Consent,
+      resources:[this.apiResource]
     });
     return logtoClient;
   }

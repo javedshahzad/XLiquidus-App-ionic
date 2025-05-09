@@ -74,7 +74,7 @@ export class AppComponent {
     let url = "https://dyse8jtzjt9yv.cloudfront.net/xl/xl-app-config.json";
     this._appServices.getDataByNative(url).subscribe((response:any)=>{
       this.CloudLoginConfig = response.data;
-      this._appServices.apiUrl =this.CloudLoginConfig.ServiceUrl+"/v3/";
+      //this._appServices.apiUrl =this.CloudLoginConfig.ServiceUrl+"/v3/";
     });
   }
   getSettings() {
@@ -104,7 +104,7 @@ export class AppComponent {
   }
 
   async checkUserloggedInOrNot() {
-    var getToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.access_token));
+    var getToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.idToken));
     if (getToken) {
       await this._appServices.deCodeJwtToken(getToken);
      // this.postSyncUserDetails()
@@ -130,17 +130,24 @@ export class AppComponent {
           this.postSyncUserDetails();
          }else{
           this._appServices.loaderDismiss();
+          setTimeout(() => {
+            this._appServices.loaderDismiss();
+          }, 2000);
           this._appServices.presentToast("You are not allowed to login!")
           this._nav.navigateRoot(['/beta-program']);
          }
       }
     }, err => {
+    setTimeout(() => {
+      this._appServices.loaderDismiss();
+    }, 2000);
       console.log(err);
       this._appServices.loaderDismiss();
       if(err.status === 401){
         this.logout();
         this._appServices.presentToast("Your token has been expired!");
       }else{
+        this._appServices.loaderDismiss();
         this._appServices.presentToast("You are not allowed to login!");
       }
      
