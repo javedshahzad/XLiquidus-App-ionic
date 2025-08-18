@@ -23,7 +23,7 @@ export class NoActiveSellerProfilePage implements OnInit {
     public _encServices: EncryptionDecryptionService,
     public _appservices: AppService,
     private global: GlobalService,
-    public iab: InAppBrowser,
+    public iab: any,
     private ngZone: NgZone,
   ) { }
 

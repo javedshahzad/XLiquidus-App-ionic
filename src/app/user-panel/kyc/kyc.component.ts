@@ -35,7 +35,7 @@ export class KYCComponent implements OnInit {
     public _appServices: AppService,
     public platform: Platform,
     public router: Router,
-    public iab: InAppBrowser,
+    public iab: any,
     public _encServices: EncryptionDecryptionService,
     public activatedroute: ActivatedRoute,
     private _nav: NavController,

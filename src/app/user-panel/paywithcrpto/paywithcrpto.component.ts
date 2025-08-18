@@ -22,7 +22,7 @@ export class PaywithcrptoComponent implements OnInit {
     public platform: Platform,
     public _encServices: EncryptionDecryptionService,
     public _appServices: AppService,
-    public iab: InAppBrowser, public router: Router,
+    public iab: any, public router: Router,
     public activatedroute: ActivatedRoute,
     public _nav: NavController
   ) { }

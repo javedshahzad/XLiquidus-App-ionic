@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { AppService } from './services/app.service';
 import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { NetworkInterface } from '@ionic-native/network-interface/ngx';
+import { AuthTokenInterceptor } from './interceptor/auth-token.interceptor';
 import { HTTP } from '@ionic-native/http/ngx';
 import { B2C_config_setting } from './B2C_config_setting';
 import { httpClientInterceptor } from './interceptor/httpClient.interceptor';
@@ -62,6 +63,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TranslateService,
     InAppBrowser,
     { provide: HTTP_INTERCEPTORS, useClass: httpClientInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

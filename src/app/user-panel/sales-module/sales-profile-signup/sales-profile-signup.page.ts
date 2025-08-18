@@ -84,7 +84,7 @@ export class SalesProfileSignupPage implements OnInit {
         public _appservices: AppService,
         private global: GlobalService,
         private ngZone: NgZone,
-        public iab: InAppBrowser,
+        public iab: any,
         private formBuilder: FormBuilder
     ) {}
 

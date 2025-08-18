@@ -24,7 +24,7 @@ export class SignupOptionsComponent implements OnInit {
   constructor(
     private router: Router,
     public _nav: NavController,
-    public iab: InAppBrowser,
+    public iab: any,
     public _appServices: AppService,
     public _appEnum: AppEnum,
     public platform: Platform,

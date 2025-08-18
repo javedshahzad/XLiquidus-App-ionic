@@ -21,7 +21,7 @@ export class PayWithCardComponent implements OnInit {
     public platform: Platform,
     public _encServices: EncryptionDecryptionService,
     public _appServices: AppService,
-    public iab: InAppBrowser,
+    public iab: any,
     public router: Router,
     public activatedroute: ActivatedRoute,
     public _nav: NavController) { }

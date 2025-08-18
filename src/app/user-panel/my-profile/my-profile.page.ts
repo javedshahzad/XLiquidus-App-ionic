@@ -12,7 +12,7 @@ import { UserPanelPage } from '../user-panel.page';
   selector: 'app-my-profile',
   templateUrl: './my-profile.page.html',
   styleUrls: ['./my-profile.page.scss'],
-  providers: [InAppBrowser]
+  providers: [{ provide: InAppBrowser, useValue: {} }]
 })
 export class MyProfilePage implements OnInit {
   userDetails: any="";
@@ -23,7 +23,7 @@ export class MyProfilePage implements OnInit {
   constructor(
     public router: Router,
     public _encServices: EncryptionDecryptionService,
-    public iab: InAppBrowser,
+    public iab: any,
     public _appServices: AppService,
     public _appEnum: AppEnum,
     public _nav: NavController,

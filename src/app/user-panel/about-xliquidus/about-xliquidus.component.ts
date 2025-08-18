@@ -10,7 +10,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 })
 export class AboutXliquidusComponent implements OnInit {
   backButtonSubscription:any;
-  constructor(public _appservices:AppService,public router:Router,public iab:InAppBrowser,public _appServices:AppService,  public platform:Platform, public _nav:NavController) { }
+  constructor(public _appservices:AppService,public router:Router,public iab: any,public _appServices:AppService,  public platform:Platform, public _nav:NavController) { }
 
   ngOnInit() {
     this.backButtonSubscription = this.platform.backButton.subscribe(() => {

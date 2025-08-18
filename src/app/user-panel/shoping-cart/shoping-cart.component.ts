@@ -19,7 +19,7 @@ export class ShopingCartComponent implements OnInit {
   public backButtonSubscription: any;
   @ViewChild('myModal', { static: false }) myModal: ElementRef;
   elm1: HTMLElement;
-  constructor(public _appServices: AppService, public iab: InAppBrowser, public alertController: AlertController, public platform: Platform, public _nav: NavController, public router: Router, public _encServices: EncryptionDecryptionService) { }
+  constructor(public _appServices: AppService, public iab: any, public alertController: AlertController, public platform: Platform, public _nav: NavController, public router: Router, public _encServices: EncryptionDecryptionService) { }
 
   ngOnInit() { }
 

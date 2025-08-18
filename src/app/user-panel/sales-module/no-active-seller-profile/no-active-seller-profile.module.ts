@@ -19,8 +19,6 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
     SharedModule
   ],
   declarations: [NoActiveSellerProfilePage],
-  providers: [
-    InAppBrowser
-  ]
+  providers: [{ provide: InAppBrowser, useValue: {} }]
 })
 export class NoActiveSellerProfilePageModule {}
