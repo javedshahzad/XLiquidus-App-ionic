@@ -12,10 +12,13 @@
       <ion-row class="p-l-10 p-r-10">
         <ion-col size="8">
           <h5 class="size-23 m-t-20 text-white font-weight-600 jostDemi">Hi
-            {{(_appServices?.loggedInUserAccountDetails?.firstName)== '' ?
-            _appServices?.loggedInUserAccountDetails?.preferredName == '' ?
-            _appServices?.loggedInUserAccountDetails?.preferredName : "User" :
-            _appServices?.loggedInUserAccountDetails?.firstName}}!</h5>
+            <span *ngIf="_appServices?.loggedInUserAccountDetails?.given_name || _appServices?.loggedInUserAccountDetails?.family_name">
+              {{_appServices?.loggedInUserAccountDetails?.given_name}}{{_appServices?.loggedInUserAccountDetails?.family_name}}
+            </span>
+            <span *ngIf="_appServices?.loggedInUserAccountDetails?.name">
+              {{_appServices?.loggedInUserAccountDetails?.name}}
+            </span>!
+          </h5>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -52,7 +55,7 @@
               <ion-select [(ngModel)]="tokenSortByValue" (ngModelChange)="sortValueChange(tokenSortByValue)"
                 class="itemclass height-50" interface="action-sheet">
                 <ion-select-option value='p'>Price</ion-select-option>
-                <ion-select-option value='g'>Gains</ion-select-option>
+                <ion-select-option value='g'>Amount</ion-select-option>
               </ion-select>
             </ion-col>
           </ion-row>
@@ -84,16 +87,16 @@
             <h4 class="color-secondary jostDemi size-19 m-b-0 m-t-0">
               {{token.name}}
             </h4>
-            <h4 class="color-secondary jostBook size-15 m-t-0">{{token.shortName}}</h4>
+            <h4 class="color-secondary jostBook size-15 m-t-0">{{token.cryptocurrency}}</h4>
           </div>
           <ion-text slot="end">
             <!-- <ion-button fill="clear" class="color-secondary jostHeavy size-15 font-weight-800 height-20 m-0">
               <h5 class="jostHeavy size-15 font-weight-800 m-t-10 ion-text-end">{{token.marketPrice | currency}}</h5> 
             </ion-button> -->
-            <h5 class="jostHeavy size-15 font-weight-800 m-t-10 height-20 ion-text-end">{{token.marketPrice | currency}}
+            <h5 class="jostHeavy size-15 font-weight-800 m-t-10 height-20 ion-text-end">{{token.price | currency}}
             </h5>
             <ng-container>
-              <p class="jostBook size-13 color-success m-0 ion-text-end">{{token.profitLoss}}%</p>
+              <p class="jostBook size-13 color-success m-0 ion-text-end">{{token.amount}}</p>
             </ng-container>
           </ion-text>
         </ion-item>

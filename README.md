@@ -66,3 +66,14 @@ Add this below line in android\app\build.gradle file
 ```
  manifestPlaceholders = [appAuthRedirectScheme: 'com.usscyber.xliquiduss.app']
 ```
+
+
+```
+	// "server": {
+	// 	"hostname":"localhost:8100",
+	// 	"androidScheme": "https",
+	// 	"iosScheme":"https",
+	// 	"cleartext":true
+	//   },
+	
+```

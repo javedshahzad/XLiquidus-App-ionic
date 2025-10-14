@@ -103,7 +103,7 @@ export class SalesProfileSignupPage implements OnInit {
         this._nav.back();
     }
     GetFudingOptionsTypes() {
-        var UrlParameters = `Global/GetFudingOptionsTypes`;
+        var UrlParameters = `global/GetFundingOptions`;
         console.log(UrlParameters);
         this._appservices.getDataByHttp(UrlParameters).subscribe(res => {
             console.log("Global/GetFudingOptionsTypes Response", res);
@@ -115,7 +115,8 @@ export class SalesProfileSignupPage implements OnInit {
     }
     GetUser() {
         this._appservices.presentLoading();
-        var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appservices.loggedInUserDetails['email'])}&clientIpAddress=${this._appservices.ipAddress.ip}`
+        //var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appservices.loggedInUserDetails['email'])}&clientIpAddress=${this._appservices.ipAddress.ip}`
+        var UserDetailsUrl = `users/${this._appservices.loggedInUserDetails.oid}`
         this._appservices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
             if (_res.status == 200) {
                 this.userDetails = _res.data;

@@ -13,27 +13,10 @@ export class httpClientInterceptor implements HttpInterceptor {
     var headers;
     if (authToken) {
       const authHeader = `Bearer ${authToken}`;
-      headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'access-control-allow-methods': 'GET,PUT,POST,DELETE',
-        'Clear-Site-Data': "*",
-        'Access-Control-Allow-Credentials': 'true',
-        'platform-interface-id': this._appservices.interfaceID,
-        'appInterfaceId': this._appservices.interfaceID,
-        'Authorization': authHeader
-      });
+      headers = new HttpHeaders(this._appservices.getHttpHeaders());
     }
     else {
-      headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'access-control-allow-methods': 'GET,PUT,POST,DELETE',
-        'Clear-Site-Data': "*",
-        'Access-Control-Allow-Credentials': 'true',
-        'platform-interface-id': this._appservices.interfaceID,
-        'appInterfaceId': this._appservices.interfaceID,
-      });
+      headers = new HttpHeaders(this._appservices.getHttpHeaders());
     }
     const authReq = req.clone({ headers });
     return next.handle(authReq);

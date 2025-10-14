@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
 
   ionViewWillEnter() {
    this.OnDashboadInit();
-   this.HandleCache();
+   //this.HandleCache();
   }
 
   OnDashboadInit(){
@@ -80,13 +80,18 @@ export class DashboardComponent implements OnInit {
   }
   GetMarketTokens(){
     this._appServices.simpleLoader();
-    if (this.tokenSearchValue == '') {
-      var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.defaultSearchTerm}&lang=EN&take=30&skip=0`
-    } else {
-      var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.tokenSearchValue}&lang=EN&take=30&skip=0`
-    }
-    this.sub2 = this._appServices.getDataByHttp(`Search/Get?${UrlParameters}`).subscribe(_res => {
-      this.getSearchResult = _res.status == 200 ? (_res.data ? _res.data.data.data : []) : [];
+    // if (this.tokenSearchValue == '') {
+    //   var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.defaultSearchTerm}&lang=EN&take=30&skip=0`
+    // } else {
+    //   var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.tokenSearchValue}&lang=EN&take=30&skip=0`
+    // }
+    var UrlParameters = `marketplace/products`;
+    
+    this.sub2 = this._appServices.getDataByHttp(UrlParameters).subscribe((_res:any) => {
+      console.log("marketplace/products == ", _res)
+      // var parse = JSON.parse(_res);
+      // console.log(parse)
+      this.getSearchResult = _res.status == 200 ? (_res.data ? _res.data.items : []) : [];
       console.log(this.getSearchResult);
       this._appServices.loaderDismiss();
     }, err => {
@@ -133,11 +138,12 @@ export class DashboardComponent implements OnInit {
     this.tokenSearchValue = val;
     if (this.tokenSearchValue.length === 0) {
       this.isDataLoad = true;
-      var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.defaultSearchTerm}&lang=EN&take=30&skip=0`
-      this._appServices.getDataByHttp(`Search/Get?${UrlParameters}`).subscribe(res => {
+      //var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.defaultSearchTerm}&lang=EN&take=30&skip=0`
+     var UrlParameters = `marketplace/products`;
+      this._appServices.getDataByHttp(`${UrlParameters}`).subscribe(res => {
         this.isDataLoad = false;
         if (res.status == 200) {
-          this.getSearchResult = res.data.data.data;
+          this.getSearchResult = res.data.items;
         }
       });
     } else if (this.tokenSearchValue.length >= 3) {
@@ -148,11 +154,18 @@ export class DashboardComponent implements OnInit {
   searchresult() {
     this._appServices.presentLoading();
     this.isDataLoad = true;
-    var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.tokenSearchValue}&lang=EN&take=30&skip=0`
-    this._appServices.getDataByHttp(`Search/Get?${UrlParameters}`).subscribe(res => {
+    //var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.tokenSearchValue}&lang=EN&take=30&skip=0`
+       var payload = {
+        "query": this.tokenSearchValue,
+        "cryptocurrency": this.tokenSearchValue,
+        "Page": 1,
+        "PageSize": 10
+        }
+    var UrlParameters = `marketplace/search`;
+    this._appServices.postDataByHttp(`${UrlParameters}`,payload).subscribe(res => {
       this.isDataLoad = false;
       if (res.status == 200) {
-        this.getSearchResult = res.data.data.data;
+        this.getSearchResult = res.data.items;
       }
       this._appServices.loaderDismiss();
     }, err => {
@@ -165,10 +178,10 @@ export class DashboardComponent implements OnInit {
   sortValueChange(value) {
     if (value == 'p') {
       this.getSearchResult.sort(function (a, b) {
-        return b.marketPrice - a.marketPrice;
+        return b.price - a.price;
       });
     } else if (value == 'g') {
-      this.getSearchResult.sort((a, b) => a.rate < b.rate ? -1 : a.rate > b.rate ? 1 : 0)
+      this.getSearchResult.sort((a, b) => a.amount < b.amount ? -1 : a.amount > b.amount ? 1 : 0)
     }
   }
 

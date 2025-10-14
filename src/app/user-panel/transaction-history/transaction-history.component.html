@@ -40,16 +40,16 @@
           <tr *ngFor="let td of CurrentUserTransactionsDetails | fullObjectFilter:searchTerm"
             (click)="goToTransactionDetails(td)">
             <td>
-              <h2 class="color-blue jostDemi m-b-5 m-t-5 font-weight-600 size-14">{{td.type}}</h2>
+              <h2 class="color-blue jostDemi m-b-5 m-t-5 font-weight-600 size-14">{{td.transactionType}}</h2>
               <h6 class="color-blue jostMedium  m-b-5 m-t-5 font-weight-400 size-14">
-                {{td.customDate}}
+                {{td.transactionDate | date:'short'}}
               </h6>
-              <p class="text-gray jostBook font-weight-500 size-12 m-t-0 m-b-0">#{{td.receiptTxId.substring(0,30)}}...
+              <p class="text-gray jostBook font-weight-500 size-12 m-t-0 m-b-0">#{{td.transactionId.substring(0,30)}}...
               </p>
             </td>
             <td>
-              <ion-icon *ngIf="td.status != 0" class="size-24 custom-tick-color" name="checkmark-circle"></ion-icon>
-              <ion-icon *ngIf="td.status == 0" class="size-24 custom-tick-color-danger" name="checkmark-circle">
+              <ion-icon *ngIf="td.status == 'Completed'" class="size-24 custom-tick-color" name="checkmark-circle"></ion-icon>
+              <ion-icon *ngIf="td.status != 'Completed'" class="size-24 custom-tick-color-danger" name="checkmark-circle">
               </ion-icon>
             </td>
             <td>

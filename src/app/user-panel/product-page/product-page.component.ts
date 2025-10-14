@@ -80,14 +80,14 @@ initProductPage(){
 GetProduct(){
   this.isDataLoad = true;
   this._appservices.simpleLoader();
-  if (this.productDataFromDashboardPage.type == 'Team') {
-    var UrlParameters = `symbol=UCTokens&name=${this.productDataFromDashboardPage.shortName}`
-  } else {
-    var UrlParameters = `symbol=${this.productDataFromDashboardPage.shortName}&name=${this.productDataFromDashboardPage.shortName}`
-  }
-  // var UrlParameters = `symbol=BTC&name=BTC`
+  // if (this.productDataFromDashboardPage.type == 'Team') {
+  //   var UrlParameters = `symbol=UCTokens&name=${this.productDataFromDashboardPage.shortName}`
+  // } else {
+  //   var UrlParameters = `symbol=${this.productDataFromDashboardPage.shortName}&name=${this.productDataFromDashboardPage.shortName}`
+  // }
+   var UrlParameters = `marketplace/listings/${this.productDataFromDashboardPage.id}`
   console.log(UrlParameters);
-  this._appservices.getDataByHttp(`Markets/GetProduct?${UrlParameters}`).subscribe(res => {
+  this._appservices.getDataByHttp(`${UrlParameters}`).subscribe(res => {
     console.log("GetProduct : ", res);
     this._appservices.loaderDismiss();
     this._appservices.cartRefresh.next(true);
@@ -287,13 +287,14 @@ GetProduct(){
     // console.log(UrlParameters);
     this.cartItems[0] = {
       amount:1,
-      item:this.productDataFromDashboardPage?.tokenIndexId,
-      isSecondaryMarketItem:false
+      tokenId:this.productDataFromDashboardPage?.id,
+      metadata:this.productDataFromDashboardPage.name
     }
     let payload:ADD_TO_CART_PAYLOAD = {
-       email:this._appservices.loggedInUserDetails.email,
-       type:'XL',
-       items:this.cartItems
+       name:this.productDataFromDashboardPage.name,
+       items:this.cartItems,
+       description:this.productDetail.description,
+       currency:this.productDataFromDashboardPage.cryptocurrency
     }
     this._appservices.addToCart(payload).then(res => {
       console.log("responce data", res);

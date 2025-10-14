@@ -14,7 +14,7 @@
       <ion-list class="w-100 p-0" line="none">
         <ion-item class="white-background ion-activatable ripple-parent">
           <ion-ripple-effect type="unbounded"></ion-ripple-effect>
-          <ion-row class="w-100" *ngIf="productDataFromDashboardPage?.isSaleAvailable">
+          <ion-row class="w-100" *ngIf="productDataFromDashboardPage?.available">
             <ion-col size="7" class="ion-no-padding">
               <ion-text class="display-block">
                 <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left p-t-20">Last Updated:</p>
@@ -22,15 +22,17 @@
               </ion-text>
             </ion-col>
             <ion-col size="5" class="ion-no-padding">
-              <ion-button *ngIf="productDataFromDashboardPage?.type != 'Currency'" expand="block" (click)="buynow()" size="small" class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
+              <!-- *ngIf="productDataFromDashboardPage?.type != 'Currency'" -->
+              <ion-button  expand="block" (click)="buynow()" size="small" class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
                 <h5 class="jostHeavy size-14 font-weight-700 m-t-10">BUY NOW</h5>
               </ion-button>
-              <ion-button *ngIf="productDataFromDashboardPage?.type === 'Currency'" expand="block" (click)="customizeorder()" size="small" class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
+              <!-- *ngIf="productDataFromDashboardPage?.type === 'Currency'" -->
+              <ion-button  expand="block" (click)="customizeorder()" size="small" class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
                 <h5 class="jostHeavy size-12 font-weight-700 m-t-10">CUSTOMIZE ORDER</h5>
               </ion-button>
             </ion-col>
           </ion-row>
-          <ion-row class="w-100" *ngIf="!productDataFromDashboardPage?.isSaleAvailable">
+          <ion-row class="w-100" *ngIf="!productDataFromDashboardPage?.available">
             <ion-col size="6">
               <ion-text class="display-block">
                 <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left p-t-20">Last Updated:</p>
@@ -54,8 +56,8 @@
                   <h5 class="color-tertiary-dark jostDemi size-32 m-b-0 m-t-5 font-weight-600">
                     {{productDataFromDashboardPage?.name}}
                   </h5>
-                  <h2 class="color-secondary jostDemi size-23 m-b-0 m-t-0 p-t-4 font-weight-600" *ngIf="productDataFromDashboardPage?.shortName != '' && productDataFromDashboardPage?.shortName != null">
-                    {{productDataFromDashboardPage?.shortName}}: <span class="jostBook font-weight-400 size-23">{{productDataFromDashboardPage?.marketPrice ? productDataFromDashboardPage?.marketPrice :  productDetail?.marketPrice | currency}}</span>
+                  <h2 class="color-secondary jostDemi size-23 m-b-0 m-t-0 p-t-4 font-weight-600" *ngIf="productDataFromDashboardPage?.cryptocurrency != '' && productDataFromDashboardPage?.cryptocurrency != null">
+                    {{productDataFromDashboardPage?.cryptocurrency}}: <span class="jostBook font-weight-400 size-23">{{productDataFromDashboardPage?.amount ? productDataFromDashboardPage?.amount :  productDetail?.amount | currency}}</span>
                   </h2>
                 </div>
               </ion-text>
@@ -66,7 +68,7 @@
       <ion-grid *ngIf="!GetTokenProfileData">
         <ion-row>
           <ion-col size="12">
-            <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600"> USD: <span class="jostBook darken-color font-weight-400 size-20">{{productDataFromDashboardPage?.marketPrice ? productDataFromDashboardPage?.marketPrice :  productDetail?.marketPrice | currency}}</span>
+            <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600"> USD: <span class="jostBook darken-color font-weight-400 size-20">{{productDataFromDashboardPage?.price ? productDataFromDashboardPage?.price :  productDetail?.price | currency}}</span>
             </h4>
           </ion-col>
         </ion-row>
@@ -74,7 +76,7 @@
       <ion-grid *ngIf="GetTokenProfileData">
         <ion-row>
           <ion-col size="12">
-            <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600"> USD: <span class="jostBook darken-color font-weight-400 size-20">{{productDataFromDashboardPage?.marketPrice ? productDataFromDashboardPage?.marketPrice :  productDetail?.marketPrice | currency}}</span>
+            <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600"> USD: <span class="jostBook darken-color font-weight-400 size-20">{{productDataFromDashboardPage?.price ? productDataFromDashboardPage?.price :  productDetail?.price | currency}}</span>
             </h4>
             <h4 class="color-tertiary-dark jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600">
               {{GetTokenProfileData?.marketSymbol}}: <span class="jostBook darken-color font-weight-400 size-20">{{GetTokenProfileData?.available}}</span>
@@ -242,10 +244,10 @@
         <ion-row>
           <ion-col>
             <!-- [disabled]="!productDataFromDashboardPage?.isSaleAvailable"  -->
-            <ion-button expand="block" *ngIf="productDataFromDashboardPage?.isSaleAvailable && productDataFromDashboardPage?.type != 'Currency'" (click)="addtocart()" size="large" class="primary-color-background shadownot no-border border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-95 letter-spacing">
+            <ion-button expand="block" *ngIf="productDataFromDashboardPage?.available" (click)="addtocart()" size="large" class="primary-color-background shadownot no-border border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-95 letter-spacing">
               <h5 class="jostHeavy size-15 font-weight-800 m-t-10">ADD TO CART</h5>
             </ion-button>
-            <ion-button expand="block" *ngIf="productDataFromDashboardPage?.isSaleAvailable && productDataFromDashboardPage?.type === 'Currency'" (click)="customizeorder()" size="large" class="primary-color-background shadownot no-border border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-95 letter-spacing">
+            <ion-button expand="block" *ngIf="productDataFromDashboardPage?.available" (click)="customizeorder()" size="large" class="primary-color-background shadownot no-border border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-95 letter-spacing">
               <h5 class="jostHeavy size-15 font-weight-800 m-t-10">CUSTOMIZE ORDER</h5>
             </ion-button>
           </ion-col>
@@ -287,12 +289,12 @@
           </ion-col>
           <ion-col>
             
-            <ion-button expand="block" (click)="addtocart()" *ngIf="productDataFromDashboardPage?.isSaleAvailable && productDataFromDashboardPage?.type != 'Currency'" size="large" class="primary-color-background no-border shadownot border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
+            <!-- <ion-button expand="block" (click)="addtocart()" *ngIf="productDataFromDashboardPage?.available" size="large" class="primary-color-background no-border shadownot border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
               <h5 class="jostHeavy size-15 font-weight-800 m-t-10">ADD TO CART</h5>
             </ion-button>
-            <ion-button expand="block" (click)="customizeorder()" *ngIf="productDataFromDashboardPage?.isSaleAvailable && productDataFromDashboardPage?.type === 'Currency'" size="large" class="primary-color-background no-border shadownot border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
+            <ion-button expand="block" (click)="customizeorder()" *ngIf="productDataFromDashboardPage?.available" size="large" class="primary-color-background no-border shadownot border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
               <h5 class="jostHeavy size-15 font-weight-800 m-t-10">CUSTOMIZE ORDER</h5>
-            </ion-button>
+            </ion-button> -->
           </ion-col>
         </ion-row>
       </ion-grid>

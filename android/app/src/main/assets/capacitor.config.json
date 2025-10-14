@@ -4,12 +4,6 @@
 	"webDir": "www",
 	"bundledWebRuntime": false,
 	"version": "1.0.0",
-	"server": {
-		"hostname": "localhost:8100",
-		"androidScheme": "https",
-		"iosScheme": "https",
-		"cleartext": true
-	},
 	"plugins": {
 		"SplashScreen": {
 			"showSpinner": true,
