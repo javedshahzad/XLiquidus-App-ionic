@@ -69,19 +69,38 @@ export class AppComponent {
     });
 }
   CheckUserAuth(){
-    this._appServices.getDataByHttp('auth/me').subscribe((response)=>{
-      console.log("get Data auth me = ",response)
-
-    },error=>{
-      console.log(error)
-    })
-      this._appServices.getDataByHttp('auth/user/profile').subscribe((response)=>{
-      console.log("get Data auth/user/profile = ",response)
+    this._appServices.getDataByHttp('auth/protected').subscribe((response)=>{
+      console.log("get Data auth protected = ",response)
+      if(response.data && response.data.authenticated === true){
+        this.syncUserData();
+        this.validateJWT_token();
+        this._appServices.presentToast("Login successfull!");
+      }
 
     },error=>{
       console.log(error)
     })
      this._nav.navigateRoot(['/user-panel']);
+  }
+  async syncUserData(){
+      this._appServices.postDataByHttp('auth/user/sync',{}).subscribe((response)=>{
+      console.log("auth/user/sync= ",response)
+
+    },error=>{
+      console.log(error)
+    })
+  }
+    async validateJWT_token(){
+      var getToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.access_token));
+      var payload = {
+    "AccessToken": getToken
+}
+      this._appServices.postDataByHttp('auth/token/validate',payload).subscribe((response)=>{
+      console.log("auth/token/validate = ",response)
+
+    },error=>{
+      console.log(error)
+    })
   }
   async initializeApp() {
     this.platform.ready().then(async () => {

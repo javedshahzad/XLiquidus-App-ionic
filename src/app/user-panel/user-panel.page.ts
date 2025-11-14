@@ -86,11 +86,11 @@ export class UserPanelPage {
     var ShowAuthenticationModal = localStorage.getItem("ShowAuthenticationModal") ? localStorage.getItem("ShowAuthenticationModal") : "true"; 
     this._appServices.presentLoading();
    // var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
-    var UserDetailsUrl = `auth/user/profile`; 
+    var UserDetailsUrl = `auth/me`; 
    this._appServices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
     console.log("User profile == "+_res)
       if (_res.status == 200) {
-        this._appServices.loggedInUserAccountDetails = this.userDetails = _res.data;
+       this.userDetails = _res.data;
         if (!this.userDetails.enableMultiFactorAuthentication && ShowAuthenticationModal === "true") {
           this.showModal = true;
           localStorage.setItem("ShowAuthenticationModal","false");
@@ -121,16 +121,27 @@ export class UserPanelPage {
       //this._appServices.loaderDismiss();
     });
   }
+  async logoutUser(){
+      this._appServices.postDataByHttp('auth/logout',{}).subscribe((response)=>{
+      console.log("auth/user/sync= ",response)
 
+    },error=>{
+      console.log(error)
+    })
+  }
   closeMenu() {
     this.menu.close();
   }
 
- async  logout() {
+ async logout() {
+  this.closeMenu();
     var call_back_url = this.platform.is("ios") === true ? this._B2C_config.LogtoLoginDetails().iOS_logout_call_Back : this._B2C_config.LogtoLoginDetails().android_logout_call_back;
-   if(this.platform.is("android"))
+   if(this.platform.is("android")){
     await this._appServices.InitLogtoIoAndroid().signOut(call_back_url);
-   else await this.logtoService.InitLogtoIoIOS().signOut(call_back_url);
+   }else{
+    await this.logtoService.InitLogtoIoIOS().signOut(call_back_url);
+   }
+   this.logoutUser();
     var deviceID = this._encrypDecrypService.getUUID();
     localStorage.clear();
     this._encrypDecrypService.setUUID(deviceID);

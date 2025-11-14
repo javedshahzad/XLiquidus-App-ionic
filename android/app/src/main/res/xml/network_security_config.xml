@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">vanui6iyhz.us-east-1.awsapprunner.com</domain>
+        <domain includeSubdomains="true">qsl-uat-alb-2026365544.us-east-1.elb.amazonaws.com</domain>
     </domain-config>
 </network-security-config>

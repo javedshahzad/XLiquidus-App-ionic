@@ -27,7 +27,8 @@ export class AppService {
   //public apiUrl = "https://inverse-xl.usscyber.com/v3/";    //development url
  //public apiUrl = "https://mobious-xl.usscyber.com/v3/";    //production url
  //public apiUrl ="https://2ufet3xaskyqtigo43ifmqri7q0vynew.lambda-url.us-east-1.on.aws/v3/";
- public apiUrl = "https://vanui6iyhz.us-east-1.awsapprunner.com/api/"
+ //public apiUrl = "https://vanui6iyhz.us-east-1.awsapprunner.com/api/"
+ public apiUrl = "http://qsl-uat-alb-2026365544.us-east-1.elb.amazonaws.com/mobile/api/"
  // public apiUrl = "https://inverse.usscyber.com/v3/";
   public blockChainTransactionBaseUrl = "https://explorer.usscyber.com/transaction/";
   public ipAddress: any = { "ip": '127.0.0.1' };
@@ -40,7 +41,7 @@ export class AppService {
   public UploadMaxRetryHit = 3;
   public cartRefresh = new BehaviorSubject(false);
   public connectionPopup = false;
-  public apiResourceUrl = "http://vanui6iyhz.us-east-1.awsapprunner.com";
+  public apiResourceUrl = "https://mobile.dev.quantumskylink.com";
   headers:any= {};
 
   constructor(
@@ -265,7 +266,7 @@ export class AppService {
         // 'appInterfaceId': this.interfaceID,
         // 'platform-interface-id': this.interfaceID,
         'Authorization': `Bearer ${authToken}`,
-        'X-API-Key': "apk_test_7f9a2b8c4d6e1f3g5h7i9j0k2l4m6n8o0p2q4r6s8t0u2v4w6x8y0z2a4b6c8d0e2f4g6h8i0j2k4l6m8n0o2p4q6r8s0t2u4v6w8x0y2z4a6b8c0d2e4f6g8h0i2j4k6l8m0n2o4p6q8r0s2t4u6v8w0x2y4z6a8b0c2d4e6f8g0h2i4j6k8l0m2n4o6p8q0r2s4t6u8v0w2x4y6z8a0b2c4d6e8f0g2h4i6j8k0l2m4n6o8p0q2r4s6t8u0v2w4x6y8z0",
+        //'X-API-Key': "apk_test_7f9a2b8c4d6e1f3g5h7i9j0k2l4m6n8o0p2q4r6s8t0u2v4w6x8y0z2a4b6c8d0e2f4g6h8i0j2k4l6m8n0o2p4q6r8s0t2u4v6w8x0y2z4a6b8c0d2e4f6g8h0i2j4k6l8m0n2o4p6q8r0s2t4u6v8w0x2y4z6a8b0c2d4e6f8g0h2i4j6k8l0m2n4o6p8q0r2s4t6u8v0w2x4y6z8a0b2c4d6e8f0g2h4i6j8k0l2m4n6o8p0q2r4s6t8u0v2w4x6y8z0",
         //'www-authenticate': `Bearer ${authToken}`,
       };
     }
@@ -618,7 +619,7 @@ export class AppService {
      const logtoClient = new LogtoClient({
       endpoint: 'https://5r5a7r.logto.app/',
       appId: 'nu451xjzb2pz6manbtt01',
-       scopes:['email profile phone roles'],
+      scopes:['email profile phone roles'],
       resources:[this.apiResourceUrl]
     });
     return logtoClient;
