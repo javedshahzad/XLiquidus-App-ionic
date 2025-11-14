@@ -13,7 +13,7 @@
         <div class="walletcardbackground">
             <ion-row class="wallet-card-top-content">
               <ion-col size="9" class="ion-padding-start">
-                <h2 class="text-white p-t-10 size-23">{{(_appServices?.loggedInUserAccountDetails?.firstName)== ' ' ? _appServices?.loggedInUserAccountDetails?.preferredName : _appServices?.loggedInUserAccountDetails?.firstName}}</h2>
+                <h2 class="text-white p-t-10 size-23">{{(_appServices?.loggedInUserAccountDetails?.firstName)== ' ' ? _appServices?.loggedInUserAccountDetails?.preferredName : _appServices?.loggedInUserAccountDetails?.name}}</h2>
                 <!-- <h2 class="text-white size-24 jostDemi font-weight-600 m-t-20">Cree Finnikin</h2>  -->
               </ion-col>
             </ion-row>
@@ -61,15 +61,15 @@
           <tr class ="grey-bottom-border" *ngFor="let item of userCoinMetricsList"  >
             <td>
               <ion-text class="display-block">
-                <img src="assets/images/wfse.png" class="currencyIcon ion-float-left">
-                 <h5 class="p-t-20 jostDemi size-14  m-t-5 font-weight-600">{{item.teamName}}</h5>
+                <img [src]="item.cryptocurrency.logo" onerror="this.src='assets/images/wfse.png'" class="currencyIcon ion-float-left">
+                 <h5 class="p-t-20 jostDemi size-14  m-t-5 font-weight-600">{{item.cryptocurrency.name}}</h5>
               </ion-text>
             </td>
             <td class="ion-text-center">
-              <h5 class="jostDemi size-14  m-t-5 font-weight-600">{{item.price.currentPrice}} {{item.price.fxRate.payoutCurrency}}</h5>
+              <h5 class="jostDemi size-14  m-t-5 font-weight-600">{{item.balance.total.crypto}}</h5>
             </td>
             <td class="ion-text-end">
-              <h5 class="jostDemi size-14 m-r-10  m-t-5 font-weight-600">{{item.amount | currency}}</h5>
+              <h5 class="jostDemi size-14 m-r-10  m-t-5 font-weight-600">{{item.balance.total.usd | currency}}</h5>
             </td>
           </tr>
           <tr class="thik-grey-bottom-border">
@@ -77,10 +77,10 @@
               <h5 class="size-19 font-weight-600  m-b-5 m-t-5 jostDemi">TOTAL:</h5>
             </td>
             <td class="ion-text-center">
-              <h5 class="size-15 font-weight-600 m-b-5 m-t-5 color-blue jostDemi">{{totalMrktPrice}}</h5>
+              <h5 class="size-15 font-weight-600 m-b-5 m-t-5 color-blue jostDemi">{{totalcoin}}</h5>
             </td>
             <td class="ion-text-end">
-              <h5 class="size-15 font-weight-600 m-r-10  m-b-5 m-t-5 color-blue jostDemi">{{totalcoin | currency}}</h5>
+              <h5 class="size-15 font-weight-600 m-r-10  m-b-5 m-t-5 color-blue jostDemi">{{ totalMrktPrice | currency}}</h5>
             </td>
           </tr>
         </table>

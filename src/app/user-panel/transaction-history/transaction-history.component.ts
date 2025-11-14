@@ -14,7 +14,7 @@ export class TransactionHistoryComponent implements OnInit {
   public SortByValue = "";
   public backButtonSubscription: any;
   public CurrentUserTransactionsDetails = [];
-  public transactionPageSettings = { skip: 0, take: 25, itemlength: 25 };
+  public transactionPageSettings = { page: 0, pageSize: 25 };
   constructor(
     private router: Router,
     public platform: Platform,
@@ -30,13 +30,14 @@ export class TransactionHistoryComponent implements OnInit {
       this._nav.navigateRoot(['user-panel/']);
     });
    // this.currentUserTransaction();
+   this.CurrentUserTransactionsDetails = [];
     this.fetchUserTransaction();
   }
 
   currentUserTransaction(e = null) {
     this._appServices.presentLoading();
     this.CurrentUserTransactionsDetails = undefined;
-    this.transactionPageSettings = { skip: 0, take: 25, itemlength: 25 };
+    this.transactionPageSettings = { page: 1, pageSize: 25 };
     var CurrentUserTransactionsDetailsUrl = `Wallets/GetCurrentUserTransactions?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
     this._appServices.getDataByHttp(CurrentUserTransactionsDetailsUrl).subscribe(_res => {
       console.log(_res)
@@ -55,22 +56,26 @@ export class TransactionHistoryComponent implements OnInit {
 
   fetchUserTransaction(e = null) {
     this._appServices.presentLoading();
-    this.transactionPageSettings.skip = 0
-    var UserTransactionsDetailsUrl = `Wallets/GetUserTransactions?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}&skip=${this.transactionPageSettings.skip}&take=${this.transactionPageSettings.take}`;
+    this.transactionPageSettings.page = 1
+    let headers_user ={"X-User-Email":this._appServices.loggedInUserDetails.email};
+    Object.assign(this._appServices.headers,headers_user);
+    console.log(this._appServices.getHttpHeaders());
+    //var UserTransactionsDetailsUrl = `Wallets/GetUserTransactions?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}&skip=${this.transactionPageSettings.skip}&take=${this.transactionPageSettings.take}`;
+    var UserTransactionsDetailsUrl = `wallets/transactions?page=${this.transactionPageSettings.page}&pageSize=${this.transactionPageSettings.pageSize}`;
     this._appServices.getDataByHttp(UserTransactionsDetailsUrl).subscribe(_res => {
       console.log(_res)
       this._appServices.loaderDismiss();
       if (_res.status == 200) {
-        this.transactionPageSettings.skip = this.transactionPageSettings.skip + this.transactionPageSettings.take;
-        this.transactionPageSettings.itemlength = this.transactionPageSettings.itemlength + this.transactionPageSettings.take;
-        console.log("length", this.transactionPageSettings.itemlength);
+        this.transactionPageSettings.page += 1;
+        this.transactionPageSettings.pageSize += 10;
+        console.log("length", this.transactionPageSettings.pageSize);
         console.log("CurrentUserTransactionsDetailslength", this.CurrentUserTransactionsDetails.length)
-        console.log("fetchUserTransaction", _res.data.txs);
-        this.CurrentUserTransactionsDetails = [].concat.apply(this.CurrentUserTransactionsDetails, _res.data.txs);
+        console.log("fetchUserTransaction", _res.data);
+        this.CurrentUserTransactionsDetails = [].concat.apply(this.CurrentUserTransactionsDetails, _res.data);
         // this.CurrentUserTransactionsDetails = _res.data.txs;  
         console.log(this.CurrentUserTransactionsDetails);
         this.CurrentUserTransactionsDetails.map(ele => {
-          ele["customDate"] = moment(ele.date).format('MMM DD, YYYY, h:mm:ss a')
+          ele["transactionDate"] = moment(ele.date).format('MMM DD, YYYY, h:mm:ss a')
         })
         this.sortValueChange(this.SortByValue);
         if (e) {
@@ -105,9 +110,9 @@ export class TransactionHistoryComponent implements OnInit {
     if (type == 'dateAsc' || type == 'dateDesc') {
       this.CurrentUserTransactionsDetails.sort((a, b) => {
         if (type == 'dateAsc') {
-          return new Date(a.date).getTime() - new Date(b.date).getTime();
+          return new Date(a.transactionDate).getTime() - new Date(b.transactionDate).getTime();
         } else if (type == 'dateDesc') {
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
+          return new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime();
         }
       });
     }
@@ -115,9 +120,9 @@ export class TransactionHistoryComponent implements OnInit {
 
   goToTransactionDetails(td) {
     var UrlParameters = {
-      tid: td.receiptTxId,
-      date: td.date,
-      type: td.type,
+      tid: td.transactionId,
+      date: td.transactionDate,
+      type: td.transactionType,
       amount: td.amount,
       status: td.status
     }

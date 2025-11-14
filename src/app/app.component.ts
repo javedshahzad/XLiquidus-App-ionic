@@ -10,6 +10,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import { Device } from '@capacitor/device';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
+import { Browser, OpenOptions } from '@capacitor/browser';
 
 @Component({
   selector: 'app-root',
@@ -35,27 +36,74 @@ export class AppComponent {
     public _appnum: AppEnum,
     public _appServices: AppService,
     private appVersion: AppVersion,
-    private zone:NgZone
+    private zone:NgZone,
   ) {
     this.initializeApp();
   }
   initializeDeeppLink() {
-    App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
-        this.zone.run(() => {
-          console.log(event)
-            // const slug = event.url.split(".app").pop();
-            // let que = slug.split("&");
-            // let id= que[0].split("=");
-            // let un= que[1].split("=");
-            // const navigation: NavigationExtras = {
-            //   state : {
-            //       id: id[1],
-            //       un:un[1]
-            //   }
-            // };
+    App.addListener('appUrlOpen',async (data: any) => {
+        this.zone.run( async () => {
+          console.log('App opened with URL:', data.url);
+
+      if (data.url.startsWith('com.usscyber.xliquiduss.app://callback')) {
+        
+        const url = new URL(data.url);
+        const code = url.searchParams.get('code');
+        console.log('OAuth Code:', code);
+        await this._appServices.InitLogtoIoAndroid().handleSignInCallback(data.url);
+
+        var isAuthenticated =  await this._appServices.InitLogtoIoAndroid().isAuthenticated();
+         await this._appServices.InitLogtoIoAndroid().getIdTokenClaims();
+        var access_token = await this._appServices.InitLogtoIoAndroid().getAccessToken(this._appServices.apiResourceUrl);
+        var id_token = await this._appServices.InitLogtoIoAndroid().getIdToken();
+        console.log("isAuthenticated =", isAuthenticated);
+        console.log("id_token=",id_token);
+        console.log("access_token=",access_token);
+        this._encrypDecrypService.localstorageSetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.access_token, access_token);
+        this._encrypDecrypService.localstorageSetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.id_token, id_token);
+        await this._appServices.deCodeJwtToken(id_token);
+        this._appServices.loaderDismiss();
+        this.CheckUserAuth();
+      }
         });
     });
 }
+  CheckUserAuth(){
+    this._appServices.getDataByHttp('auth/protected').subscribe((response)=>{
+      console.log("get Data auth protected = ",response)
+      if(response.data && response.data.authenticated === true){
+        this.syncUserData();
+        this.validateJWT_token();
+        this._appServices.presentToast("Login successfull!");
+        this._nav.navigateRoot(['/user-panel']);
+      }else{
+        this._nav.navigateRoot(['/']);
+      }
+
+    },error=>{
+      console.log(error)
+    })
+  }
+  async syncUserData(){
+      this._appServices.postDataByHttp('auth/user/sync',{}).subscribe((response)=>{
+      console.log("auth/user/sync= ",response)
+
+    },error=>{
+      console.log(error)
+    })
+  }
+    async validateJWT_token(){
+      var getToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.access_token));
+      var payload = {
+    "AccessToken": getToken
+}
+      this._appServices.postDataByHttp('auth/token/validate',payload).subscribe((response)=>{
+      console.log("auth/token/validate = ",response)
+
+    },error=>{
+      console.log(error)
+    })
+  }
   async initializeApp() {
     this.platform.ready().then(async () => {
       this.device = await this.platform.platforms();
@@ -74,7 +122,7 @@ export class AppComponent {
     let url = "https://dyse8jtzjt9yv.cloudfront.net/xl/xl-app-config.json";
     this._appServices.getDataByNative(url).subscribe((response:any)=>{
       this.CloudLoginConfig = response.data;
-      this._appServices.apiUrl =this.CloudLoginConfig.ServiceUrl+"/v3/";
+      // this._appServices.apiUrl =this.CloudLoginConfig.ServiceUrl+"/v3/";
     });
   }
   getSettings() {
@@ -104,11 +152,12 @@ export class AppComponent {
   }
 
   async checkUserloggedInOrNot() {
-    var getToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.access_token));
+    var getToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.id_token));
     if (getToken) {
       await this._appServices.deCodeJwtToken(getToken);
      // this.postSyncUserDetails()
-     this.IsLoginAllowedAsync();
+     //this.IsLoginAllowedAsync();
+     this.CheckUserAuth();
     } else {
       this._nav.navigateRoot(['/']);
     }

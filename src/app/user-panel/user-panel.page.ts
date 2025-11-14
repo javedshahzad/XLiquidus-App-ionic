@@ -6,6 +6,7 @@ import { AppService } from '../services/app.service';
 import { EncryptionDecryptionService } from '../services/encryption.service';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { B2C_config_setting } from '../B2C_config_setting';
+import { LogtoService } from '../services/logto.service';
 
 @Component({
   selector: 'app-user-panel',
@@ -60,7 +61,8 @@ export class UserPanelPage {
     private clipboard: Clipboard,
     public toast: ToastController,
     public _B2C_config: B2C_config_setting,
-    private platform:Platform
+    private platform:Platform,
+    private logtoService:LogtoService
   ) {
     if (!this.router.url.includes('user-panel/dashboard')) {
       this.showModal = false;
@@ -83,10 +85,12 @@ export class UserPanelPage {
   getUserDetails() {
     var ShowAuthenticationModal = localStorage.getItem("ShowAuthenticationModal") ? localStorage.getItem("ShowAuthenticationModal") : "true"; 
     this._appServices.presentLoading();
-    var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
-    this._appServices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
+   // var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
+    var UserDetailsUrl = `auth/me`; 
+   this._appServices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
+    console.log("User profile == ",_res)
       if (_res.status == 200) {
-        this._appServices.loggedInUserAccountDetails = this.userDetails = _res.data;
+       this.userDetails = _res.data;
         if (!this.userDetails.enableMultiFactorAuthentication && ShowAuthenticationModal === "true") {
           this.showModal = true;
           localStorage.setItem("ShowAuthenticationModal","false");
@@ -95,8 +99,8 @@ export class UserPanelPage {
       this._appServices.loaderDismiss();
     }, err => {
       if (err.status == 401) {
-        this.presentToast("Token Expires Please Relogin");
-        this.logout();
+        // this.presentToast("Token Expires Please Relogin");
+        // this.logout();
       }
       this._appServices.loaderDismiss();
     });
@@ -117,14 +121,27 @@ export class UserPanelPage {
       //this._appServices.loaderDismiss();
     });
   }
+  async logoutUser(){
+      this._appServices.postDataByHttp('auth/logout',{}).subscribe((response)=>{
+      console.log("auth/user/sync= ",response)
 
+    },error=>{
+      console.log(error)
+    })
+  }
   closeMenu() {
     this.menu.close();
   }
 
- async  logout() {
+ async logout() {
+  this.closeMenu();
     var call_back_url = this.platform.is("ios") === true ? this._B2C_config.LogtoLoginDetails().iOS_logout_call_Back : this._B2C_config.LogtoLoginDetails().android_logout_call_back;
-   await this._appServices.InitLogtoIo().signOut(call_back_url)
+   if(this.platform.is("android")){
+    await this._appServices.InitLogtoIoAndroid().signOut(call_back_url);
+   }else{
+    await this.logtoService.InitLogtoIoIOS().signOut(call_back_url);
+   }
+   this.logoutUser();
     var deviceID = this._encrypDecrypService.getUUID();
     localStorage.clear();
     this._encrypDecrypService.setUUID(deviceID);

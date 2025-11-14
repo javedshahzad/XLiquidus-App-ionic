@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    namespace "com.usscyber.xliquiduss.app"
+    compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "com.usscyber.xliquiduss.app"
         minSdkVersion rootProject.ext.minSdkVersion
-        targetSdk 33
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 110
-        versionName '1.0.10'
-         manifestPlaceholders = [appAuthRedirectScheme: 'com.usscyber.xliquiduss.app']
+        versionName "1.0.10"
+        manifestPlaceholders = [appAuthRedirectScheme: 'com.usscyber.xliquiduss.app']
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

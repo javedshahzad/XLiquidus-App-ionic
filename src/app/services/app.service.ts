@@ -10,7 +10,9 @@ import jwt_decode from "jwt-decode";
 import { Location } from '@angular/common';
 import { Network } from '@ionic-native/network/ngx';
 import Swal from 'sweetalert2';
-import LogtoClient, { Prompt } from '@logto/capacitor';
+import LogtoClient from '@logto/browser';
+import { EncryptionDecryptionService } from './encryption.service';
+import { AppEnum } from '../appEnum/appenum';
 
 interface apiResponse {
   status: number,
@@ -24,7 +26,9 @@ interface apiResponse {
 export class AppService {
   //public apiUrl = "https://inverse-xl.usscyber.com/v3/";    //development url
  //public apiUrl = "https://mobious-xl.usscyber.com/v3/";    //production url
- public apiUrl ="https://2ufet3xaskyqtigo43ifmqri7q0vynew.lambda-url.us-east-1.on.aws/v3/";
+ //public apiUrl ="https://2ufet3xaskyqtigo43ifmqri7q0vynew.lambda-url.us-east-1.on.aws/v3/";
+ //public apiUrl = "https://vanui6iyhz.us-east-1.awsapprunner.com/api/"
+ public apiUrl = "http://qsl-uat-alb-2026365544.us-east-1.elb.amazonaws.com/mobile/api/"
  // public apiUrl = "https://inverse.usscyber.com/v3/";
   public blockChainTransactionBaseUrl = "https://explorer.usscyber.com/transaction/";
   public ipAddress: any = { "ip": '127.0.0.1' };
@@ -37,6 +41,8 @@ export class AppService {
   public UploadMaxRetryHit = 3;
   public cartRefresh = new BehaviorSubject(false);
   public connectionPopup = false;
+  public apiResourceUrl = "https://mobile.dev.quantumskylink.com";
+  headers:any= {};
 
   constructor(
     public http: HttpClient,
@@ -51,6 +57,8 @@ export class AppService {
     public _alertController: AlertController,
     public networkInterface: NetworkInterface,
     private network: Network,
+    public _encrypDecrypService: EncryptionDecryptionService,
+    public _appnum: AppEnum,
   ) {
 
   }
@@ -125,9 +133,11 @@ export class AppService {
             oid: decoded['oid'] ? decoded['oid'] : decoded['sub']
           }
           Object.assign(ths.loggedInUserDetails, userDetails);
+          Object.assign(ths.loggedInUserAccountDetails, userDetails);
         }
         if (ths.loggedInUserDetails['email'] && ths.loggedInUserDetails['email'] != '') {
           console.log('loggedInUserDetails', ths.loggedInUserDetails)
+          console.log('loggedInUserAccountDetails == ', ths.loggedInUserAccountDetails)
           resolve(ths.loggedInUserDetails);
         } else {
           reject("error in payload in ");
@@ -201,7 +211,8 @@ export class AppService {
   }
   async simpleLoader() {
     const loading = await this.loadingController.create({
-      message: 'Please wait...'
+      message: 'Please wait...',
+       duration: 8000,
     });
     loading.present();
     this.isLoading = false
@@ -242,9 +253,9 @@ export class AppService {
   }
 
   getHttpHeaders() {
-    const authToken = this.access_token;
+    const authToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.access_token));;
     console.log("Access token=",authToken);
-    var headers;
+    var headers = {};
     if (authToken) {
       headers = {
         'Content-Type': 'application/json',
@@ -252,14 +263,15 @@ export class AppService {
         'access-control-allow-methods': 'GET,PUT,POST,DELETE',
         'Clear-Site-Data': "*",
         'Access-Control-Allow-Credentials': 'true',
-        'appInterfaceId': this.interfaceID,
-        'platform-interface-id': this.interfaceID,
+        // 'appInterfaceId': this.interfaceID,
+        // 'platform-interface-id': this.interfaceID,
         'Authorization': `Bearer ${authToken}`,
+        //'X-API-Key': "apk_test_7f9a2b8c4d6e1f3g5h7i9j0k2l4m6n8o0p2q4r6s8t0u2v4w6x8y0z2a4b6c8d0e2f4g6h8i0j2k4l6m8n0o2p4q6r8s0t2u4v6w8x0y2z4a6b8c0d2e4f6g8h0i2j4k6l8m0n2o4p6q8r0s2t4u6v8w0x2y4z6a8b0c2d4e6f8g0h2i4j6k8l0m2n4o6p8q0r2s4t6u8v0w2x4y6z8a0b2c4d6e8f0g2h4i6j8k0l2m4n6o8p0q2r4s6t8u0v2w4x6y8z0",
         //'www-authenticate': `Bearer ${authToken}`,
       };
     }
     else {
-      headers = {
+     headers = {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Headers': 'Content-Type',
         'access-control-allow-methods': 'GET,PUT,POST,DELETE',
@@ -267,14 +279,17 @@ export class AppService {
         'Access-Control-Allow-Credentials': 'true',
         'appInterfaceId': this.interfaceID,
         'platform-interface-id': this.interfaceID,
+        'X-API-Key': "apk_test_7f9a2b8c4d6e1f3g5h7i9j0k2l4m6n8o0p2q4r6s8t0u2v4w6x8y0z2a4b6c8d0e2f4g6h8i0j2k4l6m8n0o2p4q6r8s0t2u4v6w8x0y2z4a6b8c0d2e4f6g8h0i2j4k6l8m0n2o4p6q8r0s2t4u6v8w0x2y4z6a8b0c2d4e6f8g0h2i4j6k8l0m2n4o6p8q0r2s4t6u8v0w2x4y6z8a0b2c4d6e8f0g2h4i6j8k0l2m4n6o8p0q2r4s6t8u0v2w4x6y8z0",
       };
     }
-    return headers;
+    Object.assign(this.headers, headers);
+    return this.headers;
   }
 
   getDataByHttp(url) {
     url = this.apiUrl + url;
     console.log(url);
+   // return this.getData(url);
     return this.platform.is('cordova') ? this.getDataByNative(url) : this.getData(url);
   }
 
@@ -330,6 +345,7 @@ export class AppService {
   postDataByNative(url, data): Observable<any> {
     this._nativeHttp.setDataSerializer('json');
     return from(this._nativeHttp.post(url, data, this.getHttpHeaders())).pipe(retry(this.UploadMaxRetryHit), map(results => {
+      console.log(results)
       var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) ? JSON.parse(results.data): results }
       return _res;
     }, err => {
@@ -367,7 +383,7 @@ export class AppService {
 
   getData(url): Observable<any> {
     console.log(url);
-    return this.http.get(url)
+    return this.http.get(url,this.getHttpHeaders())
       .pipe(retry(this.UploadMaxRetryHit), map(results => {
         console.log(results);
         return results;
@@ -380,7 +396,7 @@ export class AppService {
 
   postData(url, data): Observable<any> {
     console.log(url, JSON.stringify(data));
-    return this.http.post(url, data)
+    return this.http.post(url, data,this.getHttpHeaders())
       .pipe(retry(this.UploadMaxRetryHit), map(results => {
         console.log(results);
         return results;
@@ -391,7 +407,7 @@ export class AppService {
 
   putData(url, data): Observable<any> {
     console.log(url, JSON.stringify(data));
-    return this.http.put(url, data)
+    return this.http.put(url, data,this.getHttpHeaders())
       .pipe(retry(this.UploadMaxRetryHit), map(results => {
         console.log(results);
         return results;
@@ -402,7 +418,7 @@ export class AppService {
 
   deleteData(url): Observable<any> {
     console.log(url);
-    return this.http.delete(url)
+    return this.http.delete(url,this.getHttpHeaders())
       .pipe(retry(this.UploadMaxRetryHit), map(results => {
         console.log(results);
         return results;
@@ -562,7 +578,7 @@ export class AppService {
     return this.postDataByPromissHttp(url, {})
   }
   addToCart(payload: ADD_TO_CART_PAYLOAD) {
-    let url = `CloudCart/AddToCart?email=${payload.email}&cartType=XL`
+    let url = `tokenized-carts​`;
     return this.postDataByPromissHttp(url, payload)
   }
   updateCart(payload: ADD_TO_CART_PAYLOAD) {
@@ -599,25 +615,29 @@ export class AppService {
       return _err;
     });
   }
-  InitLogtoIo(){
+  InitLogtoIoAndroid(){
      const logtoClient = new LogtoClient({
-      endpoint: 'https://upfbti.logto.app/',
-      appId: 'em5nk725e3ujfr20v740y',
+      endpoint: 'https://5r5a7r.logto.app/',
+      appId: 'nu451xjzb2pz6manbtt01',
       scopes:['email profile phone roles'],
-      prompt:Prompt.Consent
+      resources:[this.apiResourceUrl]
     });
     return logtoClient;
   }
 }
 export interface ADD_TO_CART_PAYLOAD {
-  email: string,
-  items: Array<CART_ITEM>,
-  type?: string
+  email?: string,
+  items?: Array<CART_ITEM>,
+  type?: string,
+  name?:string,
+  description?:string,
+  currency?:string
 }
 
 export interface CART_ITEM {
   isSecondaryMarketItem?: boolean
-  item: string,
-  amount: number
-
+  item?: string,
+  amount?: number,
+  metadata?:string,
+  tokenId?:string
 }

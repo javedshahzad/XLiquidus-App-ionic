@@ -6,7 +6,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { AppService } from 'src/app/services/app.service';
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
 import { AppEnum } from 'src/app/appEnum/appenum';
-import {OAuth2Client} from "@byteowls/capacitor-oauth2";
+// import {OAuth2Client} from "@byteowls/capacitor-oauth2";
+import { Browser, OpenOptions } from '@capacitor/browser';
+import { LogtoService } from 'src/app/services/logto.service';
 
 @Component({
   selector: 'app-login',
@@ -30,8 +32,7 @@ export class LoginComponent implements OnInit {
     public platform: Platform,
     public _B2C_config: B2C_config_setting,
     public _encrypDecrypService: EncryptionDecryptionService,
-   
-  
+    public logtoService:LogtoService
   ) {
 
 
@@ -84,24 +85,24 @@ export class LoginComponent implements OnInit {
     });
   }
 
- async appleloginwithOauth(url){
-  this._appServices.simpleLoader();
-    OAuth2Client.authenticate(
-      this._B2C_config.getAzureB2cOAuth2Options()
-  ).then(async response => {
-    console.log(response);
-      let accessToken = response["access_token"];
-      this.authtoken = response['access_token'];
-      this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token, this.authtoken);
-      await this._appServices.deCodeJwtToken(this.authtoken);
-      this._appServices.loaderDismiss();
-      this.postSyncUserDetails();
+//  async appleloginwithOauth(url){
+//   this._appServices.simpleLoader();
+//     OAuth2Client.authenticate(
+//       this._B2C_config.getAzureB2cOAuth2Options()
+//   ).then(async response => {
+//     console.log(response);
+//       let accessToken = response["access_token"];
+//       this.authtoken = response['access_token'];
+//       this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token, this.authtoken);
+//       await this._appServices.deCodeJwtToken(this.authtoken);
+//       this._appServices.loaderDismiss();
+//       this.postSyncUserDetails();
     
-  }).catch(reason => {
-    this._appServices.loaderDismiss();
-      console.error("OAuth rejected", reason);
-  });
-  }
+//   }).catch(reason => {
+//     this._appServices.loaderDismiss();
+//       console.error("OAuth rejected", reason);
+//   });
+//   }
   async getUserDetails() {
     this._appServices.presentLoading();
     var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`;
@@ -121,7 +122,6 @@ export class LoginComponent implements OnInit {
   async postSyncUserDetails() {
     this._appServices.simpleLoader();
     this._encrypDecrypService.getUserCurrentLocartion();
-    console.log(this._appServices.getHttpHeaders(),"Headers")
     var postJson = {
       "userObjectId": this._appServices.loggedInUserDetails.oid,
       "emailAddress": this._appServices.loggedInUserDetails.email,
@@ -180,50 +180,65 @@ IsLoginAllowedAsync(){
     this._appServices.loaderDismiss();
   });
 }
-async LoginWithKinde(url){
-  this._appServices.simpleLoader();
-  let paramters = this.platform.is("ios") === true ? this._B2C_config.kindeLoginDetailsIOS() : this._B2C_config.kindeLoginDetails();
-    OAuth2Client.authenticate(
-      paramters
-  ).then(async response => {
-    console.log(response);
-    if(this.platform.is("ios")){
-      this.authtoken = response['id_token'];
-    }else{
-      this.authtoken = response.authorization_response['id_token'];
-    }
-      this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token, this.authtoken);
-      await this._appServices.deCodeJwtToken(this.authtoken);
-      this._appServices.loaderDismiss();
-      this.postSyncUserDetails();
+// async LoginWithKinde(url){
+//   this._appServices.simpleLoader();
+//   let paramters = this.platform.is("ios") === true ? this._B2C_config.kindeLoginDetailsIOS() : this._B2C_config.kindeLoginDetails();
+//     OAuth2Client.authenticate(
+//       paramters
+//   ).then(async response => {
+//     console.log(response);
+//     if(this.platform.is("ios")){
+//       this.authtoken = response['id_token'];
+//     }else{
+//       this.authtoken = response.authorization_response['id_token'];
+//     }
+//       this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token, this.authtoken);
+//       await this._appServices.deCodeJwtToken(this.authtoken);
+//       this._appServices.loaderDismiss();
+//       this.postSyncUserDetails();
     
-  }).catch(reason => {
-    this._appServices.loaderDismiss();
-      console.error("OAuth rejected", reason);
-  });
-  }
+//   }).catch(reason => {
+//     this._appServices.loaderDismiss();
+//       console.error("OAuth rejected", reason);
+//   });
+//   }
   async LoginWithLogto(url){
+    if(this.platform.is("android")){
+      this.logtoSigninAndroid();
+    }else if(this.platform.is("ios")){
+    this.logtoLoginIos();
+    }
+
+    }
+    async logtoLoginIos(){
     this._appServices.simpleLoader();
-   var call_back_url = this.platform.is("ios") === true ? this._B2C_config.LogtoLoginDetails().iOS_login_call_back : this._B2C_config.LogtoLoginDetails().android_login_call_back;
-   var Login = await this._appServices.InitLogtoIo().signIn(call_back_url).then(async (onSuccess)=>{
-    var isAuthenticated =  await this._appServices.InitLogtoIo().isAuthenticated();
-    var getIdTokenClaims = await this._appServices.InitLogtoIo().getIdTokenClaims();
-    var user = await this._appServices.InitLogtoIo().fetchUserInfo();
-    var access_token_claims = await this._appServices.InitLogtoIo().getAccessTokenClaims();
-    var access_token = await this._appServices.InitLogtoIo().getAccessToken();
-    var id_token = await this._appServices.InitLogtoIo().getIdToken();
+    var call_back_url = this.platform.is("ios") === true ? this._B2C_config.LogtoLoginDetails().iOS_login_call_back : this._B2C_config.LogtoLoginDetails().android_login_call_back;
+    var Login = await this.logtoService.InitLogtoIoIOS().signIn(call_back_url).then(async (onSuccess)=>{
+    var isAuthenticated =  await this.logtoService.InitLogtoIoIOS().isAuthenticated();
+    var getIdTokenClaims = await this.logtoService.InitLogtoIoIOS().getIdTokenClaims();
+    var user = await this.logtoService.InitLogtoIoIOS().fetchUserInfo();
+    var access_token_claims = await this.logtoService.InitLogtoIoIOS().getAccessTokenClaims();
+    var access_token = await this.logtoService.InitLogtoIoIOS().getAccessToken(this._appServices.apiResourceUrl);
+    var id_token = await this.logtoService.InitLogtoIoIOS().getIdToken();
     console.log("id_token=",id_token);
     console.log("user=",user);
     console.log("access_token=",access_token);
-    this.authtoken = id_token;
+    this.authtoken = access_token;
     this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token, this.authtoken);
-    await this._appServices.deCodeJwtToken(this.authtoken);
-     this._appServices.loaderDismiss();
-     this.postSyncUserDetails();
-   }).catch(error=>{
+    this._encrypDecrypService.localstorageSetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.id_token, id_token);
+    await this._appServices.deCodeJwtToken(id_token);
     this._appServices.loaderDismiss();
-      console.error("error=", error);
-   });
+    this.CheckUserAuth();
+    }).catch(async (error)=>{
+    this._appServices.loaderDismiss();
+    console.error("error=", error);
+    });
+    }
+    async logtoSigninAndroid(){
+    this._appServices.simpleLoader();
+    var call_back_url = this.platform.is("ios") === true ? this._B2C_config.LogtoLoginDetails().iOS_login_call_back : this._B2C_config.LogtoLoginDetails().android_login_call_back;
+    await this._appServices.InitLogtoIoAndroid().signIn(call_back_url);
+
     }
   getUrlParameter(name, url) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -231,7 +246,42 @@ async LoginWithKinde(url){
     var results = regex.exec(url);
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   };
+  CheckUserAuth(){
+    this._appServices.getDataByHttp('auth/protected').subscribe((response)=>{
+      console.log("get Data auth protected = ",response)
+      if(response.data && response.data.authenticated === true){
+        this.syncUserData();
+        this.validateJWT_token();
+        this._appServices.presentToast("Login successfull!");
+        this._nav.navigateRoot(['/user-panel']);
+      }else{
+        this._nav.navigateRoot(['/']);
+      }
 
+    },error=>{
+      console.log(error)
+    })
+  }
+  async syncUserData(){
+      this._appServices.postDataByHttp('auth/user/sync',{}).subscribe((response)=>{
+      console.log("auth/user/sync= ",response)
+
+    },error=>{
+      console.log(error)
+    })
+  }
+    async validateJWT_token(){
+      var getToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token));
+      var payload = {
+    "AccessToken": getToken
+}
+      this._appServices.postDataByHttp('auth/token/validate',payload).subscribe((response)=>{
+      console.log("auth/token/validate = ",response)
+
+    },error=>{
+      console.log(error)
+    })
+  }
 
   thirdPartyLogin(url) {
     var ths = this;

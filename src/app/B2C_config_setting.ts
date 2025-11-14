@@ -1,4 +1,4 @@
-import {OAuth2AuthenticateOptions, OAuth2Client} from "@byteowls/capacitor-oauth2";
+// import {OAuth2AuthenticateOptions, OAuth2Client} from "@byteowls/capacitor-oauth2";
 
 export class B2C_config_setting {
     public TenantName = "uatwsceusscybercom";
@@ -44,7 +44,7 @@ export class B2C_config_setting {
     public MicrosoftSignupUrl = `${this.AuthorityMircoSoftSignUp}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.redirect_uri}&prompt=${this.loginPrompt}&nonce=defaultNonce`;
     public GoogleSignupUrl = `${this.AuthorityGoogleSignUp}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.redirect_uri}&prompt=${this.loginPrompt}&nonce=defaultNonce`;
     public AppleSignupUrl = `${this.AuthorityAppleSignUp}&scope=${this.Scopes}&response_type=${this.responseType}&client_id=${this.ClientId}&redirect_uri=${this.appleRedirect_uri}&prompt=${this.loginPrompt}&nonce=defaultNonce`;
-    public getAzureB2cOAuth2Options(): OAuth2AuthenticateOptions {
+    public getAzureB2cOAuth2Options(): any {
         return {
             appId: this.ClientId,
             authorizationBaseUrl:`${this.AuthorityBase}${this.AuthorizeVersion}`,
