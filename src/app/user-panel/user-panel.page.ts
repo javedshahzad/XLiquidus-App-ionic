@@ -88,7 +88,7 @@ export class UserPanelPage {
    // var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
     var UserDetailsUrl = `auth/me`; 
    this._appServices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
-    console.log("User profile == "+_res)
+    console.log("User profile == ",_res)
       if (_res.status == 200) {
        this.userDetails = _res.data;
         if (!this.userDetails.enableMultiFactorAuthentication && ShowAuthenticationModal === "true") {

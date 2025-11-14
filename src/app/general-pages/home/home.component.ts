@@ -24,13 +24,14 @@ export class HomeComponent implements OnInit {
   }
 
   goToLogin() {
-    this.checkbackgroundalready = !this.checkbackgroundalready;
+    //this.checkbackgroundalready = !this.checkbackgroundalready;
     this.router.navigate(['/login'])
   }
 
   goToSignUp() {
-    this.checkbackgroundalready = !this.checkbackgroundalready;
-    this.router.navigate(['/signup-options'])
+    //this.checkbackgroundalready = !this.checkbackgroundalready;
+    //this.router.navigate(['/signup-options'])
+    this.goToLogin();
   }
 
   ngOnDestroy() {

@@ -75,12 +75,14 @@ export class AppComponent {
         this.syncUserData();
         this.validateJWT_token();
         this._appServices.presentToast("Login successfull!");
+        this._nav.navigateRoot(['/user-panel']);
+      }else{
+        this._nav.navigateRoot(['/']);
       }
 
     },error=>{
       console.log(error)
     })
-     this._nav.navigateRoot(['/user-panel']);
   }
   async syncUserData(){
       this._appServices.postDataByHttp('auth/user/sync',{}).subscribe((response)=>{

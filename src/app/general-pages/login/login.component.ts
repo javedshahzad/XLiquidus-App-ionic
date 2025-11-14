@@ -205,7 +205,12 @@ IsLoginAllowedAsync(){
   async LoginWithLogto(url){
     if(this.platform.is("android")){
       this.logtoSigninAndroid();
-    }else{
+    }else if(this.platform.is("ios")){
+    this.logtoLoginIos();
+    }
+
+    }
+    async logtoLoginIos(){
     this._appServices.simpleLoader();
     var call_back_url = this.platform.is("ios") === true ? this._B2C_config.LogtoLoginDetails().iOS_login_call_back : this._B2C_config.LogtoLoginDetails().android_login_call_back;
     var Login = await this.logtoService.InitLogtoIoIOS().signIn(call_back_url).then(async (onSuccess)=>{
@@ -229,10 +234,7 @@ IsLoginAllowedAsync(){
     console.error("error=", error);
     });
     }
-
-    }
     async logtoSigninAndroid(){
-
     this._appServices.simpleLoader();
     var call_back_url = this.platform.is("ios") === true ? this._B2C_config.LogtoLoginDetails().iOS_login_call_back : this._B2C_config.LogtoLoginDetails().android_login_call_back;
     await this._appServices.InitLogtoIoAndroid().signIn(call_back_url);
@@ -246,11 +248,39 @@ IsLoginAllowedAsync(){
   };
   CheckUserAuth(){
     this._appServices.getDataByHttp('auth/protected').subscribe((response)=>{
-      console.log("get Data protected auth = ",response)
+      console.log("get Data auth protected = ",response)
+      if(response.data && response.data.authenticated === true){
+        this.syncUserData();
+        this.validateJWT_token();
+        this._appServices.presentToast("Login successfull!");
+        this._nav.navigateRoot(['/user-panel']);
+      }else{
+        this._nav.navigateRoot(['/']);
+      }
 
+    },error=>{
+      console.log(error)
     })
-     this._nav.navigateRoot(['/user-panel']);
+  }
+  async syncUserData(){
+      this._appServices.postDataByHttp('auth/user/sync',{}).subscribe((response)=>{
+      console.log("auth/user/sync= ",response)
 
+    },error=>{
+      console.log(error)
+    })
+  }
+    async validateJWT_token(){
+      var getToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token));
+      var payload = {
+    "AccessToken": getToken
+}
+      this._appServices.postDataByHttp('auth/token/validate',payload).subscribe((response)=>{
+      console.log("auth/token/validate = ",response)
+
+    },error=>{
+      console.log(error)
+    })
   }
 
   thirdPartyLogin(url) {
