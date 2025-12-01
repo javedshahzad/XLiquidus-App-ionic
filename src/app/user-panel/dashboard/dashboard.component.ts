@@ -85,7 +85,7 @@ export class DashboardComponent implements OnInit {
     // } else {
     //   var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.tokenSearchValue}&lang=EN&take=30&skip=0`
     // }
-    var UrlParameters = `marketplace/products`;
+    var UrlParameters = `api/marketplace/products`;
     
     this.sub2 = this._appServices.getDataByHttp(UrlParameters).subscribe((_res:any) => {
       console.log("marketplace/products == ", _res)
@@ -139,7 +139,7 @@ export class DashboardComponent implements OnInit {
     if (this.tokenSearchValue.length === 0) {
       this.isDataLoad = true;
       //var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.defaultSearchTerm}&lang=EN&take=30&skip=0`
-     var UrlParameters = `marketplace/products`;
+     var UrlParameters = `api/marketplace/products`;
       this._appServices.getDataByHttp(`${UrlParameters}`).subscribe(res => {
         this.isDataLoad = false;
         if (res.status == 200) {
@@ -161,7 +161,7 @@ export class DashboardComponent implements OnInit {
         "Page": 1,
         "PageSize": 10
         }
-    var UrlParameters = `marketplace/search`;
+    var UrlParameters = `api/marketplace/search`;
     this._appServices.postDataByHttp(`${UrlParameters}`,payload).subscribe(res => {
       this.isDataLoad = false;
       if (res.status == 200) {

@@ -1,9 +1,10 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavController, Platform } from '@ionic/angular';
 import { AppService } from 'src/app/services/app.service';
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
-import * as moment from 'moment';
+
 @Component({
   selector: 'app-transaction-history',
   templateUrl: './transaction-history.component.html',
@@ -20,7 +21,8 @@ export class TransactionHistoryComponent implements OnInit {
     public platform: Platform,
     public _nav: NavController,
     public _appServices: AppService,
-    public _encrypDecrypService: EncryptionDecryptionService
+    public _encrypDecrypService: EncryptionDecryptionService,
+    private datepipe:DatePipe
   ) { }
 
   ngOnInit() { }
@@ -38,7 +40,8 @@ export class TransactionHistoryComponent implements OnInit {
     this._appServices.presentLoading();
     this.CurrentUserTransactionsDetails = undefined;
     this.transactionPageSettings = { page: 1, pageSize: 25 };
-    var CurrentUserTransactionsDetailsUrl = `Wallets/GetCurrentUserTransactions?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
+    //var CurrentUserTransactionsDetailsUrl = `Wallets/GetCurrentUserTransactions?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
+     var CurrentUserTransactionsDetailsUrl = `api/wallets/transactions?page=${this.transactionPageSettings.page}&pageSize=${this.transactionPageSettings.pageSize}`;
     this._appServices.getDataByHttp(CurrentUserTransactionsDetailsUrl).subscribe(_res => {
       console.log(_res)
       if (_res.status == 200) {
@@ -61,7 +64,7 @@ export class TransactionHistoryComponent implements OnInit {
     Object.assign(this._appServices.headers,headers_user);
     console.log(this._appServices.getHttpHeaders());
     //var UserTransactionsDetailsUrl = `Wallets/GetUserTransactions?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}&skip=${this.transactionPageSettings.skip}&take=${this.transactionPageSettings.take}`;
-    var UserTransactionsDetailsUrl = `wallets/transactions?page=${this.transactionPageSettings.page}&pageSize=${this.transactionPageSettings.pageSize}`;
+    var UserTransactionsDetailsUrl = `api/wallets/transactions?page=${this.transactionPageSettings.page}&pageSize=${this.transactionPageSettings.pageSize}`;
     this._appServices.getDataByHttp(UserTransactionsDetailsUrl).subscribe(_res => {
       console.log(_res)
       this._appServices.loaderDismiss();
@@ -75,7 +78,7 @@ export class TransactionHistoryComponent implements OnInit {
         // this.CurrentUserTransactionsDetails = _res.data.txs;  
         console.log(this.CurrentUserTransactionsDetails);
         this.CurrentUserTransactionsDetails.map(ele => {
-          ele["transactionDate"] = moment(ele.date).format('MMM DD, YYYY, h:mm:ss a')
+          ele["transactionDate"] =this.datepipe.transform(ele.date,'MMM DD, YYYY, h:mm:ss a')
         })
         this.sortValueChange(this.SortByValue);
         if (e) {
@@ -133,3 +136,7 @@ export class TransactionHistoryComponent implements OnInit {
     this.backButtonSubscription.unsubscribe();
   }
 }
+function moment(date: any) {
+  throw new Error('Function not implemented.');
+}
+

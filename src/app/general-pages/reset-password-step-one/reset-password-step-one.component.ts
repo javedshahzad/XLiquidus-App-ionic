@@ -29,13 +29,31 @@ export class ResetPasswordStepOneComponent implements OnInit {
 
   ngOnInit() {
     this.resetPasswordForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]]
+      //email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      currentPassword:['',[Validators.required,Validators.minLength(1)]],
+      newPassword:['',[Validators.required,Validators.minLength(8),Validators.maxLength(100)]],
+      confirmPassword:['',[Validators.required,Validators.minLength(1)]]
     });
   }
   public errorMessages = {
     email: [
       { type: 'required', message: 'Email Address is required' },
       { type: 'pattern', message: 'Enter a valid Email Address' }
+    ],
+    currentPassword:[
+      { type: 'required', message: 'Current Password is required' },
+      { type: 'minlength', message: 'Enter a valid Password' },
+      { type: 'maxlength', message: 'You have reached max characters limit' }
+    ],
+    newPassword:[
+      { type: 'required', message: 'New Password is required' },
+      { type: 'minlength', message: 'Enter a valid Password' },
+      { type: 'maxlength', message: 'You have reached max characters limit' }
+    ],
+    confirmPassword:[
+      { type: 'required', message: 'Confirm Password is required' },
+      { type: 'minlength', message: 'Enter a valid Password' },
+      { type: 'maxlength', message: 'You have reached max characters limit' }
     ]
   };
   gotoLogin() {
@@ -52,14 +70,19 @@ export class ResetPasswordStepOneComponent implements OnInit {
     this._nav.navigateRoot(['/login']);
   }
   reset(){
+    if(this.newPassword.value != this.confirmPassword.value){
+      return this._appServices.presentToast("New password and Confirm password does not match!");
+    }
     this._appServices.simpleLoader();
-    var UrlParameters = `Auth/SendResetPasswordRequestAsync`;
+    var UrlParameters = `api/users/me/change-password`;
     console.log(UrlParameters);
     this._appServices.postDataByHttp(UrlParameters, this.resetPasswordForm.value).pipe(finalize(() => this._appServices.loaderDismiss())).subscribe(res => {
-      console.log("Auth/SendResetPasswordRequestAsync Response", res);
+      console.log("/api/users/me/change-password Response", res);
       if(res.status === 200){
-        this.ConfirmMessage=true;
-        this.RequestData = res.data.data;
+        this._appServices.presentToast("Password reset successfull!");
+         this._nav.navigateRoot("/user-panel");
+        // this.ConfirmMessage=true;
+        // this.RequestData = res.data.data;
       }
     }, err => {
       console.log(err);
@@ -69,6 +92,15 @@ export class ResetPasswordStepOneComponent implements OnInit {
   }
   get email() {
     return this.resetPasswordForm.get('email');
+  }
+  get currentPassword() {
+    return this.resetPasswordForm.get('currentPassword');
+  }
+  get newPassword() {
+    return this.resetPasswordForm.get('newPassword');
+  }
+  get confirmPassword() {
+    return this.resetPasswordForm.get('confirmPassword');
   }
   nextbtn(){
     this._nav.navigateForward("/reset-password-setp-two",{queryParams: { root: this.rootPage,RequestData: this.RequestData }});

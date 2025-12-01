@@ -28,7 +28,7 @@ export class AppService {
  //public apiUrl = "https://mobious-xl.usscyber.com/v3/";    //production url
  //public apiUrl ="https://2ufet3xaskyqtigo43ifmqri7q0vynew.lambda-url.us-east-1.on.aws/v3/";
  //public apiUrl = "https://vanui6iyhz.us-east-1.awsapprunner.com/api/"
- public apiUrl = "http://qsl-uat-alb-2026365544.us-east-1.elb.amazonaws.com/mobile/api/"
+ public apiUrl = "http://qsl-uat-alb-2026365544.us-east-1.elb.amazonaws.com/mobile/"
  // public apiUrl = "https://inverse.usscyber.com/v3/";
   public blockChainTransactionBaseUrl = "https://explorer.usscyber.com/transaction/";
   public ipAddress: any = { "ip": '127.0.0.1' };

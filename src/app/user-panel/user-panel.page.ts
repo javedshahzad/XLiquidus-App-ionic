@@ -86,7 +86,7 @@ export class UserPanelPage {
     var ShowAuthenticationModal = localStorage.getItem("ShowAuthenticationModal") ? localStorage.getItem("ShowAuthenticationModal") : "true"; 
     this._appServices.presentLoading();
    // var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
-    var UserDetailsUrl = `auth/me`; 
+    var UserDetailsUrl = `users/me`; 
    this._appServices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
     console.log("User profile == ",_res)
       if (_res.status == 200) {

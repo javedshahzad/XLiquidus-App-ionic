@@ -247,7 +247,7 @@ IsLoginAllowedAsync(){
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   };
   CheckUserAuth(){
-    this._appServices.getDataByHttp('auth/protected').subscribe((response)=>{
+    this._appServices.getDataByHttp('api/auth/protected').subscribe((response)=>{
       console.log("get Data auth protected = ",response)
       if(response.data && response.data.authenticated === true){
         this.syncUserData();
@@ -263,7 +263,7 @@ IsLoginAllowedAsync(){
     })
   }
   async syncUserData(){
-      this._appServices.postDataByHttp('auth/user/sync',{}).subscribe((response)=>{
+      this._appServices.postDataByHttp('api/auth/user/sync',{}).subscribe((response)=>{
       console.log("auth/user/sync= ",response)
 
     },error=>{
@@ -275,7 +275,7 @@ IsLoginAllowedAsync(){
       var payload = {
     "AccessToken": getToken
 }
-      this._appServices.postDataByHttp('auth/token/validate',payload).subscribe((response)=>{
+      this._appServices.postDataByHttp('api/auth/token/validate',payload).subscribe((response)=>{
       console.log("auth/token/validate = ",response)
 
     },error=>{

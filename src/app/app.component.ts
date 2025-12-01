@@ -69,7 +69,7 @@ export class AppComponent {
     });
 }
   CheckUserAuth(){
-    this._appServices.getDataByHttp('auth/protected').subscribe((response)=>{
+    this._appServices.getDataByHttp('api/auth/protected').subscribe((response)=>{
       console.log("get Data auth protected = ",response)
       if(response.data && response.data.authenticated === true){
         this.syncUserData();
@@ -85,7 +85,7 @@ export class AppComponent {
     })
   }
   async syncUserData(){
-      this._appServices.postDataByHttp('auth/user/sync',{}).subscribe((response)=>{
+      this._appServices.postDataByHttp('api/auth/user/sync',{}).subscribe((response)=>{
       console.log("auth/user/sync= ",response)
 
     },error=>{
@@ -97,7 +97,7 @@ export class AppComponent {
       var payload = {
     "AccessToken": getToken
 }
-      this._appServices.postDataByHttp('auth/token/validate',payload).subscribe((response)=>{
+      this._appServices.postDataByHttp('api/auth/token/validate',payload).subscribe((response)=>{
       console.log("auth/token/validate = ",response)
 
     },error=>{

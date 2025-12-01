@@ -37,7 +37,7 @@ export class MyProfilePage implements OnInit {
   ionViewWillEnter() {
     this._appServices.presentLoading();
     //var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
-    var UserDetailsUrl = `auth/me`//`users/${this._appServices.loggedInUserAccountDetails.oid}`;
+    var UserDetailsUrl = `api/users/me`//`users/${this._appServices.loggedInUserAccountDetails.oid}`;
     this._appServices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
       if (_res.status == 200) {
         this.userDetails = _res.data;

@@ -44,7 +44,8 @@ export class SignupStep2Component implements OnInit {
   ngOnInit() { }
 getUserProfile(){
   this._appservices.presentLoading();
-  var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appservices.loggedInUserDetails['email'])}&clientIpAddress=${this._appservices.ipAddress.ip}`
+  //var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appservices.loggedInUserDetails['email'])}&clientIpAddress=${this._appservices.ipAddress.ip}`
+  var UserDetailsUrl = `api/users/me`
   this._appservices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
     if (_res.status == 200) {
       this.userDetails = _res.data;
@@ -67,14 +68,14 @@ getUserProfile(){
     console.log(this.maskemailId);
 
     var UrlParameters = `emailAddress=${this._appservices.loggedInUserDetails.email}&clientIpAddress=${this._appservices.ipAddress.ip}`
-    this._appservices.getDataByHttp(`Global/GetCountries?${UrlParameters}`).subscribe(res => {
+    this._appservices.getDataByHttp(`Global/GetCountries`).subscribe(res => {
       if (res.status == 200) {
         this.countries = res.data.data;
         console.log(this.countries);
       }
     });
 
-    this._appservices.getDataByHttp(`Global/GetGenders?${UrlParameters}`).subscribe(res => {
+    this._appservices.getDataByHttp(`Global/GetGenders`).subscribe(res => {
       if (res.status == 200) {
         this.genders = res.data.data;
         console.log(this.genders);
@@ -112,9 +113,9 @@ getUserProfile(){
     return this.signupForm2.get('city');
   }
 
-  // get state(){
-  //   return this.signupForm2.get('state');
-  // }
+  get state(){
+    return this.signupForm2.get('state');
+  }
 
   // get zipcode(){
   //   return this.signupForm2.get('zipcode');
@@ -127,17 +128,17 @@ getUserProfile(){
 
 
   signupForm2 = this.formBuilder.group({
-    FirstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern('[a-zA-Z]+[a-zA-Z _]$')]],
-    LastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern('[a-zA-Z]+[a-zA-Z _]$')]],
-    country: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    dob: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50), ageValidator]],
-    gender: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    streetAddr: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255), Validators.pattern('^[a-zA-Z0-9!@#$&()\\-`.+,/\"][a-zA-Z0-9!@#$&()\\-`.+,/\"_ ]+[a-zA-Z0-9!@#$&()\\-`.+,/\" _]$')]],
+    FirstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100), Validators.pattern('[a-zA-Z]+[a-zA-Z _]$')]],
+    LastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100), Validators.pattern('[a-zA-Z]+[a-zA-Z _]$')]],
+    country: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+    dob: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(100), ageValidator]],
+    //gender: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+    streetAddr: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200), Validators.pattern('^[a-zA-Z0-9!@#$&()\\-`.+,/\"][a-zA-Z0-9!@#$&()\\-`.+,/\"_ ]+[a-zA-Z0-9!@#$&()\\-`.+,/\" _]$')]],
     // AddnlAddr: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255),Validators.pattern('^[a-zA-Z0-9!@#$&()\\-`.+,/\"][a-zA-Z0-9!@#$&()\\-`.+,/\"_ ]+[a-zA-Z0-9!@#$&()\\-`.+,/\" _]$')]],
-    // state: [null, [Validators.required]],
-    city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50),Validators.pattern('[a-zA-Z][a-zA-Z_ ]+[a-zA-Z _]$')]],
-    mobile: ['', [Validators.required, Validators.maxLength(18), Validators.pattern(/^[+][1-9]{0}[0-9]+/)]], // /^(\d{10}|\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3}))$/
-    // zipcode: [null, [Validators.required,Validators.minLength(4)]],
+    state: [null, [Validators.required,Validators.maxLength(100)]],
+    city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100),Validators.pattern('[a-zA-Z][a-zA-Z_ ]+[a-zA-Z _]$')]],
+    mobile: ['', [Validators.required, Validators.maxLength(20), Validators.pattern(/^[+][1-9]{0}[0-9]+/)]], // /^(\d{10}|\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3}))$/
+    zipcode: [null, [Validators.required,Validators.minLength(4),Validators.maxLength(20)]],
   });
 
   public errorMessages = {
@@ -176,13 +177,15 @@ getUserProfile(){
     //   { type: 'pattern', message: 'Enter a valid Additional Address'},
     //   { type: 'maxlength', message: 'You have reached max characters limit' }
     // ],
-    // state: [
-    //   { type: 'required', message: 'State is required' },
-    // ],
-    // zipcode: [
-    //   { type: 'required', message: 'ZIP code is required' },
-    //   { type: 'minlength', message: 'Enter a valid ZIP Code' }
-    // ],
+    state: [
+      { type: 'required', message: 'State is required' },
+      { type: 'maxlength', message: 'You have reached max characters limit' }
+    ],
+    zipcode: [
+      { type: 'required', message: 'ZIP code is required' },
+      { type: 'minlength', message: 'Enter a valid ZIP Code' },
+      { type: 'maxlength', message: 'You have reached max characters limit' }
+    ],
     city: [
       { type: 'required', message: 'City is required' },
       { type: 'pattern', message: 'Enter a valid City' } 
@@ -208,28 +211,23 @@ getUserProfile(){
     this.ShowSpinner = true;
     var newDate = new Date(this.signupForm2.value.dob)
     var postJson = {
-      "email": this.emailId,
-      "preferredName": this.Callname,
       "firstName": this.signupForm2.value.FirstName,
-      "middleName": "",
       "lastName": this.signupForm2.value.LastName,
-      "mobilePhone": this.signupForm2.value.mobile,
-      "address": {
+      "phoneNumber": this.signupForm2.value.mobile,
         // "id": 0,
-        "streetAddress": this.signupForm2.value.streetAddr,
+        "address": this.signupForm2.value.streetAddr,
         // "additionalAddressInfo": this.signupForm2.value.AddnlAddr,
-        // "stateProvinceRegion": this.signupForm2.value.state,
+        "state": this.signupForm2.value.state,
         "city": this.signupForm2.value.city,
-        // "zipPostal": this.signupForm2.value.zipcode,
-        "country": this.signupForm2.value.country
-      },
-      "dob": this.signupForm2.value.dob,
-      "gender": this.signupForm2.value.gender,
-      "language": this.language,
-      "objectId": this.RegistrationId
+      "postalCode": this.signupForm2.value.zipcode,
+      "country": this.signupForm2.value.country,
+      "dateOfBirth": this.signupForm2.value.dob,
+      //"gender": this.signupForm2.value.gender,
+      //"language": this.language,
+      // "objectId": this.RegistrationId
     }
     console.log(postJson);
-    this._appservices.postDataByPromissHttp(`Users/UpdateUser`, postJson).then(res => {
+    this._appservices.postDataByPromissHttp(`/api/users/${this.userDetails.id}`, postJson).then(res => {
       console.log("responce data", res);
       this.ShowSpinner = false;
       if (res.status == 200) {

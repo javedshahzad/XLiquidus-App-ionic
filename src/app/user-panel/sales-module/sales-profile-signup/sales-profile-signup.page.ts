@@ -116,7 +116,7 @@ export class SalesProfileSignupPage implements OnInit {
     GetUser() {
         this._appservices.presentLoading();
         //var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appservices.loggedInUserDetails['email'])}&clientIpAddress=${this._appservices.ipAddress.ip}`
-        var UserDetailsUrl = `users/${this._appservices.loggedInUserDetails.oid}`
+        var UserDetailsUrl = `api/users/me`
         this._appservices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
             if (_res.status == 200) {
                 this.userDetails = _res.data;

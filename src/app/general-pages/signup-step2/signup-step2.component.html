@@ -49,7 +49,7 @@
               </div>
             </div>
             <div>
-              <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">STREET
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">Address
                 <!-- <span
                   class="text-gray jostDemi">(STREET)</span> -->
               </ion-label>
@@ -75,19 +75,20 @@
               </div>
             </div>
 
-            <div>
-              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">MOBILE NUMBER</ion-label>
-              <ion-input class="itemclass height-60" inputmode="numeric" placeholder='+XX (XXX) XXX-XXXXX'
-                [brmasker]="{mask:'+00 (000) 000-00000', len:18}" maxlength="18" autocomplete="off"
-                formControlName="mobile" autocomplete="new-password" type="tel"></ion-input>
-              <div *ngFor="let error of errorMessages.mobile" class="errormsg">
-                <ng-container *ngIf="mobile.hasError(error.type) && (mobile.dirty || mobile.touched)">
+              <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">STATE
+                </ion-label>
+              <ion-input class="itemclass height-60" formControlName="state"></ion-input>
+              <div *ngFor="let error of errorMessages.state" class="errormsg">
+                <ng-container *ngIf="state.hasError(error.type) && (state.dirty || state.touched)">
                   <div class="erroronform">
                     <small class="error-message jostDemi size-13">{{error.message}}</small>
                   </div>
                 </ng-container>
               </div>
             </div>
+
+      
             <div class="position-relative">
               <div class="showtip showtip-top size-14" *ngIf="isshowtipc==true">
                 <p class="m-t-0">Select the Country in which you have current Legal Identification for.
@@ -118,6 +119,19 @@
               </div>
 
             </div>
+              <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">MOBILE NUMBER</ion-label>
+              <ion-input class="itemclass height-60" inputmode="numeric" placeholder='+XX (XXX) XXX-XXXXX'
+                [brmasker]="{mask:'+00 (000) 000-00000', len:20}" maxlength="20" autocomplete="off"
+                formControlName="mobile" autocomplete="new-password" type="tel"></ion-input>
+              <div *ngFor="let error of errorMessages.mobile" class="errormsg">
+                <ng-container *ngIf="mobile.hasError(error.type) && (mobile.dirty || mobile.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
             <div>
               <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">DATE OF BIRTH
               </ion-label>
@@ -131,7 +145,7 @@
                 </ng-container>
               </div>
             </div>
-            <div>
+            <!-- <div>
               <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">GENDER
                 PREFERENCE:</ion-label>
               <ion-select class="itemclass height-60" interface="action-sheet" formControlName="gender">
@@ -146,7 +160,7 @@
                   </div>
                 </ng-container>
               </div>
-            </div>
+            </div> -->
             <ion-button expand="block" size="large"
               class="shadownot size-18 primary-color-background no-border border-radius-8 m-b-20 m-t-15 height-60 jostDemi letter-spacing ion-activatable ripple-parent box-shadow font-weight-600"
               [class.background-blue-light]="checkbackground" (click)="submitStep2()">SUBMIT<ion-spinner name="lines"

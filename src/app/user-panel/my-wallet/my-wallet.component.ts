@@ -33,7 +33,7 @@ export class MyWalletComponent implements OnInit {
     Object.assign(this._appServices.headers,headers_user);
     console.log(this._appServices.getHttpHeaders());
 
-    var getUserbalance = this._appServices.getDataByHttp(`wallets/balances`);
+    var getUserbalance = this._appServices.getDataByHttp(`api/wallets/balances`);
     forkJoin([getUserbalance])
     .subscribe(_res => {
       console.log("balance response == ",_res[0])
