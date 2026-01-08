@@ -72,10 +72,7 @@ export class AppComponent {
     this._appServices.getDataByHttp('api/auth/protected').subscribe((response)=>{
       console.log("get Data auth protected = ",response)
       if(response.data && response.data.authenticated === true){
-        this.syncUserData();
-        this.validateJWT_token();
-        this._appServices.presentToast("Login successfull!");
-        this._nav.navigateRoot(['/user-panel']);
+        this.getUserData_Me();
       }else{
         this._nav.navigateRoot(['/']);
       }
@@ -88,6 +85,21 @@ export class AppComponent {
       this._appServices.postDataByHttp('api/auth/user/sync',{}).subscribe((response)=>{
       console.log("auth/user/sync= ",response)
 
+    },error=>{
+      console.log(error)
+    })
+  }
+  async getUserData_Me(){
+      this._appServices.getDataByHttp('v2026/auth/me').subscribe((response)=>{
+        console.log("v2026/auth/me = ",response);
+        var resData = response.data;
+        if(resData.isRegistered === false && resData.registrationRequired === true){
+          this._appServices.presentToast(resData.message,false);
+          this.router.navigate(['/signupstep2', {onlyCreateProfile: 1 }])
+        }else{
+          this._appServices.presentToast("Login successfull!");
+          this._nav.navigateRoot(['/user-panel']);
+        }
     },error=>{
       console.log(error)
     })
@@ -107,49 +119,49 @@ export class AppComponent {
   async initializeApp() {
     this.platform.ready().then(async () => {
       this.device = await this.platform.platforms();
-      this.getCloudConfig();
       this.backButtonEvent();
       this.setDeviceID();
       await this._encrypDecrypService.getUserCurrentLocartion();
       this._appServices.checkConnection();
-      this.getSettings();
+      //this.getSettings();
+      this.checkUserloggedInOrNot();
       await StatusBar.setStyle({ style: Style.Default });
       await SplashScreen.hide();
       this.initializeDeeppLink();
     });
   }
-  getCloudConfig(){
-    let url = "https://dyse8jtzjt9yv.cloudfront.net/xl/xl-app-config.json";
-    this._appServices.getDataByNative(url).subscribe((response:any)=>{
-      this.CloudLoginConfig = response.data;
-      // this._appServices.apiUrl =this.CloudLoginConfig.ServiceUrl+"/v3/";
-    });
-  }
-  getSettings() {
-    let vn = this.appVersion.getVersionNumber();
-    vn.then(res => {
-      this.currentAppVersion = res;
-    }).catch(err => this.currentAppVersion = '0.0.9');
+  // getCloudConfig(){
+  //   let url = "https://dyse8jtzjt9yv.cloudfront.net/xl/xl-app-config.json";
+  //   this._appServices.getDataByNative(url).subscribe((response:any)=>{
+  //     this.CloudLoginConfig = response.data;
+  //     // this._appServices.apiUrl =this.CloudLoginConfig.ServiceUrl+"/v3/";
+  //   });
+  // }
+  // getSettings() {
+  //   let vn = this.appVersion.getVersionNumber();
+  //   vn.then(res => {
+  //     this.currentAppVersion = res;
+  //   }).catch(err => this.currentAppVersion = '0.0.9');
 
-    const url = 'https://cdn.usscyber.com/files/settings/xl-settings.json';
-    this._appServices.getDataByNativePromiss(url).then((res: any) => {
-      this.appSettings = res.data;
+  //   const url = 'https://cdn.usscyber.com/files/settings/xl-settings.json';
+  //   this._appServices.getDataByNativePromiss(url).then((res: any) => {
+  //     this.appSettings = res.data;
 
-      if ((this.platform.is("android") && this.appSettings["maintenance-android"] == true) || (this.platform.is("ios") && this.appSettings["maintenance-ios"] == true && this.appSettings["mandatory"] == true)) {
-        this._nav.navigateRoot(['/maintenance']);
-      } else if (this.platform.is("android") && `'${this.appSettings["android-version"]}'` > `'${this.currentAppVersion}'` && this.appSettings["mandatory"] == true) {
-        this._nav.navigateRoot(['/app-update', { force: this.appSettings.mandatory }]);
-      } else if (this.platform.is("ios") && `'${this.appSettings["ios-version"]}'` > `'${this.currentAppVersion}'` && this.appSettings["mandatory"] == true) {
-        this._nav.navigateRoot(['/app-update', { force: this.appSettings.mandatory }]);
-      } else {
-        this.checkUserloggedInOrNot();
-      }
-    }, err => {
-      console.log(err);
-      this.checkUserloggedInOrNot();
-    });
-    this.HandleCache();
-  }
+  //     if ((this.platform.is("android") && this.appSettings["maintenance-android"] == true) || (this.platform.is("ios") && this.appSettings["maintenance-ios"] == true && this.appSettings["mandatory"] == true)) {
+  //       this._nav.navigateRoot(['/maintenance']);
+  //     } else if (this.platform.is("android") && `'${this.appSettings["android-version"]}'` > `'${this.currentAppVersion}'` && this.appSettings["mandatory"] == true) {
+  //       this._nav.navigateRoot(['/app-update', { force: this.appSettings.mandatory }]);
+  //     } else if (this.platform.is("ios") && `'${this.appSettings["ios-version"]}'` > `'${this.currentAppVersion}'` && this.appSettings["mandatory"] == true) {
+  //       this._nav.navigateRoot(['/app-update', { force: this.appSettings.mandatory }]);
+  //     } else {
+  //       this.checkUserloggedInOrNot();
+  //     }
+  //   }, err => {
+  //     console.log(err);
+  //     this.checkUserloggedInOrNot();
+  //   });
+  //   //this.HandleCache();
+  // }
 
   async checkUserloggedInOrNot() {
     var getToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.id_token));
@@ -279,14 +291,14 @@ export class AppComponent {
     });
     toast.present();
   }
-  HandleCache(){
-    var UrlParameters = `AppGlobalSettings/XL`;
-    this._appServices.getDataByHttp(UrlParameters).subscribe(async res => {
-      console.log("AppGlobalSettings/XL Response", res);
+  // HandleCache(){
+  //   var UrlParameters = `AppGlobalSettings/XL`;
+  //   this._appServices.getDataByHttp(UrlParameters).subscribe(async res => {
+  //     console.log("AppGlobalSettings/XL Response", res);
       
-    }, err => {
-      console.log(err);
+  //   }, err => {
+  //     console.log(err);
      
-    });
-  }
+  //   });
+  // }
 }

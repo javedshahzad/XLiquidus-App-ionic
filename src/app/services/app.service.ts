@@ -28,7 +28,8 @@ export class AppService {
  //public apiUrl = "https://mobious-xl.usscyber.com/v3/";    //production url
  //public apiUrl ="https://2ufet3xaskyqtigo43ifmqri7q0vynew.lambda-url.us-east-1.on.aws/v3/";
  //public apiUrl = "https://vanui6iyhz.us-east-1.awsapprunner.com/api/"
- public apiUrl = "http://qsl-uat-alb-2026365544.us-east-1.elb.amazonaws.com/mobile/"
+ //public apiUrl = "http://qsl-uat-alb-2026365544.us-east-1.elb.amazonaws.com/mobile/"
+ public apiUrl = "https://mobile-api.uat.xliquidus.com/";
  // public apiUrl = "https://inverse.usscyber.com/v3/";
   public blockChainTransactionBaseUrl = "https://explorer.usscyber.com/transaction/";
   public ipAddress: any = { "ip": '127.0.0.1' };
@@ -120,9 +121,13 @@ export class AppService {
               name: decoded['name'],
               given_name: decoded['given_name'],
               family_name: decoded['family_name'],
-              oid: decoded['oid'] ? decoded['oid'] : decoded['sub']
+              oid: decoded['sub'],
+              userId :decoded['sub'],
+              userName:decoded['username'],
+              phoneNumber:decoded['phone_number']
             }
             Object.assign(ths.loggedInUserDetails, userDetails);
+            Object.assign(ths.loggedInUserAccountDetails, userDetails);
           }
         } else if (decoded['email']) {
           var userDetails = {
@@ -130,7 +135,10 @@ export class AppService {
             name: decoded['name'],
             given_name: decoded['given_name'],
             family_name: decoded['family_name'],
-            oid: decoded['oid'] ? decoded['oid'] : decoded['sub']
+            oid: decoded['sub'],
+            userId :decoded['sub'],
+            userName:decoded['username'],
+            phoneNumber:decoded['phone_number']
           }
           Object.assign(ths.loggedInUserDetails, userDetails);
           Object.assign(ths.loggedInUserAccountDetails, userDetails);
@@ -229,7 +237,7 @@ export class AppService {
     return await this.loadingController.dismiss();
   }
 
-  async presentToast(msg) {
+  async presentToast(msg,isSuccess = true) {
       const check = await this._toastController.getTop();
     if (check) {
       this._toastController.dismiss();
@@ -238,7 +246,7 @@ export class AppService {
       message: msg,
       duration: 4000,
       position: 'top',
-      color:"primary",
+      color: isSuccess === true ? "primary" : "danger",
       buttons: [
         {
           icon: 'close',
@@ -329,9 +337,7 @@ export class AppService {
 
   getDataByNative(url): Observable<any> {
     return from(this._nativeHttp.get(url, {}, this.getHttpHeaders())).pipe(retry(this.UploadMaxRetryHit), map(results => {
-      console.log(results);
-      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) ? JSON.parse(results.data): results }
-
+      var _res: apiResponse = { status: results.status, data: JSON.parse(results.data) ? JSON.parse(results.data) : results }
       return _res;
     }, err => {
       console.log("errrr", err);

@@ -49,13 +49,12 @@
               </div>
             </div>
             <div>
-              <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">Address
-                <!-- <span
-                  class="text-gray jostDemi">(STREET)</span> -->
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">E-MAIL ADDRESS
+                <span class="text-gray jostDemi">(AS REGISTERED IN LOGTO)</span>
               </ion-label>
-              <ion-input class="itemclass height-60" formControlName="streetAddr"></ion-input>
-              <div *ngFor="let error of errorMessages.streetAddr" class="errormsg">
-                <ng-container *ngIf="streetAddr.hasError(error.type) && (streetAddr.dirty || streetAddr.touched)">
+              <ion-input class="itemclass height-60" formControlName="email" [disabled]="true"></ion-input>
+              <div *ngFor="let error of errorMessages.email" class="errormsg">
+                <ng-container *ngIf="email.hasError(error.type) && (email.dirty || email.touched)">
                   <div class="erroronform">
                     <small class="error-message jostDemi size-13">{{error.message}}</small>
                   </div>
@@ -75,7 +74,7 @@
               </div>
             </div>
 
-              <div>
+              <!-- <div>
               <ion-label class="m-t-15 m-b-5 size-13 jostDemi  color-secondary display-block">STATE
                 </ion-label>
               <ion-input class="itemclass height-60" formControlName="state"></ion-input>
@@ -86,7 +85,7 @@
                   </div>
                 </ng-container>
               </div>
-            </div>
+            </div> -->
 
       
             <div class="position-relative">
@@ -107,7 +106,7 @@
                   CHOOSE COUNTRY
                 </ion-select-option>
                 <ion-select-option *ngFor="let item of countries" [value]="item">
-                  {{item.name}}
+                  {{item}}
                 </ion-select-option>
               </ion-select>
               <div *ngFor="let error of errorMessages.country" class="errormsg">
@@ -132,7 +131,7 @@
                 </ng-container>
               </div>
             </div>
-            <div>
+            <!-- <div>
               <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">DATE OF BIRTH
               </ion-label>
               <ion-input  class="itemclass height-60" type="date"  displayFormat="MMM DD, YYYY"
@@ -144,23 +143,37 @@
                   </div>
                 </ng-container>
               </div>
-            </div>
-            <!-- <div>
-              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">GENDER
-                PREFERENCE:</ion-label>
-              <ion-select class="itemclass height-60" interface="action-sheet" formControlName="gender">
-                <ion-select-option *ngFor="let item of genders" [value]="item">
+            </div> -->
+            <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">LANGUAGE</ion-label>
+              <ion-select class="itemclass height-60" interface="action-sheet" formControlName="preferredLanguage">
+                <ion-select-option *ngFor="let item of GetLanguages" [value]="item">
                   {{item}}
                 </ion-select-option>
               </ion-select>
-              <div *ngFor="let error of errorMessages.gender" class="errormsg">
-                <ng-container *ngIf="gender.hasError(error.type) && (gender.dirty || gender.touched)">
+              <div *ngFor="let error of errorMessages.preferredLanguage" class="errormsg">
+                <ng-container *ngIf="preferredLanguage.hasError(error.type) && (preferredLanguage.dirty || preferredLanguage.touched)">
                   <div class="erroronform">
                     <small class="error-message jostDemi size-13">{{error.message}}</small>
                   </div>
                 </ng-container>
               </div>
-            </div> -->
+            </div>
+               <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">CURRENCY</ion-label>
+              <ion-select class="itemclass height-60" interface="action-sheet" formControlName="preferredCurrency">
+                <ion-select-option *ngFor="let item of GetCryptoCurrencies" [value]="item">
+                  {{item}}
+                </ion-select-option>
+              </ion-select>
+              <div *ngFor="let error of errorMessages.preferredCurrency" class="errormsg">
+                <ng-container *ngIf="preferredCurrency.hasError(error.type) && (preferredCurrency.dirty || preferredCurrency.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
             <ion-button expand="block" size="large"
               class="shadownot size-18 primary-color-background no-border border-radius-8 m-b-20 m-t-15 height-60 jostDemi letter-spacing ion-activatable ripple-parent box-shadow font-weight-600"
               [class.background-blue-light]="checkbackground" (click)="submitStep2()">SUBMIT<ion-spinner name="lines"

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { forkJoin } from 'rxjs';
 import { AppService } from 'src/app/services/app.service';
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
 
@@ -27,6 +28,25 @@ export class SignupStep2Component implements OnInit {
   createProfile: any;
   noteighteen: any;
   userDetails: any="";
+  GetLanguages: any;
+  GetCryptoCurrencies =  [
+  "AED","AFN","ALL","AMD","ANG","AOA","ARS","AUD","AWG","AZN",
+  "BAM","BBD","BDT","BGN","BHD","BIF","BMD","BND","BOB","BRL",
+  "BSD","BTN","BWP","BYN","BZD","CAD","CDF","CHF","CLP","CNY",
+  "COP","CRC","CUP","CVE","CZK","DJF","DKK","DOP","DZD","EGP",
+  "ERN","ETB","EUR","FJD","FKP","GBP","GEL","GGP","GHS","GIP",
+  "GMD","GNF","GTQ","GYD","HKD","HNL","HRK","HTG","HUF","IDR",
+  "ILS","IMP","INR","IQD","IRR","ISK","JEP","JMD","JOD","JPY",
+  "KES","KGS","KHR","KMF","KPW","KRW","KWD","KYD","KZT","LAK",
+  "LBP","LKR","LRD","LSL","LYD","MAD","MDL","MGA","MKD","MMK",
+  "MNT","MOP","MRU","MUR","MVR","MWK","MXN","MYR","MZN","NAD",
+  "NGN","NIO","NOK","NPR","NZD","OMR","PAB","PEN","PGK","PHP",
+  "PKR","PLN","PYG","QAR","RON","RSD","RUB","RWF","SAR","SBD",
+  "SCR","SDG","SEK","SGD","SHP","SLL","SOS","SRD","SSP","STN",
+  "SYP","SZL","THB","TJS","TMT","TND","TOP","TRY","TTD","TWD",
+  "TZS","UAH","UGX","USD","UYU","UZS","VES","VND","VUV","WST",
+  "XAF","XCD","XOF","XPF","YER","ZAR","ZMW","ZWL"
+];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,21 +62,20 @@ export class SignupStep2Component implements OnInit {
   }
 
   ngOnInit() { }
-getUserProfile(){
-  this._appservices.presentLoading();
-  //var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appservices.loggedInUserDetails['email'])}&clientIpAddress=${this._appservices.ipAddress.ip}`
-  var UserDetailsUrl = `api/users/me`
-  this._appservices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
-    if (_res.status == 200) {
-      this.userDetails = _res.data;
-      console.log(this.userDetails)
-      this.signupForm2.controls["dob"].setValue(this.userDetails.dob);
-    }
-    this._appservices.loaderDismiss();
-  });
-}
+// getUserProfile(){
+//   this._appservices.presentLoading();
+//   //var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appservices.loggedInUserDetails['email'])}&clientIpAddress=${this._appservices.ipAddress.ip}`
+//   var UserDetailsUrl = `v2026/auth/me`
+//   this._appservices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
+//     if (_res.status == 200) {
+//       this.userDetails = _res.data;
+//       console.log(this.userDetails)
+//       // this.signupForm2.controls["dob"].setValue(this.userDetails.dob);
+//     }
+//     this._appservices.loaderDismiss();
+//   });
+// }
   ionViewWillEnter() {
-    this._appservices.presentLoading();
     this.Callname = this._encServices.decrypt(this.activatedroute.snapshot.paramMap.get('prefferedLanguage'));
     this.RegistrationId = this._encServices.decrypt(this.activatedroute.snapshot.paramMap.get('registerationId'));
     this.emailId = this._encServices.decrypt(this.activatedroute.snapshot.paramMap.get('email'));
@@ -66,23 +85,26 @@ getUserProfile(){
       (_, a, b, c) => a + b.replace(/./g, '*') + c
     );
     console.log(this.maskemailId);
-
-    var UrlParameters = `emailAddress=${this._appservices.loggedInUserDetails.email}&clientIpAddress=${this._appservices.ipAddress.ip}`
-    this._appservices.getDataByHttp(`Global/GetCountries`).subscribe(res => {
-      if (res.status == 200) {
-        this.countries = res.data.data;
-        console.log(this.countries);
-      }
-    });
-
-    this._appservices.getDataByHttp(`Global/GetGenders`).subscribe(res => {
-      if (res.status == 200) {
-        this.genders = res.data.data;
-        console.log(this.genders);
-      }
-    });
-    this.getUserProfile();
-    this._appservices.presentLoading();
+    this.getGlobalData();
+  }
+  getGlobalData(){
+     this._appservices.presentLoading();
+    var get_countries =this._appservices.getDataByHttp(`Global/GetCountries`);
+    var GetGenders =this._appservices.getDataByHttp(`Global/GetGenders`);
+    var GetLanguages =this._appservices.getDataByHttp(`Global/GetLanguages`);
+    var GetCryptoCurrencies =this._appservices.getDataByHttp(`Global/GetCryptoCurrencies`);
+    forkJoin([get_countries,GetGenders,GetLanguages,GetCryptoCurrencies]).subscribe(_res => {
+      console.log(_res)
+      this.countries = _res[0].status == 200 ? _res[0].data : [];
+      this.genders = _res[1].status == 200 ? _res[1].data : [];
+      this.GetLanguages = _res[2].status == 200 ? _res[2].data : [];
+      //this.GetCryptoCurrencies = _res[3].status == 200 ? _res[3].data : [];
+       this._appservices.loaderDismiss();
+    }
+    ,error=>{
+       this._appservices.loaderDismiss();
+    }
+  );
   }
 
   get FirstName() {
@@ -112,6 +134,12 @@ getUserProfile(){
   get city() {
     return this.signupForm2.get('city');
   }
+  get preferredLanguage() {
+    return this.signupForm2.get('preferredLanguage');
+  }
+  get preferredCurrency() {
+    return this.signupForm2.get('preferredCurrency');
+  }
 
   get state(){
     return this.signupForm2.get('state');
@@ -124,23 +152,28 @@ getUserProfile(){
   get mobile() {
     return this.signupForm2.get('mobile');
   }
+   get email() {
+    return this.signupForm2.get('email');
+  }
 
 
 
   signupForm2 = this.formBuilder.group({
-    FirstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100), Validators.pattern('[a-zA-Z]+[a-zA-Z _]$')]],
-    LastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100), Validators.pattern('[a-zA-Z]+[a-zA-Z _]$')]],
+    FirstName: [this._appservices.loggedInUserAccountDetails.given_name, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]], //, Validators.pattern('[a-zA-Z]+[a-zA-Z _]$')
+    LastName: [this._appservices.loggedInUserAccountDetails.family_name, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]], //, Validators.pattern('[a-zA-Z]+[a-zA-Z _]$')
     country: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-    dob: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(100), ageValidator]],
+    preferredLanguage: ["English", [Validators.required]],
+    preferredCurrency: ["USD", [Validators.required]],
+    email: [this._appservices.loggedInUserAccountDetails.email, []],
+    //dob: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(100), ageValidator]],
     //gender: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    streetAddr: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200), Validators.pattern('^[a-zA-Z0-9!@#$&()\\-`.+,/\"][a-zA-Z0-9!@#$&()\\-`.+,/\"_ ]+[a-zA-Z0-9!@#$&()\\-`.+,/\" _]$')]],
+    //streetAddr: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200), Validators.pattern('^[a-zA-Z0-9!@#$&()\\-`.+,/\"][a-zA-Z0-9!@#$&()\\-`.+,/\"_ ]+[a-zA-Z0-9!@#$&()\\-`.+,/\" _]$')]],
     // AddnlAddr: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255),Validators.pattern('^[a-zA-Z0-9!@#$&()\\-`.+,/\"][a-zA-Z0-9!@#$&()\\-`.+,/\"_ ]+[a-zA-Z0-9!@#$&()\\-`.+,/\" _]$')]],
-    state: [null, [Validators.required,Validators.maxLength(100)]],
-    city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100),Validators.pattern('[a-zA-Z][a-zA-Z_ ]+[a-zA-Z _]$')]],
+    //state: [null, [Validators.required,Validators.maxLength(100)]],
+    city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100),]], //Validators.pattern('[a-zA-Z][a-zA-Z_ ]+[a-zA-Z _]$')
     mobile: ['', [Validators.required, Validators.maxLength(20), Validators.pattern(/^[+][1-9]{0}[0-9]+/)]], // /^(\d{10}|\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3}))$/
-    zipcode: [null, [Validators.required,Validators.minLength(4),Validators.maxLength(20)]],
+    //zipcode: [null, [Validators.required,Validators.minLength(4),Validators.maxLength(20)]],
   });
-
   public errorMessages = {
     FirstName: [
       { type: 'required', message: 'First Name is required' },
@@ -158,6 +191,12 @@ getUserProfile(){
       {
         type: 'isvalid', message: 'You must be 18 years or older'
       }
+    ],
+    preferredLanguage:[
+      { type: 'required', message: 'Language is required' },
+    ],
+    preferredCurrency:[
+      { type: 'required', message: 'Currency is required' },
     ],
     gender: [
       { type: 'required', message: 'Gender is required' },
@@ -209,29 +248,32 @@ getUserProfile(){
       return;
     }
     this.ShowSpinner = true;
-    var newDate = new Date(this.signupForm2.value.dob)
+    //var newDate = new Date(this.signupForm2.value.dob)
     var postJson = {
       "firstName": this.signupForm2.value.FirstName,
       "lastName": this.signupForm2.value.LastName,
       "phoneNumber": this.signupForm2.value.mobile,
-        // "id": 0,
-        "address": this.signupForm2.value.streetAddr,
-        // "additionalAddressInfo": this.signupForm2.value.AddnlAddr,
-        "state": this.signupForm2.value.state,
-        "city": this.signupForm2.value.city,
-      "postalCode": this.signupForm2.value.zipcode,
+      "email":this._appservices.loggedInUserAccountDetails.email,
+      // "address": this.signupForm2.value.streetAddr,
+      // "state": this.signupForm2.value.state,
+      "city": this.signupForm2.value.city,
+      // "postalCode": this.signupForm2.value.zipcode,
       "country": this.signupForm2.value.country,
-      "dateOfBirth": this.signupForm2.value.dob,
+      // "dateOfBirth": this.signupForm2.value.dob,
+      "preferredLanguage":this.signupForm2.value.preferredLanguage,
+      "preferredCurrency":this.signupForm2.value.preferredCurrency,
+      "acceptTerms":true,
+      "acceptPrivacyPolicy":true,
       //"gender": this.signupForm2.value.gender,
       //"language": this.language,
       // "objectId": this.RegistrationId
     }
     console.log(postJson);
-    this._appservices.postDataByPromissHttp(`/api/users/${this.userDetails.id}`, postJson).then(res => {
+    this._appservices.postDataByHttp(`v2026/auth/register`, postJson).subscribe(res => {
       console.log("responce data", res);
       this.ShowSpinner = false;
       if (res.status == 200) {
-        this._appservices.presentToast('Personalize profile update successfully');
+        this._appservices.presentToast('Personalize profile registeration successfull!');
         if (this.createProfile == 1) {
           this._nav.navigateRoot(['user-panel/dashboard']);
         } else {
@@ -245,6 +287,9 @@ getUserProfile(){
       
       }
       // this._appservices.presentToast(res);
+    },error=>{
+      this.ShowSpinner = false;
+      console.log(error)
     });
 
   }
