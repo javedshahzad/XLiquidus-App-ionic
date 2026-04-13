@@ -7,6 +7,7 @@ import { EncryptionDecryptionService } from '../services/encryption.service';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { B2C_config_setting } from '../B2C_config_setting';
 import { LogtoService } from '../services/logto.service';
+import { AppApiService } from '../services/app-apis.service';
 
 @Component({
   selector: 'app-user-panel',
@@ -62,7 +63,8 @@ export class UserPanelPage {
     public toast: ToastController,
     public _B2C_config: B2C_config_setting,
     private platform:Platform,
-    private logtoService:LogtoService
+    private logtoService:LogtoService,
+    private _appAPI: AppApiService,
   ) {
     if (!this.router.url.includes('user-panel/dashboard')) {
       this.showModal = false;
@@ -79,15 +81,13 @@ export class UserPanelPage {
 
   ionViewWillEnter() {
     this.getUserDetails();
-    this.GetUserCoinMetrics();
+    //this.GetUserCoinMetrics();
   }
 
   getUserDetails() {
     var ShowAuthenticationModal = localStorage.getItem("ShowAuthenticationModal") ? localStorage.getItem("ShowAuthenticationModal") : "true"; 
     this._appServices.presentLoading();
-   // var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
-    var UserDetailsUrl = `v2026/auth/me`; 
-   this._appServices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
+   this._appAPI.getMe().subscribe(_res => {
     console.log("User profile == ",_res)
       if (_res.status == 200) {
        this.userDetails = _res.data;
@@ -122,7 +122,7 @@ export class UserPanelPage {
     });
   }
   async logoutUser(){
-      this._appServices.postDataByHttp('auth/logout',{}).subscribe((response)=>{
+      this._appServices.postDataByHttp('v2026/auth/logout',{}).subscribe((response)=>{
       console.log("auth/user/sync= ",response)
 
     },error=>{

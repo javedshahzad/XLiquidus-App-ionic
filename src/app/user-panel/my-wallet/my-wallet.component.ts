@@ -67,7 +67,9 @@ export class MyWalletComponent implements OnInit {
   gotoTransaction() {
     this.router.navigate(['/user-panel/transaction-history'])
   }
-
+  Deposit(){
+    this.router.navigate(['/user-panel/wallet-deposit'])
+  }
   ionViewDidLeave() {
     this.backButtonSubscription.unsubscribe();
   }

@@ -1,0 +1,139 @@
+<ion-content class="h-100 no-scroll">
+  <div class="overfolow-y h-100">
+    <ion-item-divider class="height-30 removeborder background-subheader"></ion-item-divider>
+    <ion-grid class="position-relative z-index-10">
+      <ion-row>
+        <ion-col>
+          <ion-toolbar class="general-pages-toolbar p-t-0">
+            <div class="ion-text-center">
+              <h1 class="color-secondary size-32 font-weight-600 jostDemi">
+                DEPOSIT INTO YOUR
+              </h1>
+              <h2 class="size-23 transaction-color m-t-0 jostDemi letter-spacing font-weight-600 ion-text-uppercase">ACCOUNT
+              </h2>
+            </div>
+
+          </ion-toolbar>
+          <form class="p-5" [formGroup]="deposit_blueprint_form">
+              <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">TYPE</ion-label>
+              <ion-select class="itemclass height-60" (ionChange)="OnChangeType($event)" interface="action-sheet" formControlName="type">
+                <ion-select-option *ngFor="let item of depositTypes" [value]="item" class="ion-text-uppercase">
+                  {{item}}
+                </ion-select-option>
+              </ion-select>
+              <div *ngFor="let error of errorMessages.type" class="errormsg">
+                <ng-container *ngIf="type.hasError(error.type) && (type.dirty || type.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <div>
+              <ion-label class="m-t-13 m-b-5 size-13 color-secondary display-block font-weight-600 jostDemi">AMOUNT
+              </ion-label>
+              <ion-input type="number" class="itemclass height-60" formControlName="amount"></ion-input>
+              <div *ngFor="let error of errorMessages.amount" class="errormsg">
+                <ng-container *ngIf="amount.hasError(error.type) && (amount.dirty || amount.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+   
+             <ng-container *ngIf="deposit_blueprint_form.value.type == 'fiat' ">
+              <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">CURRENCY</ion-label>
+              <ion-select class="itemclass height-60" interface="action-sheet" formControlName="currency">
+                <ion-select-option *ngFor="let item of currenciesArr" [value]="item.code" class="ion-text-uppercase">
+                  {{item.code}}
+                </ion-select-option>
+              </ion-select>
+              <div *ngFor="let error of errorMessages.currency" class="errormsg">
+                <ng-container *ngIf="currency.hasError(error.type) && (currency.dirty || currency.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+   
+      
+
+             <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">PAYMENT METHOD</ion-label>
+              <ion-select class="itemclass height-60" interface="action-sheet" formControlName="paymentMethod">
+                <ion-select-option *ngFor="let item of payment_methods" [value]="item" class="ion-text-uppercase">
+                  {{item}}
+                </ion-select-option>
+              </ion-select>
+              <div *ngFor="let error of errorMessages.paymentMethod" class="errormsg">
+                <ng-container *ngIf="paymentMethod.hasError(error.type) && (paymentMethod.dirty || paymentMethod.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <div>
+                <div id="card-container"></div>
+            </div>
+
+             </ng-container>
+
+              <ng-container *ngIf="deposit_blueprint_form.value.type == 'crypto'">
+                <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">ASSET</ion-label>
+              <ion-select class="itemclass height-60" interface="action-sheet" formControlName="asset">
+                <ion-select-option *ngFor="let item of GetCryptoCurrencies" [value]="item" class="ion-text-uppercase">
+                  {{item}}
+                </ion-select-option>
+              </ion-select>
+              <div *ngFor="let error of errorMessages.asset" class="errormsg">
+                <ng-container *ngIf="asset.hasError(error.type) && (asset.dirty || asset.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+                   <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">NETWORK</ion-label>
+              <ion-select class="itemclass height-60" interface="action-sheet" formControlName="network">
+                <ion-select-option *ngFor="let item of networksArr" [value]="item" class="ion-text-uppercase">
+                  {{item}}
+                </ion-select-option>
+              </ion-select>
+              <div *ngFor="let error of errorMessages.network" class="errormsg">
+                <ng-container *ngIf="network.hasError(error.type) && (network.dirty || network.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+              </ng-container>
+
+       
+            
+            <ion-button expand="block" size="large"
+              class="shadownot size-18 primary-color-background no-border border-radius-8 m-b-20 m-t-15 height-60 jostDemi letter-spacing ion-activatable ripple-parent box-shadow font-weight-600"
+              [class.background-blue-light]="checkbackground" (click)="submit()">DEPOSIT<ion-spinner name="lines"
+                class="validatespinner1" *ngIf="ShowSpinner"></ion-spinner>
+            </ion-button>
+          </form>
+
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <!-- <div class="backgroundimage-footer z-index-0">
+    </div> -->
+
+  </div>
+</ion-content>

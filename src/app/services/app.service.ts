@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import LogtoClient from '@logto/browser';
 import { EncryptionDecryptionService } from './encryption.service';
 import { AppEnum } from '../appEnum/appenum';
+import { countriesList } from './countries';
 
 interface apiResponse {
   status: number,
@@ -122,7 +123,7 @@ export class AppService {
               given_name: decoded['given_name'],
               family_name: decoded['family_name'],
               oid: decoded['sub'],
-              userId :decoded['sub'],
+              LogtoUserId :decoded['sub'],
               userName:decoded['username'],
               phoneNumber:decoded['phone_number']
             }
@@ -136,7 +137,7 @@ export class AppService {
             given_name: decoded['given_name'],
             family_name: decoded['family_name'],
             oid: decoded['sub'],
-            userId :decoded['sub'],
+            LogtoUserId :decoded['sub'],
             userName:decoded['username'],
             phoneNumber:decoded['phone_number']
           }
@@ -206,8 +207,9 @@ export class AppService {
     this.isLoading = true;
     return await this.loadingController
       .create({
-        duration: 8000,
+        duration: 12000,
         message:message ? message : "Please wait...",
+        backdropDismiss:true
       })
       .then((a) => {
         a.present().then(() => {
@@ -220,7 +222,16 @@ export class AppService {
   async simpleLoader() {
     const loading = await this.loadingController.create({
       message: 'Please wait...',
-       duration: 8000,
+       duration: 12000,
+       backdropDismiss:true
+    });
+    loading.present();
+    this.isLoading = false
+  }
+    async simpleLoaderWithoutDuration() {
+    const loading = await this.loadingController.create({
+      message: 'Please wait...',
+      backdropDismiss:true
     });
     loading.present();
     this.isLoading = false
@@ -259,7 +270,19 @@ export class AppService {
 
     toast.present();
   }
-
+  getCountry(): string{
+    const authToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.access_token));;
+    console.log("Access token=",authToken);
+    var decoded:any = jwt_decode(authToken);
+    if(decoded['country']){
+      return this.getCountryName(decoded['country']);
+    }else{
+      return "";
+    }
+  }
+   getCountryName(code) {
+    return countriesList[code] || 'Unknown';
+  }
   getHttpHeaders() {
     const authToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.access_token));;
     console.log("Access token=",authToken);
@@ -621,6 +644,13 @@ export class AppService {
       return _err;
     });
   }
+    setXLUserId(userId: string): void {
+      localStorage.setItem('XL_USER_ID', userId);
+    }
+
+    getXLUserId(): string | null {
+      return localStorage.getItem('XL_USER_ID');
+    }
   InitLogtoIoAndroid(){
      const logtoClient = new LogtoClient({
       endpoint: 'https://5r5a7r.logto.app/',
@@ -630,6 +660,43 @@ export class AppService {
     });
     return logtoClient;
   }
+  presentErrorToast(error){
+    this.presentToast(this.getErrorMessage(error),false)
+  }
+getErrorMessage(error: any): string {
+  let defaultMessage = 'Something went wrong. Please try again.';
+
+  try {
+    // If backend sends stringified JSON inside error.error
+    if (error?.error) {
+
+      // Case 1: error.error is string
+      if (typeof error.error === 'string') {
+        var parsed = JSON.parse(error.error);
+        if(typeof parsed?.error === "string"){
+          const parsed_2 = JSON.parse(parsed?.error);
+          return parsed_2?.error || parsed_2.error?.message || defaultMessage;
+        }else if(typeof parsed?.error === "object"){
+          return parsed?.error?.error || parsed.error?.message || defaultMessage;
+        }else{
+          return parsed?.error || parsed.error?.message || defaultMessage;
+        }
+        
+      }
+
+      // Case 2: error.error is already object
+      if (typeof error.error === 'object') {
+        return error.error?.error || error.error?.message || defaultMessage;
+      }
+    }
+
+    // Fallback to general message
+    return error?.message || defaultMessage;
+
+  } catch (e) {
+    return defaultMessage;
+  }
+}
 }
 export interface ADD_TO_CART_PAYLOAD {
   email?: string,

@@ -9,6 +9,7 @@ import { AppEnum } from 'src/app/appEnum/appenum';
 // import {OAuth2Client} from "@byteowls/capacitor-oauth2";
 import { Browser, OpenOptions } from '@capacitor/browser';
 import { LogtoService } from 'src/app/services/logto.service';
+import { AppApiService } from 'src/app/services/app-apis.service';
 
 @Component({
   selector: 'app-login',
@@ -32,7 +33,8 @@ export class LoginComponent implements OnInit {
     public platform: Platform,
     public _B2C_config: B2C_config_setting,
     public _encrypDecrypService: EncryptionDecryptionService,
-    public logtoService:LogtoService
+    public logtoService:LogtoService,
+    private _appApi: AppApiService
   ) {
 
 
@@ -232,6 +234,12 @@ IsLoginAllowedAsync(){
     }).catch(async (error)=>{
     this._appServices.loaderDismiss();
     console.error("error=", error);
+      var call_back_url = this.platform.is("ios") === true ? this._B2C_config.LogtoLoginDetails().iOS_logout_call_Back : this._B2C_config.LogtoLoginDetails().android_logout_call_back;
+      if(this.platform.is("android")){
+      await this._appServices.InitLogtoIoAndroid().signOut(call_back_url);
+      }else{
+      await this.logtoService.InitLogtoIoIOS().signOut(call_back_url);
+      }
     });
     }
     async logtoSigninAndroid(){
@@ -246,43 +254,54 @@ IsLoginAllowedAsync(){
     var results = regex.exec(url);
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   };
-  CheckUserAuth(){
-    this._appServices.getDataByHttp('api/auth/protected').subscribe((response)=>{
-      console.log("get Data auth protected = ",response)
-      if(response.data && response.data.authenticated === true){
-        this.syncUserData();
-        this.validateJWT_token();
-        this._appServices.presentToast("Login successfull!");
-        this._nav.navigateRoot(['/user-panel']);
-      }else{
+ CheckUserAuth() {
+  this._appServices.presentLoading();
+
+  this._appApi.validateToken().subscribe(
+    (response: any) => {
+      console.log('token validate = ', response);
+
+      if (response?.data?.valid === true) {
+        this._appServices.loaderDismiss();
+        this.getUserData_Me();
+      } else {
+        this._appServices.loaderDismiss();
         this._nav.navigateRoot(['/']);
       }
-
-    },error=>{
-      console.log(error)
-    })
-  }
-  async syncUserData(){
-      this._appServices.postDataByHttp('api/auth/user/sync',{}).subscribe((response)=>{
-      console.log("auth/user/sync= ",response)
-
-    },error=>{
-      console.log(error)
-    })
-  }
-    async validateJWT_token(){
-      var getToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appEnum.EntityOfLocalStorageKeys.access_token));
-      var payload = {
-    "AccessToken": getToken
+    },
+    error => {
+      this._appServices.loaderDismiss();
+      console.error(error);
+    }
+  );
 }
-      this._appServices.postDataByHttp('api/auth/token/validate',payload).subscribe((response)=>{
-      console.log("auth/token/validate = ",response)
 
-    },error=>{
-      console.log(error)
-    })
-  }
+getUserData_Me() {
+  this._appServices.presentLoading();
 
+  this._appApi.getMe().subscribe(
+    (response: any) => {
+      console.log('auth/me = ', response);
+
+      const resData = response.data;
+
+      if (resData?.isRegistered === false && resData?.registrationRequired === true) {
+        this._appServices.presentToast(resData.message, false);
+        this.router.navigate(['/signupstep2', { onlyCreateProfile: 1 }]);
+      } else {
+        this._appServices.setXLUserId(resData.id);
+        this._appServices.presentToast('Login successfull!');
+        this._nav.navigateRoot(['/user-panel']);
+      }
+
+      this._appServices.loaderDismiss();
+    },
+    error => {
+      this._appServices.loaderDismiss();
+      console.error(error);
+    }
+  );
+}
   thirdPartyLogin(url) {
     var ths = this;
     return new Promise(function (resolve, reject) {

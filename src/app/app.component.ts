@@ -11,6 +11,9 @@ import { Device } from '@capacitor/device';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { Browser, OpenOptions } from '@capacitor/browser';
+import { AppApiService } from './services/app-apis.service';
+import { B2C_config_setting } from './B2C_config_setting';
+import { LogtoService } from './services/logto.service';
 
 @Component({
   selector: 'app-root',
@@ -37,6 +40,9 @@ export class AppComponent {
     public _appServices: AppService,
     private appVersion: AppVersion,
     private zone:NgZone,
+    private _appApi: AppApiService,
+    private logtoService:LogtoService,
+    public _B2C_config: B2C_config_setting,
   ) {
     this.initializeApp();
   }
@@ -50,8 +56,8 @@ export class AppComponent {
         const url = new URL(data.url);
         const code = url.searchParams.get('code');
         console.log('OAuth Code:', code);
+        try {
         await this._appServices.InitLogtoIoAndroid().handleSignInCallback(data.url);
-
         var isAuthenticated =  await this._appServices.InitLogtoIoAndroid().isAuthenticated();
          await this._appServices.InitLogtoIoAndroid().getIdTokenClaims();
         var access_token = await this._appServices.InitLogtoIoAndroid().getAccessToken(this._appServices.apiResourceUrl);
@@ -62,60 +68,66 @@ export class AppComponent {
         this._encrypDecrypService.localstorageSetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.access_token, access_token);
         this._encrypDecrypService.localstorageSetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.id_token, id_token);
         await this._appServices.deCodeJwtToken(id_token);
-        this._appServices.loaderDismiss();
         this.CheckUserAuth();
+        } catch (error) {
+          var call_back_url = this.platform.is("ios") === true ? this._B2C_config.LogtoLoginDetails().iOS_logout_call_Back : this._B2C_config.LogtoLoginDetails().android_logout_call_back;
+          if(this.platform.is("android")){
+          await this._appServices.InitLogtoIoAndroid().signOut(call_back_url);
+          }else{
+          await this.logtoService.InitLogtoIoIOS().signOut(call_back_url);
+          }
+        }
+        
+     
       }
         });
     });
 }
-  CheckUserAuth(){
-    this._appServices.getDataByHttp('api/auth/protected').subscribe((response)=>{
-      console.log("get Data auth protected = ",response)
-      if(response.data && response.data.authenticated === true){
+CheckUserAuth() {
+  this._appServices.simpleLoaderWithoutDuration();
+
+  this._appApi.validateToken().subscribe(
+    (response: any) => {
+      console.log('token validate = ', response);
+
+      if (response?.data?.valid === true) {
         this.getUserData_Me();
-      }else{
+      } else {
+        this._appServices.loaderDismiss();
         this._nav.navigateRoot(['/']);
       }
-
-    },error=>{
-      console.log(error)
-    })
-  }
-  async syncUserData(){
-      this._appServices.postDataByHttp('api/auth/user/sync',{}).subscribe((response)=>{
-      console.log("auth/user/sync= ",response)
-
-    },error=>{
-      console.log(error)
-    })
-  }
-  async getUserData_Me(){
-      this._appServices.getDataByHttp('v2026/auth/me').subscribe((response)=>{
-        console.log("v2026/auth/me = ",response);
-        var resData = response.data;
-        if(resData.isRegistered === false && resData.registrationRequired === true){
-          this._appServices.presentToast(resData.message,false);
-          this.router.navigate(['/signupstep2', {onlyCreateProfile: 1 }])
-        }else{
-          this._appServices.presentToast("Login successfull!");
-          this._nav.navigateRoot(['/user-panel']);
-        }
-    },error=>{
-      console.log(error)
-    })
-  }
-    async validateJWT_token(){
-      var getToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.access_token));
-      var payload = {
-    "AccessToken": getToken
+    },
+    error => {
+      this._nav.navigateRoot(['/']);
+      this._appServices.loaderDismiss();
+      console.error(error);
+    }
+  );
 }
-      this._appServices.postDataByHttp('api/auth/token/validate',payload).subscribe((response)=>{
-      console.log("auth/token/validate = ",response)
 
-    },error=>{
-      console.log(error)
-    })
-  }
+getUserData_Me() {
+  this._appApi.getMe().subscribe(
+    (response: any) => {
+      this._appServices.loaderDismiss();
+      console.log('auth/me = ', response);
+
+      const resData = response.data;
+
+      if (resData?.isRegistered === false && resData?.registrationRequired === true) {
+        this._appServices.presentToast(resData.message, false);
+        this.router.navigate(['/signupstep2', { onlyCreateProfile: 1 }]);
+      } else {
+        this._appServices.setXLUserId(resData.id);
+        this._appServices.presentToast('Login successfull!');
+        this._nav.navigateRoot(['/user-panel']);
+      }
+    },
+    error => {
+      this._appServices.loaderDismiss();
+      console.error(error);
+    }
+  );
+}
   async initializeApp() {
     this.platform.ready().then(async () => {
       this.device = await this.platform.platforms();
@@ -124,51 +136,16 @@ export class AppComponent {
       await this._encrypDecrypService.getUserCurrentLocartion();
       this._appServices.checkConnection();
       //this.getSettings();
-      this.checkUserloggedInOrNot();
+      await this.checkUserloggedInOrNot();
       await StatusBar.setStyle({ style: Style.Default });
       await SplashScreen.hide();
       this.initializeDeeppLink();
     });
   }
-  // getCloudConfig(){
-  //   let url = "https://dyse8jtzjt9yv.cloudfront.net/xl/xl-app-config.json";
-  //   this._appServices.getDataByNative(url).subscribe((response:any)=>{
-  //     this.CloudLoginConfig = response.data;
-  //     // this._appServices.apiUrl =this.CloudLoginConfig.ServiceUrl+"/v3/";
-  //   });
-  // }
-  // getSettings() {
-  //   let vn = this.appVersion.getVersionNumber();
-  //   vn.then(res => {
-  //     this.currentAppVersion = res;
-  //   }).catch(err => this.currentAppVersion = '0.0.9');
-
-  //   const url = 'https://cdn.usscyber.com/files/settings/xl-settings.json';
-  //   this._appServices.getDataByNativePromiss(url).then((res: any) => {
-  //     this.appSettings = res.data;
-
-  //     if ((this.platform.is("android") && this.appSettings["maintenance-android"] == true) || (this.platform.is("ios") && this.appSettings["maintenance-ios"] == true && this.appSettings["mandatory"] == true)) {
-  //       this._nav.navigateRoot(['/maintenance']);
-  //     } else if (this.platform.is("android") && `'${this.appSettings["android-version"]}'` > `'${this.currentAppVersion}'` && this.appSettings["mandatory"] == true) {
-  //       this._nav.navigateRoot(['/app-update', { force: this.appSettings.mandatory }]);
-  //     } else if (this.platform.is("ios") && `'${this.appSettings["ios-version"]}'` > `'${this.currentAppVersion}'` && this.appSettings["mandatory"] == true) {
-  //       this._nav.navigateRoot(['/app-update', { force: this.appSettings.mandatory }]);
-  //     } else {
-  //       this.checkUserloggedInOrNot();
-  //     }
-  //   }, err => {
-  //     console.log(err);
-  //     this.checkUserloggedInOrNot();
-  //   });
-  //   //this.HandleCache();
-  // }
-
   async checkUserloggedInOrNot() {
     var getToken = this._encrypDecrypService.decrypt(this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.id_token));
     if (getToken) {
       await this._appServices.deCodeJwtToken(getToken);
-     // this.postSyncUserDetails()
-     //this.IsLoginAllowedAsync();
      this.CheckUserAuth();
     } else {
       this._nav.navigateRoot(['/']);
@@ -179,33 +156,6 @@ export class AppComponent {
     localStorage.clear();
     this._encrypDecrypService.setUUID(deviceID);
     this._nav.navigateRoot('/token-expires');
-  }
-  IsLoginAllowedAsync(){
-    this._appServices.simpleLoader();
-    var UrlParameters = `Auth/IsLoginAllowedAsync?email=${this._appServices.loggedInUserDetails.email}&applicationType=XL`;
-    this._appServices.getDataByHttp(UrlParameters).subscribe(async res => {
-      console.log("Auth/IsLoginAllowedAsync Response", res);
-      if(res.status === 200){
-         this.IsLoginAllowedAsyncData = res.data.data;
-         if(this.IsLoginAllowedAsyncData.isAllowedToLogin === true){
-          this.postSyncUserDetails();
-         }else{
-          this._appServices.loaderDismiss();
-          this._appServices.presentToast("You are not allowed to login!")
-          this._nav.navigateRoot(['/beta-program']);
-         }
-      }
-    }, err => {
-      console.log(err);
-      this._appServices.loaderDismiss();
-      if(err.status === 401){
-        this.logout();
-        this._appServices.presentToast("Your token has been expired!");
-      }else{
-        this._appServices.presentToast("You are not allowed to login!");
-      }
-     
-    });
   }
   setDeviceID() {
     let deviceId;
@@ -219,49 +169,7 @@ export class AppComponent {
       }
     });
   }
-  async postSyncUserDetails() {
-    this._encrypDecrypService.AppBundeID();
-    this._encrypDecrypService.GetDeviceID();
-    this._encrypDecrypService.DeviceDetails();
-   await this._encrypDecrypService.getUserCurrentLocartion();
-   var postJson = {
-    "userObjectId": this._appServices.loggedInUserDetails.oid,
-    "emailAddress": this._appServices.loggedInUserDetails.email,
-    "date": this._appServices.getAppDateTime(new Date()),
-    "appId":this._encrypDecrypService.PackageName,
-    "deviceId": this._encrypDecrypService.deviceId,
-    "deviceOs": this.platform.is('android') ? 'android' : 'ios',
-    "deviceName": this._encrypDecrypService.DeviceName,
-    "locationGeoTag": this._encrypDecrypService.geolocationparam,
-    "signature": "",
-    "status": "NewRequest",
-    "type": "ReSync",
-    "networkInterface": " XLiquidusExchange",
-    "nonce": ((new Date().getTime() * 10000) + 621355968000000000)
-  }
-    console.log('POST SYNC PAULOAD = ', postJson);
-    var UrlParameters = `clientIpAddress=${this._appServices.ipAddress.ip}`
-    await this._appServices.postDataByNativePromiss(`Users/PostSync?${UrlParameters}`, postJson).then(async (_res1:any) => {
-      console.log("Stwp one data response",_res1)
-      console.log("reesync set data", this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.communicationAccessKey))
-      if (!this._encrypDecrypService.localstorageGetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.communicationAccessKey)) {
-        postJson['type'] = "Sync";
-        await this._appServices.postDataByNativePromiss(`Users/PostSync?${UrlParameters}`, postJson).then(_res2 => {
-          console.log("step two = ",_res1, _res2);
-          console.log("POST SYNC Data here")
-          this._encrypDecrypService.localstorageSetWithEncrypt(this._appnum.EntityOfLocalStorageKeys.communicationAccessKey, _res2.communicationAccessKey);
-          this._appServices.loaderDismiss();
-            this._nav.navigateRoot(['/user-panel']);
 
-          // this.router.navigate(['/signupconfirm', { email: this._encServices.encrypt(res.data.emailAddress), RegistraionId: this._encServices.encrypt(res.data.registrationId), language: this._encServices.encrypt(res.data.preferredLanguage), prefName: this._encServices.encrypt(res.data.preferredName) }]);
-        });
-      } else {
-        console.log("POST RESYNC Data there...")
-        this._appServices.loaderDismiss();
-          this._nav.navigateRoot(['/user-panel']); 
-      }
-    }, err => console.log('err', err));
-  }
   backButtonEvent() {
     this.platform.backButton.subscribe(async () => {
       this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
@@ -291,14 +199,4 @@ export class AppComponent {
     });
     toast.present();
   }
-  // HandleCache(){
-  //   var UrlParameters = `AppGlobalSettings/XL`;
-  //   this._appServices.getDataByHttp(UrlParameters).subscribe(async res => {
-  //     console.log("AppGlobalSettings/XL Response", res);
-      
-  //   }, err => {
-  //     console.log(err);
-     
-  //   });
-  // }
 }

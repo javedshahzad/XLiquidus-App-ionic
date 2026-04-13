@@ -6,11 +6,11 @@
           <!-- <img src="assets/images/user.png" > -->
           <ion-avatar class="background-success border-white m-l-a m-r-a">
             <h3 class="text-white size-32 m-t-15 ion-text-center font-weight-500 line-height-30">
-              {{((userDetails?.firstName)== '' ? userDetails?.preferredName : userDetails?.firstName)?.substring(0,1)}}
+              {{(_appServices?.loggedInUserAccountDetails?.given_name)?.substring(0,1)}}
             </h3>
           </ion-avatar>
-          <h5 class="color-primary display-block size-15 m-t-15 m-b-15 jostHeavy">{{userDetails?.firstName}}
-            {{userDetails?.lastName}}</h5>
+          <h5 class="color-primary display-block size-15 m-t-15 m-b-15 jostHeavy">{{_appServices?.loggedInUserAccountDetails?.given_name}}
+            {{_appServices?.loggedInUserAccountDetails?.family_name}}</h5>
           <ion-button expand="block" fill="outline" size="large"
             class="jostHeavy shadownot letter-spacing size-15 alredy-member no-border border-radius-8 height-50 w-80 m-auto m-b-15"
             (click)="closeMenu()" [routerLink]="['/user-panel/myprofile']">PROFILE & SETTINGS</ion-button>

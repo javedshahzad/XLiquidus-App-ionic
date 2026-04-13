@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController, Platform } from '@ionic/angular';
+import { AlertController, ModalController, NavController, Platform } from '@ionic/angular';
+import { AppApiService } from 'src/app/services/app-apis.service';
 import { ADD_TO_CART_PAYLOAD, AppService, CART_ITEM } from 'src/app/services/app.service';
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
+import { AccountDepositComponent } from 'src/app/shared/account-deposit/account-deposit.component';
+import { CreateCartComponent } from 'src/app/shared/create-cart/create-cart.component';
 
 @Component({
   selector: 'app-product-page',
@@ -39,13 +42,18 @@ export class ProductPageComponent implements OnInit {
   cartItems:Array<CART_ITEM> = []
   GetCartData: any;
   enableDisableBuy: boolean=false;
+  created_cart_data: any;
+  deposit_account_data: any;
   constructor(
     public _nav: NavController,
     public router: Router,
     public platform: Platform,
     private activatedroute: ActivatedRoute,
     public _encServices: EncryptionDecryptionService,
-    public _appservices: AppService
+    public _appservices: AppService,
+    private _appApi: AppApiService,
+    private modalCtrl:ModalController,
+    private alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -64,7 +72,6 @@ initProductPage(){
   var proData = this._encServices.decrypt(this.activatedroute.snapshot.paramMap.get('productData'));
   this.productDataFromDashboardPage = JSON.parse(proData);
   console.log(this.productDataFromDashboardPage);
-  // if(this.productDataFromDashboardPage.isSaleAvailable){
   this.GetProduct();
   this.fromDate = new Date();
   this.toDate = new Date();
@@ -74,20 +81,18 @@ initProductPage(){
     day.style.color = 'white';
     day.style.borderRadius = '5px'
   }
-  this.getGraphData(this.fromDate, this.toDate);
-  this.GetCartItems();
+  //this.getGraphData(this.fromDate, this.toDate);
 }
 GetProduct(){
   this.isDataLoad = true;
   this._appservices.simpleLoader();
-  // if (this.productDataFromDashboardPage.type == 'Team') {
-  //   var UrlParameters = `symbol=UCTokens&name=${this.productDataFromDashboardPage.shortName}`
-  // } else {
-  //   var UrlParameters = `symbol=${this.productDataFromDashboardPage.shortName}&name=${this.productDataFromDashboardPage.shortName}`
-  // }
-   var UrlParameters = `marketplace/listings/${this.productDataFromDashboardPage.id}`
-  console.log(UrlParameters);
-  this._appservices.getDataByHttp(`${UrlParameters}`).subscribe(res => {
+   let ListingByID;
+   if(this.productDataFromDashboardPage.marketType == "Secondary"){
+    ListingByID = this._appApi.get_api_markets_primary_listings_listingId(this.productDataFromDashboardPage.id);
+   }else{
+    ListingByID = this._appApi.get_api_markets_secondary_listings_listingId(this.productDataFromDashboardPage.id);
+   }
+  ListingByID.subscribe(res => {
     console.log("GetProduct : ", res);
     this._appservices.loaderDismiss();
     this._appservices.cartRefresh.next(true);
@@ -97,22 +102,12 @@ GetProduct(){
       this.productDetail = res.data;
       console.log(this.productDetail)
     }
-    if(this.productDataFromDashboardPage.type === "VendorToken" || this.productDataFromDashboardPage.type==="Team"){
-      this.getTokenProfile(this.productDataFromDashboardPage.tokenIndexId);
-    }
   }, err => {
     this._appservices.loaderDismiss();
     this.isDataLoad = false;
     console.log(err);
     // if (err.status == 400) {
       this.isProductData = false;
-    //   var result = JSON.parse(err.toString());
-    //   console.log(result);
-    //   this._appservices.presentToast(result.symbol);
-    // }
-    if(this.productDataFromDashboardPage.type === "VendorToken" || this.productDataFromDashboardPage.type === "Team"){
-      this.getTokenProfile(this.productDataFromDashboardPage.tokenIndexId);
-    }
   });
 
 }
@@ -122,7 +117,6 @@ GetProduct(){
   getTokenProfile(tokenIndexId){
     this.isDataLoad = true;
     this._appservices.simpleLoader();
-   // https://mobious-xl.usscyber.com/v3/markets/GetTokenProfile?id=5bac2cb0-c5bc-4dcd-94eb-023ab5e28dbd
     var UrlParameters = `markets/GetTokenProfile?id=${tokenIndexId}`;
     console.log(UrlParameters);
     this._appservices.getDataByHttp(UrlParameters).subscribe(res => {
@@ -281,57 +275,106 @@ GetProduct(){
 
 
   addtocart() {
-    this._appservices.simpleLoader();
+    this._appservices.simpleLoaderWithoutDuration();
     this.isDataLoad = true;
-    // var UrlParameters = `teamId=${this.productDataFromDashboardPage.id}&emailAddress=${encodeURIComponent(this._appservices.loggedInUserDetails['email'])}&amount=1&clientIpAddress=${this._appservices.ipAddress.ip}`;
-    // console.log(UrlParameters);
-    this.cartItems[0] = {
-      amount:1,
-      tokenId:this.productDataFromDashboardPage?.id,
-      metadata:this.productDataFromDashboardPage.name
-    }
-    let payload:ADD_TO_CART_PAYLOAD = {
-       name:this.productDataFromDashboardPage.name,
-       items:this.cartItems,
-       description:this.productDetail.description,
-       currency:this.productDataFromDashboardPage.cryptocurrency
-    }
-    this._appservices.addToCart(payload).then(res => {
-      console.log("responce data", res);
+    let payload:any = {
+          "listingId": this.productDataFromDashboardPage.id,
+          "marketType": this.productDataFromDashboardPage.marketType == "Secondary" ? 2 : 1,
+          "quantity": 1,
+          "pricePerUnit": this.productDetail.price,
+          "currency": this.created_cart_data?.cart_data?.cart?.currency
+        }
+        if(this.productDataFromDashboardPage.marketType == "Secondary"){
+          payload.sellerId = this.productDataFromDashboardPage.seller.id;
+          payload.useEscrow = true;
+          payload.notes = "Adding into cart"
+        }
+        console.log(payload,"cart payload")
+      this._appApi.post_v2026_add_cart_items(payload,this.created_cart_data?.cart_data?.cart.id).subscribe(res => {
+      console.log("post_v2026_add_cart_items data", res);
+      this._appservices.loaderDismiss();
       this._appservices.cartRefresh.next(true);
       this.isDataLoad = false;
-      this._appservices.loaderDismiss();
-      if (res.status == 200) {
+    
+      if (res.status == 200 || res.status == 201) {
         console.log(res);
 
         this.router.navigate(['/user-panel/shoping-cart']);
         this._appservices.presentToast('Added to the cart!');
-      } else if (res.status == 202) {
-        this.router.navigate(['/user-panel/shoping-cart']);
-      }else if(res.status === 404){
-        this._appservices.createCart(this._appservices.loggedInUserDetails.email).then(_response=>{
-          console.log('Create cart:',_response)
-        }).catch(err =>{
-          console.log('Create cart:',err)
-        })
+      } else {
+
       }
     }, (err) => {
       console.log(err)
       this.isDataLoad = false;
+      this._appservices.presentErrorToast(err);
       this._appservices.loaderDismiss();
-      if (err.status == 402) {
-        this.router.navigate(['/user-panel/shoping-cart']);
-      } else if (err.status == 402) {
-        this.router.navigate(['/user-panel/shoping-cart']);
-      }
     });
   }
+
   toggleTooltip1() {
     setTimeout(() => {
       this.showTooltip1 = !this.showTooltip1;
     }, 100);
   }
+  async open_Create_Cart_Modal() {
+    const modal = await this.modalCtrl.create({
+      component: CreateCartComponent,
+      cssClass:"create-cart-modal"
+    });
+    modal.present();
 
+    const { data, role } = await modal.onWillDismiss();
+
+    console.log(data,role)
+    if(data.isCartCreated === true){
+      this.created_cart_data = data;
+      this.addtocart();
+    }
+  }
+    async open_deposit_account_Modal() {
+    const modal = await this.modalCtrl.create({
+      component: AccountDepositComponent,
+      cssClass:"deposit-account-modal"
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+
+    console.log(data,role)
+    if(data.isSuccess === true){
+      this.deposit_account_data = data;
+      this.open_Create_Cart_Modal();
+    }
+  }
+   async presentAlertForCart() {
+    const alert = await this.alertController.create({
+      header: 'Confirmation!',
+      mode:"ios",
+      message:"You may need to deposit money into your account for add item into cart. Do you want to deposit?",
+      buttons: [
+        {
+          text: 'Proceed to Cart',
+          role: 'cancel',
+          handler: () => {
+            this.open_Create_Cart_Modal();
+          },
+        },
+        {
+          text: 'Deposit',
+          role: 'confirm',
+          handler :() => {
+            this.open_deposit_account_Modal();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
+    console.log(`Dismissed with role: ${role}`);
+  }
   toggleTooltip2() {
     setTimeout(() => {
       this.showTooltip2 = !this.showTooltip2;

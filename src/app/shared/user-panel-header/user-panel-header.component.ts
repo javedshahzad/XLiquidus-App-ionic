@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NavController, Platform } from '@ionic/angular';
 import { forkJoin } from 'rxjs';
+import { AppApiService } from 'src/app/services/app-apis.service';
 import { AppService } from 'src/app/services/app.service';
 
 @Component({
@@ -18,7 +19,8 @@ export class UserPanelHeaderComponent implements OnInit {
   showBadgeInfoIcon = false;
   showicons = false;
   public subscriptionCart;
-  constructor(public _appServices: AppService, public _nav: NavController,public platform:Platform) { }
+  portfolio_balance: any;
+  constructor(public _appServices: AppService, private _appApi: AppApiService, public _nav: NavController,public platform:Platform) { }
 
   ngOnInit() {
     this.subscriptionCart = this._appServices.cartRefresh.subscribe(res => {
@@ -37,36 +39,10 @@ export class UserPanelHeaderComponent implements OnInit {
   }
 
   loadWalletandCCart() {
-    // var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}` 
-    // this._appServices.getDataByHttp(`Dashboard/GetGetHistoricalWalletBalance?${UrlParameters}`).subscribe(_res=>{
-    //   this.historyWalletBalance = _res.status ==200 ?  _res.data[0] : {}; 
-    //   console.log('this.historyWalletBalance', this.historyWalletBalance);
-    // });
-    var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=Top30&lang=EN&take=30&skip=0`
-    // var GetHistoricalWallet= this._appServices.getDataByHttp(`Dashboard/GetGetHistoricalWalletBalance?${UrlParameters}`);
-
-    // var GetUserCoinMetrics = this._appServices.getDataByHttp(`Wallets/GetUserCoinMetrics?${UrlParameters}`);
-    // var GetCartItemCount = this._appServices.getDataByHttp(`ShoppingCart/GetCartItemCount?${UrlParameters}`)
-    // this.showBadgeInfoIcon = true;
-
-    // forkJoin([GetUserCoinMetrics, GetCartItemCount]).subscribe(_res => {
-    //   this.historyWalletBalance = _res[0].status == 200 ? _res[0].data.totalCost : [];
-    //   this.CartItemCount = _res[1].status == 200 ? _res[1].data : [];
-    //   this._appServices.cartRefresh.next(false);
-    //   console.log(_res);
-    //   console.log(this.CartItemCount);
-    //   console.log("Wallet balance on header", this.historyWalletBalance)
-    //   this.showBadgeInfoIcon = false;
-    //   this.showicons = true;
-    //   if (this.CartItemCount.length == 0) {
-    //     this.CartItemCount = 0;
-    //   }
-    // }, (err) => {
-    //   this.CartItemCount = 0;
-    // });
-      this._appServices.getDataByHttp(`Wallets/GetUserCoinMetrics?${UrlParameters}`).subscribe(resp => {
+      this._appApi.get_v2026_portfolio_balance("USD").subscribe(resp => {
         // this._appServices.cartRefresh.next(false);
-        this.historyWalletBalance = resp.status == 200 ? resp.data.totalCost : 0;
+        this.portfolio_balance = resp.data;
+        this.historyWalletBalance = resp.status == 200 ? resp.data.totalValueUSD : 0;
         this.showBadgeInfoIcon = false;
         this.showicons = true;
       }, err => {

@@ -28,6 +28,7 @@ import { NotificationPageComponent } from './notification-page/notification-page
 import { WatchlistPageComponent } from './watchlist-page/watchlist-page.component';
 import { LetsLiquidateComponent } from './lets-liquidate/lets-liquidate.component';
 import { SalesComponent } from './sales-module/sales/sales.component';
+import { WalletDepositComponent } from './wallet-deposit/wallet-deposit.component';
 const routes: Routes = [
   {
     path: '',
@@ -62,6 +63,10 @@ const routes: Routes = [
       {
         path: 'wallet-page',
         component: MyWalletComponent
+      },
+      {
+        path: 'wallet-deposit',
+        component: WalletDepositComponent
       },
       {
         path: "transaction-status",

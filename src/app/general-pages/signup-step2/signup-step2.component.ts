@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { forkJoin } from 'rxjs';
+import { AppApiService } from 'src/app/services/app-apis.service';
 import { AppService } from 'src/app/services/app.service';
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
 
@@ -29,7 +30,7 @@ export class SignupStep2Component implements OnInit {
   noteighteen: any;
   userDetails: any="";
   GetLanguages: any;
-  GetCryptoCurrencies =  [
+  GetCurrencies =  [
   "AED","AFN","ALL","AMD","ANG","AOA","ARS","AUD","AWG","AZN",
   "BAM","BBD","BDT","BGN","BHD","BIF","BMD","BND","BOB","BRL",
   "BSD","BTN","BWP","BYN","BZD","CAD","CDF","CHF","CLP","CNY",
@@ -47,6 +48,7 @@ export class SignupStep2Component implements OnInit {
   "TZS","UAH","UGX","USD","UYU","UZS","VES","VND","VUV","WST",
   "XAF","XCD","XOF","XPF","YER","ZAR","ZMW","ZWL"
 ];
+GetCryptoCurrencies = []
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,7 +56,8 @@ export class SignupStep2Component implements OnInit {
     public _nav: NavController,
     public activatedroute: ActivatedRoute,
     public _appservices: AppService,
-    public _encServices: EncryptionDecryptionService
+    public _encServices: EncryptionDecryptionService,
+    private _appApi: AppApiService
   ) {
     this.date = new Date();
     this.maxDate = new Date(this.date.getFullYear() - 18, this.date.getMonth(), this.date.getDate()).toISOString();
@@ -89,16 +92,16 @@ export class SignupStep2Component implements OnInit {
   }
   getGlobalData(){
      this._appservices.presentLoading();
-    var get_countries =this._appservices.getDataByHttp(`Global/GetCountries`);
-    var GetGenders =this._appservices.getDataByHttp(`Global/GetGenders`);
-    var GetLanguages =this._appservices.getDataByHttp(`Global/GetLanguages`);
-    var GetCryptoCurrencies =this._appservices.getDataByHttp(`Global/GetCryptoCurrencies`);
+    var get_countries =this._appApi.get_Global_GetCountries();
+    var GetGenders =this._appApi.get_Global_GetGenders();
+    var GetLanguages =this._appApi.get_Global_GetLanguages();
+    var GetCryptoCurrencies =this._appApi.get_Global_GetCryptoCurrencies();
     forkJoin([get_countries,GetGenders,GetLanguages,GetCryptoCurrencies]).subscribe(_res => {
       console.log(_res)
       this.countries = _res[0].status == 200 ? _res[0].data : [];
       this.genders = _res[1].status == 200 ? _res[1].data : [];
       this.GetLanguages = _res[2].status == 200 ? _res[2].data : [];
-      //this.GetCryptoCurrencies = _res[3].status == 200 ? _res[3].data : [];
+      this.GetCryptoCurrencies = _res[3].status == 200 ? _res[3].data : [];
        this._appservices.loaderDismiss();
     }
     ,error=>{
@@ -161,7 +164,7 @@ export class SignupStep2Component implements OnInit {
   signupForm2 = this.formBuilder.group({
     FirstName: [this._appservices.loggedInUserAccountDetails.given_name, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]], //, Validators.pattern('[a-zA-Z]+[a-zA-Z _]$')
     LastName: [this._appservices.loggedInUserAccountDetails.family_name, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]], //, Validators.pattern('[a-zA-Z]+[a-zA-Z _]$')
-    country: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+    country: [this._appservices.getCountry(), [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     preferredLanguage: ["English", [Validators.required]],
     preferredCurrency: ["USD", [Validators.required]],
     email: [this._appservices.loggedInUserAccountDetails.email, []],
@@ -237,7 +240,6 @@ export class SignupStep2Component implements OnInit {
   toggleshowtipc() {
     this.isshowtipc = !this.isshowtipc;
   }
-
   submitStep2() {
     console.log(this.signupForm2.value)
     if (!this.signupForm2.valid) {
@@ -269,20 +271,21 @@ export class SignupStep2Component implements OnInit {
       // "objectId": this.RegistrationId
     }
     console.log(postJson);
-    this._appservices.postDataByHttp(`v2026/auth/register`, postJson).subscribe(res => {
+    this._appApi.post_v2026_auth_register( postJson).subscribe(async (res) => {
       console.log("responce data", res);
       this.ShowSpinner = false;
-      if (res.status == 200) {
-        this._appservices.presentToast('Personalize profile registeration successfull!');
+      if (res.status == 200 || res.status == 201) {
+        await this.postProfile(postJson);
+        this._appservices.presentToast(res.data.message);
         if (this.createProfile == 1) {
-          this._nav.navigateRoot(['user-panel/dashboard']);
+          this._nav.navigateRoot(['/signup-step3']);
         } else {
           this._nav.navigateRoot(['.']);
         }
       } else {
-        if(res.data.error){
-          var msg =JSON.parse(res.data.error);
-          this._appservices.presentToast(msg.message);
+        if(res.data.message){
+          var msg =JSON.parse(res.data.message);
+          this._appservices.presentToast(msg);
         }
       
       }
@@ -293,7 +296,18 @@ export class SignupStep2Component implements OnInit {
     });
 
   }
-
+  postProfile(data){
+    var postJson={
+      email: data.email,
+      name: `${data.firstName} ${data.lastname}`,
+      logtoId: this._appservices.loggedInUserAccountDetails.LogtoUserId
+    }
+    this._appApi.post_v2026_auth_profile(postJson).subscribe(res => {
+      console.log("profile data", res);
+    },error=>{
+      console.log(error)
+    });
+  }
   skipthisstep() {
     this._nav.navigateRoot(['.']);
   }

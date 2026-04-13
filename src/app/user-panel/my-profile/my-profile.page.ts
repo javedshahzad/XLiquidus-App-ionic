@@ -7,6 +7,7 @@ import { AppService } from 'src/app/services/app.service';
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
 import { Router } from '@angular/router';
 import { UserPanelPage } from '../user-panel.page';
+import { AppApiService } from 'src/app/services/app-apis.service';
 
 @Component({
   selector: 'app-my-profile',
@@ -30,15 +31,15 @@ export class MyProfilePage implements OnInit {
     public platform: Platform,
     public _B2C_config: B2C_config_setting,
     public _encrypDecrypService: EncryptionDecryptionService,
-    private userPanel: UserPanelPage
+    private userPanel: UserPanelPage,
+      private _appAPI: AppApiService,
   ) {
   }
 
   ionViewWillEnter() {
     this._appServices.presentLoading();
-    //var UserDetailsUrl = `Users/GetUser?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
-    var UserDetailsUrl = `v2026/auth/me`//`users/${this._appServices.loggedInUserAccountDetails.oid}`;
-    this._appServices.getDataByHttp(UserDetailsUrl).subscribe(_res => {
+    
+    this._appAPI.getMe().subscribe(_res => {
       if (_res.status == 200) {
         this.userDetails = _res.data;
         console.log(this.userDetails)

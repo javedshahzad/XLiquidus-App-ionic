@@ -1,0 +1,77 @@
+<ion-content class="h-100 no-scroll">
+  <div class="overfolow-y h-100">
+    <!-- <ion-item-divider class="height-30 removeborder background-subheader"></ion-item-divider> -->
+    <ion-grid class="position-relative z-index-10">
+      <ion-row>
+        <ion-col>
+          <ion-toolbar class="general-pages-toolbar p-t-0">
+            <div class="ion-text-center">
+              <h1 class="color-secondary size-32 font-weight-600 jostDemi">
+                CREATE YOUR
+              </h1>
+              <h2 class="size-23 transaction-color m-t-0 jostDemi letter-spacing font-weight-600 ion-text-uppercase">CART
+              </h2>
+            </div>
+
+          </ion-toolbar>
+          <form class="p-5" [formGroup]="create_cart">
+            <div>
+              <ion-label class="m-t-13 m-b-5 size-13 color-secondary display-block font-weight-600 jostDemi">NAME
+              </ion-label>
+              <ion-input class="itemclass height-60" formControlName="name"></ion-input>
+              <div *ngFor="let error of errorMessages.name" class="errormsg">
+                <ng-container *ngIf="name.hasError(error.type) && (name.dirty || name.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+   
+            <div>
+              <ion-label class="m-t-13 m-b-5 size-13 color-secondary display-block font-weight-600 jostDemi">DESCRIPTION
+              </ion-label>
+              <ion-input class="itemclass height-60" formControlName="description"></ion-input>
+              <div *ngFor="let error of errorMessages.description" class="errormsg">
+                <ng-container *ngIf="description.hasError(error.type) && (description.dirty || description.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+   
+      
+
+             <div>
+              <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">CURRENCIES</ion-label>
+              <ion-select class="itemclass height-60" interface="action-sheet" formControlName="currency">
+                <ion-select-option *ngFor="let item of currenciesArr" [value]="item.code">
+                  {{item.code}}
+                </ion-select-option>
+              </ion-select>
+              <div *ngFor="let error of errorMessages.currency" class="errormsg">
+                <ng-container *ngIf="currency.hasError(error.type) && (currency.dirty || currency.touched)">
+                  <div class="erroronform">
+                    <small class="error-message jostDemi size-13">{{error.message}}</small>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            
+            <ion-button expand="block" size="large"
+              class="shadownot size-18 primary-color-background no-border border-radius-8 m-b-20 m-t-15 height-60 jostDemi letter-spacing ion-activatable ripple-parent box-shadow font-weight-600"
+              [class.background-blue-light]="checkbackground" (click)="submit()">CREATE<ion-spinner name="lines"
+                class="validatespinner1" *ngIf="ShowSpinner"></ion-spinner>
+            </ion-button>
+          </form>
+
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <!-- <div class="backgroundimage-footer z-index-0">
+    </div> -->
+
+  </div>
+</ion-content>

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NavController, Platform } from '@ionic/angular';
 import { forkJoin, Subscription } from 'rxjs';
 import { B2C_config_setting } from 'src/app/B2C_config_setting';
+import { AppApiService } from 'src/app/services/app-apis.service';
 import { AppService } from 'src/app/services/app.service';
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
 @Component({
@@ -30,7 +31,11 @@ export class DashboardComponent implements OnInit {
   isDataLoad = false;
   sub1: Subscription;
   sub2: Subscription;
-
+  private subs = new Subscription();
+  userId = this._appServices.getXLUserId();
+  balanceData: any[] = [];
+  page = 1;
+  pageSize = 20;
 
   constructor(
     public _appServices: AppService,
@@ -39,6 +44,7 @@ export class DashboardComponent implements OnInit {
     public router: Router,
     public platform: Platform,
     public _B2C_config: B2C_config_setting,
+    private _appApi: AppApiService,
   ) {
   }
 
@@ -48,7 +54,6 @@ export class DashboardComponent implements OnInit {
 
   ionViewWillEnter() {
    this.OnDashboadInit();
-   //this.HandleCache();
   }
 
   OnDashboadInit(){
@@ -61,76 +66,33 @@ export class DashboardComponent implements OnInit {
       this.sub2.unsubscribe();
     }
     this.GetMarketTokens();
-    this.getWalletData();
- // var GetHistoricalWallet = this._appServices.getDataByHttp(`Dashboard/GetGetHistoricalWalletBalance?${UrlParameters1}`);
-    // var GetSearch = this._appServices.getDataByHttp(`Search/Get?${UrlParameters}`)
-    // console.log('GetSearch', GetSearch, GetHistoricalWallet);
-    // forkJoin([GetSearch, GetHistoricalWallet]).subscribe(_res => {
-    //   console.log('res', _res);
-    //   this._appServices.cartRefresh.next(true);
-    //   this.isDataLoad = false;
-    //   this.getSearchResult = _res[0].status == 200 ? (_res[0].data ? _res[0].data.data.data : []) : [];
-    //   this.GraphData = _res[1].status == 200 ? _res[1].data : [];
-    //   this.showGraph = true;
-    //   console.log("getSearch", this.getSearchResult);
-    //   console.log("DashboardGraphData", this.GraphData);
-    // }, err => {
-    //   console.log('errrrrr', err)
-    // });
   }
   GetMarketTokens(){
-    this._appServices.simpleLoader();
-    // if (this.tokenSearchValue == '') {
-    //   var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.defaultSearchTerm}&lang=EN&take=30&skip=0`
-    // } else {
-    //   var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.tokenSearchValue}&lang=EN&take=30&skip=0`
-    // }
-    var UrlParameters = `api/marketplace/products`;
-    
-    this.sub2 = this._appServices.getDataByHttp(UrlParameters).subscribe((_res:any) => {
-      console.log("marketplace/products == ", _res)
-      // var parse = JSON.parse(_res);
-      // console.log(parse)
-      this.getSearchResult = _res.status == 200 ? (_res.data ? _res.data.items : []) : [];
-      console.log(this.getSearchResult);
-      this._appServices.loaderDismiss();
-    }, err => {
-      this.isDataLoad = false;
-      console.log('GetMarketTokens error', err);
-      this._appServices.loaderDismiss();
+   this.isDataLoad = true;
+    const dashboard$ = forkJoin({
+      balance: this._appApi.get_v2026_portfolio_balance("USD"),
+      market_featured: this._appApi.get_v2026_market_featured(this.pageSize)
     });
-  }
-  getWalletData(){
-    this.isDataLoad = true;
-    var UrlParameters1 = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}`
-    this.sub1 = this._appServices.getDataByHttp(`Dashboard/GetGetHistoricalWalletBalance?${UrlParameters1}`).subscribe(resp => {
-      console.log('GetGetHistoricalWalletBalance', resp);
-      this._appServices.cartRefresh.next(true);
-      this.GraphData = resp.status == 200 ? resp.data : [];
-      this.showGraph = true;
-      this.isDataLoad = false;
-    }, err => {
-      this.GraphData = [];
-      this.showGraph = true;
-      this.isDataLoad = false;
-      console.log('err1', err);
-    })
+
+    this.subs.add(
+      dashboard$.subscribe({
+        next: res => {
+          console.log("GetMarketTokens == ",res)
+          this.balanceData = res.balance?.data || [];
+          this.getSearchResult = res?.market_featured?.data?.listings || [];
+          this.isDataLoad = false;
+        },
+        error: err => {
+          console.error('Dashboard load failed', err);
+          this.isDataLoad = false;
+        }
+      })
+    );
   }
   gotoProductPage(index,token) {
     let data=this.getSearchResult[index];
     var jsonData = JSON.stringify(data);
     this.router.navigate(['/user-panel/product-page', { 'productData': this._encServices.encrypt(jsonData) }]);
-  }
-  customizeorder(){
-    this._nav.navigateForward(["/user-panel/current-order"])
-  }
-  mapCoinMatrics(userCoinMetricsList) {
-    this.userCoinMetricsList = userCoinMetricsList.userWallet.inWallet.tokens.map((token, i) => {
-      var teams = userCoinMetricsList?.teams.filter(t => t.team.id == token.teamId);
-      return Object.assign(token, teams[0].price.priceFluxPercentage);
-    });
-    console.log("mapCoinMatrics", this.userCoinMetricsList);
-    this.sortValueChange(this.tokenSortByValue);
   }
 
   changeval(val) {
@@ -138,41 +100,26 @@ export class DashboardComponent implements OnInit {
     this.tokenSearchValue = val;
     if (this.tokenSearchValue.length === 0) {
       this.isDataLoad = true;
-      //var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.defaultSearchTerm}&lang=EN&take=30&skip=0`
-     var UrlParameters = `api/marketplace/products`;
-      this._appServices.getDataByHttp(`${UrlParameters}`).subscribe(res => {
-        this.isDataLoad = false;
-        if (res.status == 200) {
-          this.getSearchResult = res.data.items;
-        }
-      });
+      this.GetMarketTokens();
     } else if (this.tokenSearchValue.length >= 3) {
       this.searchresult();
     }
   }
 
   searchresult() {
-    this._appServices.presentLoading();
     this.isDataLoad = true;
-    //var UrlParameters = `emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails.email)}&clientIpAddress=${this._appServices.ipAddress.ip}&searchRequest=${this.tokenSearchValue}&lang=EN&take=30&skip=0`
-       var payload = {
-        "query": this.tokenSearchValue,
-        "cryptocurrency": this.tokenSearchValue,
-        "Page": 1,
-        "PageSize": 10
-        }
-    var UrlParameters = `api/marketplace/search`;
-    this._appServices.postDataByHttp(`${UrlParameters}`,payload).subscribe(res => {
-      this.isDataLoad = false;
-      if (res.status == 200) {
-        this.getSearchResult = res.data.items;
-      }
-      this._appServices.loaderDismiss();
-    }, err => {
-      this.isDataLoad = false;
-      this.getSearchResult = undefined;
-      this._appServices.loaderDismiss();
-    });
+      this.subs.add(
+      this._appApi
+        .get_2026_market_search(this.tokenSearchValue, this.page, this.pageSize)
+        .subscribe({
+          next: res => {
+            console.log("get_2026_market_search == ",res)
+            this.getSearchResult = res?.data?.primaryResults?.listings || [];
+            this.isDataLoad = false;
+          },
+          error: err => {console.error('get_2026_market_search load failed', err);this.isDataLoad = false;}
+        })
+    );
   }
 
   sortValueChange(value) {
@@ -181,7 +128,7 @@ export class DashboardComponent implements OnInit {
         return b.price - a.price;
       });
     } else if (value == 'g') {
-      this.getSearchResult.sort((a, b) => a.amount < b.amount ? -1 : a.amount > b.amount ? 1 : 0)
+      this.getSearchResult.sort((a, b) => a.totalQuantity < b.totalQuantity ? -1 : a.totalQuantity > b.totalQuantity ? 1 : 0)
     }
   }
 
@@ -190,7 +137,6 @@ export class DashboardComponent implements OnInit {
   }
 
   DoTransfer() {
-    // this.checkbackgroundTransfer = !this.checkbackgroundTransfer;
     this.router.navigate(['/user-panel/liquidate'])
   }
   ngOnDestroy() {
@@ -198,20 +144,17 @@ export class DashboardComponent implements OnInit {
   }
 
   ionViewDidLeave() {
-    this.sub1.unsubscribe();
-    this.sub2.unsubscribe();
+    // this.sub1.unsubscribe();
+    // this.sub2.unsubscribe();
     this.checkbackground = false;
-    // this.checkbackgroundTransfer = false;
     this.backButtonSubscription.unsubscribe();
   }
-  HandleCache(){
-    var UrlParameters = `AppGlobalSettings/XL`;
-    this._appServices.getDataByHttp(UrlParameters).subscribe(async res => {
-      console.log("AppGlobalSettings/XL Response", res);
-      
-    }, err => {
-      console.log(err);
-     
-    });
+    loadNextPage() {
+    this.page++;
+    if (this.tokenSearchValue.length === 0) {
+      this.GetMarketTokens();
+    } else if (this.tokenSearchValue.length >= 3) {
+      this.searchresult();
+    }
   }
 }

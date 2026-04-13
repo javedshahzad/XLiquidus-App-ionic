@@ -24,6 +24,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ResetPasswordStepOneComponent } from './reset-password-step-one/reset-password-step-one.component';
 import { ResetPasswordStepTwoComponent } from './reset-password-step-two/reset-password-step-two.component';
 import { BetaProgramComponent } from './beta-program/beta-program.component';
+import { SignupStep3Component } from './signup-step3/signup-step3.component';
 
 const routes: Routes = [
   {
@@ -60,6 +61,11 @@ const routes: Routes = [
     path: 'signupstep2',
     component: SignupStep2Component,
     data: { title: 'Sign Up Step2' }
+  },
+  {
+    path:"signup-step3",
+    component:SignupStep3Component,
+    data:{title:"Sign Up Step 3"}
   },
   {
     path: 'tnc',
@@ -130,7 +136,8 @@ const routes: Routes = [
     CheckoutTransactionSummaryComponent,
     ResetPasswordStepOneComponent,
     ResetPasswordStepTwoComponent,
-    BetaProgramComponent
+    BetaProgramComponent,
+    SignupStep3Component
   ],
   imports: [
     CommonModule,

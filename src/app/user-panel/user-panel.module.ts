@@ -44,6 +44,7 @@ import { SalesComponent } from './sales-module/sales/sales.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { FilterModalPageModule } from './buying-options-module/filter-modal/filter-modal.module';
 import { UpdateOrderModalPageModule } from './buying-options-module/update-order-modal/update-order-modal.module';
+import { WalletDepositComponent } from './wallet-deposit/wallet-deposit.component';
 
 @NgModule({
   imports: [
@@ -72,6 +73,7 @@ import { UpdateOrderModalPageModule } from './buying-options-module/update-order
     ConfirmOrderComponent,
     ProductPageComponent,
     MyWalletComponent,
+    WalletDepositComponent,
     TransactionStatusKycComponent,
     TransactionStatusComponent,
     LiquidateComponent,

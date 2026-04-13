@@ -14,36 +14,21 @@
       <ion-list class="w-100 p-0" line="none">
         <ion-item class="white-background ion-activatable ripple-parent">
           <ion-ripple-effect type="unbounded"></ion-ripple-effect>
-          <ion-row class="w-100" *ngIf="productDataFromDashboardPage?.available">
-            <ion-col size="7" class="ion-no-padding">
+          <ion-row class="w-100">
+            <ion-col class="ion-no-padding">
               <ion-text class="display-block">
                 <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left p-t-20">Last Updated:</p>
                 <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left">{{currentDateTime | date:'MMM-d-y, h:mm a' :'UTC +0'}} UTC</p>
               </ion-text>
             </ion-col>
-            <ion-col size="5" class="ion-no-padding">
-              <!-- *ngIf="productDataFromDashboardPage?.type != 'Currency'" -->
+            <!-- <ion-col size="5" class="ion-no-padding">
               <ion-button  expand="block" (click)="buynow()" size="small" class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
                 <h5 class="jostHeavy size-14 font-weight-700 m-t-10">BUY NOW</h5>
               </ion-button>
-              <!-- *ngIf="productDataFromDashboardPage?.type === 'Currency'" -->
               <ion-button  expand="block" (click)="customizeorder()" size="small" class="ion-text-right primary-color-background no-border shadownot border-radius-8 height-50 letter-spacing">
                 <h5 class="jostHeavy size-12 font-weight-700 m-t-10">CUSTOMIZE ORDER</h5>
               </ion-button>
-            </ion-col>
-          </ion-row>
-          <ion-row class="w-100" *ngIf="!productDataFromDashboardPage?.available">
-            <ion-col size="6">
-              <ion-text class="display-block">
-                <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left p-t-20">Last Updated:</p>
-                <p class="color-secondary jostBook size-13 font-weight-400 m-t-0 m-b-0 ion-text-left">{{currentDateTime | date:'MMM-d-y, h:mm a' :'UTC +0'}} UTC</p>
-              </ion-text>
-            </ion-col>
-            <ion-col size="6">
-              <ion-button expand="block" size="large" [disabled]="true" class="shadownot static-butto-color no-border border-radius-8 height-50 letter-spacing">
-                <h5 class="font-weight-800 size-15 jostHeavy m-t-10">COMING SOON</h5>
-              </ion-button>
-            </ion-col>
+            </ion-col> -->
           </ion-row>
         </ion-item>
         <ion-item class="white-background p-r-12 ion-activatable ripple-parent">
@@ -51,13 +36,13 @@
           <ion-row>
             <ion-col>
               <ion-text class="display-block">
-                <img [src]="productDataFromDashboardPage?.logo ? productDataFromDashboardPage?.logo : productDataFromDashboardPage?.flag" onerror="this.src='assets/images/wfse.png'" class="w-30 ion-float-left">
+                <img [src]="productDataFromDashboardPage?.mainImageUrl" onerror="this.src='assets/images/wfse.png'" class="w-30 ion-float-left">
                 <div ion-float-right>
                   <h5 class="color-tertiary-dark jostDemi size-32 m-b-0 m-t-5 font-weight-600">
-                    {{productDataFromDashboardPage?.name}}
+                    {{productDataFromDashboardPage?.assetType}}
                   </h5>
-                  <h2 class="color-secondary jostDemi size-23 m-b-0 m-t-0 p-t-4 font-weight-600" *ngIf="productDataFromDashboardPage?.cryptocurrency != '' && productDataFromDashboardPage?.cryptocurrency != null">
-                    {{productDataFromDashboardPage?.cryptocurrency}}: <span class="jostBook font-weight-400 size-23">{{productDataFromDashboardPage?.amount ? productDataFromDashboardPage?.amount :  productDetail?.amount | currency}}</span>
+                  <h2 class="color-secondary jostDemi size-23 m-b-0 m-t-0 p-t-4 font-weight-600" *ngIf="productDataFromDashboardPage?.priceCurrency != '' && productDataFromDashboardPage?.priceCurrency != null">
+                    {{productDataFromDashboardPage?.priceCurrency}}: <span class="jostBook font-weight-400 size-23">{{productDataFromDashboardPage?.price | currency}}</span>
                   </h2>
                 </div>
               </ion-text>
@@ -65,15 +50,7 @@
           </ion-row>
         </ion-item>
       </ion-list>
-      <ion-grid *ngIf="!GetTokenProfileData">
-        <ion-row>
-          <ion-col size="12">
-            <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600"> USD: <span class="jostBook darken-color font-weight-400 size-20">{{productDataFromDashboardPage?.price ? productDataFromDashboardPage?.price :  productDetail?.price | currency}}</span>
-            </h4>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <ion-grid *ngIf="GetTokenProfileData">
+      <!-- <ion-grid *ngIf="GetTokenProfileData">
         <ion-row>
           <ion-col size="12">
             <h4 class="darken-color jostDemi size-20 m-b-0 m-t-0 p-t-4 font-weight-600"> USD: <span class="jostBook darken-color font-weight-400 size-20">{{productDataFromDashboardPage?.price ? productDataFromDashboardPage?.price :  productDetail?.price | currency}}</span>
@@ -133,8 +110,8 @@
             </div>
           </ion-col>
         </ion-row>
-      </ion-grid>
-      <ion-grid *ngIf="!GetTokenProfileData && !productDetail">
+      </ion-grid> -->
+      <ion-grid *ngIf="!productDetail">
         <ion-row>
           <ion-col size="12" class="ion-text-center">
             <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-center ion-text-uppercase"> No Data Found</h4>
@@ -142,7 +119,7 @@
         </ion-row>
       </ion-grid>
       <ion-grid *ngIf="productDetail">
-        <ion-row>
+        <!-- <ion-row>
           <ion-col size="7">
             <div>
               <div class="showtipMFA showtipMFA-top w-120p" *ngIf="showTooltip1">
@@ -174,7 +151,7 @@
               <app-graph *ngIf="showGraph" [totalWalletBalnce]="GraphData" [pageName]="productpage"></app-graph>
             </div>
           </ion-col>
-        </ion-row>
+        </ion-row> -->
         <ion-row>
           <ion-col>
             <div>
@@ -184,28 +161,50 @@
                 <p class="m-b-5 m-t-0 size-15 font-weight-400 ion-text-center text-black display-block jostBook">Contact us here:</p>
                 <a class="m-t-15 m-b-5 size-15 font-weight-400 ion-text-center color-primary display-block jostBook">Support.Xliquidus.com/help </a>
               </div>
-              <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase"> MARKET STATS <ion-icon name="information-circle" class="color-tertiary custome-icon-info v-lign-m" (click)="toggleTooltip2()"></ion-icon>
+              <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase"> ABOUT <ion-icon name="information-circle" class="color-tertiary custome-icon-info v-lign-m" (click)="toggleTooltip2()"></ion-icon>
               </h4>
+            <div>
+                <h4 class="size-15 font-weight-800 jostHeavy color-secondary p-l-10"> Title:</h4>
+              <p class="size-14 jostBook font-weight-400 p-l-10 p-r-10 m-0">
+                {{productDetail?.title}}
+              </p>
+              <h4 class="size-15 font-weight-800 jostHeavy color-secondary p-l-10"> Description:</h4>
+              <p class="size-14 jostBook font-weight-400 p-l-10 p-r-10 m-0">
+                {{productDetail?.description}}
+              </p>
+            </div>
               <ion-list>
                 <ion-item class="height-30">
-                  <h5 class="size-15 font-weight-800 jostHeavy color-secondary">Market Cap</h5>
+                  <h5 class="size-15 font-weight-800 jostHeavy color-secondary">Market Type</h5>
                   <div slot="end">
-                    <ion-label class="size-14 jostBook">${{productDetail?.marketCap}} billion</ion-label>
+                    <ion-label class="size-14 jostBook">{{productDetail?.marketType}}</ion-label>
                     <!-- <span class="color-danger size-12 futuraFontsMedium ion-text-right display-block">-627%</span> -->
                   </div>
                 </ion-item>
-                <ion-item class="height-30">
-                  <h5 class="size-15 font-weight-800 jostHeavy color-secondary">Fully Diluted Market Cap</h5>
+                                <ion-item class="height-30">
+                  <h5 class="size-15 font-weight-800 jostHeavy color-secondary">Seller</h5>
                   <div slot="end">
-                    <ion-label class="size-14 jostBook">${{productDetail?.fullyDilutedMarketCap}} billion</ion-label>
+                    <ion-label class="size-14 jostBook">{{productDetail?.seller?.name}}</ion-label>
+                    <!-- <span class="color-danger size-12 futuraFontsMedium ion-text-right display-block">-627%</span> -->
+                  </div>
+                </ion-item>
+                
+                <ion-item class="height-30">
+                  <h5 class="size-15 font-weight-800 jostHeavy color-secondary">Status</h5>
+                  <div slot="end">
+                    <ion-label class="size-14 jostBook">{{productDetail?.status}}</ion-label>
                     <!-- <span class="color-danger size-12 futuraFontsMedium ion-text-right display-block">-628%</span> -->
                   </div>
                 </ion-item>
-                <ion-item class="height-30">
-                  <h5 class="size-15 font-weight-800 jostHeavy color-secondary">Volume/Market Cap</h5>
-                  <ion-label slot="end" class="size-14 jostBook">{{productDetail?.volumeMarketCap}} million </ion-label>
-                </ion-item>
+
               </ion-list>
+                 <ion-item class="height-30">
+                  <h5 class="size-15 font-weight-800 jostHeavy color-secondary">Views</h5>
+                  <div slot="end">
+                    <ion-label class="size-14 jostBook">{{productDetail?.viewCount}}</ion-label>
+                    <span class="color-danger size-12 futuraFontsMedium ion-text-right display-block"> <ion-icon name="eye-outline"></ion-icon> </span>
+                  </div>
+                </ion-item>
             </div>
           </ion-col>
         </ion-row>
@@ -218,24 +217,34 @@
                 <p class="m-b-5 m-t-0 size-15 font-weight-400 ion-text-center text-black display-block jostBook">Contact us here:</p>
                 <a class="m-t-15 m-b-5 size-15 font-weight-400 ion-text-center color-primary display-block jostBook">Support.Xliquidus.com/help </a>
               </div>
-              <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase"> circulation <ion-icon name="information-circle" class="color-tertiary custome-icon-info v-lign-m" (click)="toggleTooltip3()"></ion-icon>
+              <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase"> PRICE/AVAILABILITY <ion-icon name="information-circle" class="color-tertiary custome-icon-info v-lign-m" (click)="toggleTooltip3()"></ion-icon>
               </h4>
               <ion-list>
                 <ion-item class="height-30">
-                  <h5 class="size-15 font-weight-800 jostHeavy color-secondary">Circulation Supply</h5>
+                  <h5 class="size-15 font-weight-800 jostHeavy color-secondary">Total Quantity</h5>
                   <div slot="end">
-                    <ion-label class="size-14 jostBook">${{productDetail?.circulationSupply}} billion</ion-label>
+                    <ion-label class="size-14 jostBook">{{productDetail?.totalQuantity}}</ion-label>
+                  </div>
+                </ion-item>
+                   <ion-item class="height-30">
+                  <h5 class="size-15 font-weight-800 jostHeavy color-secondary">Available Quantity</h5>
+                  <div slot="end">
+                    <ion-label class="size-14 jostBook">{{productDetail?.availableQuantity}}</ion-label>
+                  </div>
+                </ion-item>
+                                <ion-item class="height-30">
+                  <h5 class="size-15 font-weight-800 jostHeavy color-secondary">Min. Purchase Quantity</h5>
+                  <ion-label slot="end" class="size-14 jostBook">{{productDetail?.minimumPurchaseQuantity}} </ion-label>
+                </ion-item>
+                <ion-item class="height-30">
+                  <h5 class="size-15 font-weight-800 jostHeavy color-secondary">Price</h5>
+                  <div slot="end">
+                    <ion-label class="size-14 jostBook">${{productDetail?.price}}</ion-label>
                   </div>
                 </ion-item>
                 <ion-item class="height-30">
-                  <h5 class="size-15 font-weight-800 jostHeavy color-secondary">Total Supply</h5>
-                  <div slot="end">
-                    <ion-label class="size-14 jostBook">${{productDetail?.totalSupply}} billion</ion-label>
-                  </div>
-                </ion-item>
-                <ion-item class="height-30">
-                  <h5 class="size-15 font-weight-800 jostHeavy color-secondary">Max Supply</h5>
-                  <ion-label slot="end" class="size-14 jostBook">{{productDetail?.maxSupply}} million </ion-label>
+                  <h5 class="size-15 font-weight-800 jostHeavy color-secondary">Price Currency</h5>
+                  <ion-label slot="end" class="size-14 jostBook">{{productDetail?.priceCurrency}} </ion-label>
                 </ion-item>
               </ion-list>
             </div>
@@ -244,30 +253,19 @@
         <ion-row>
           <ion-col>
             <!-- [disabled]="!productDataFromDashboardPage?.isSaleAvailable"  -->
-            <ion-button expand="block" *ngIf="productDataFromDashboardPage?.available" (click)="addtocart()" size="large" class="primary-color-background shadownot no-border border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-95 letter-spacing">
+            <ion-button expand="block" (click)="buynow()" size="large" class="primary-color-background shadownot no-border border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-95 letter-spacing">
+              <h5 class="jostHeavy size-15 font-weight-800 m-t-10">BUY NOW</h5>
+            </ion-button>
+        
+          </ion-col>
+          <ion-col>
+            <ion-button expand="block" (click)="presentAlertForCart()" size="large" class="primary-color-background no-border shadownot border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
               <h5 class="jostHeavy size-15 font-weight-800 m-t-10">ADD TO CART</h5>
             </ion-button>
-            <ion-button expand="block" *ngIf="productDataFromDashboardPage?.available" (click)="customizeorder()" size="large" class="primary-color-background shadownot no-border border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-95 letter-spacing">
-              <h5 class="jostHeavy size-15 font-weight-800 m-t-10">CUSTOMIZE ORDER</h5>
-            </ion-button>
           </ion-col>
         </ion-row>
-        <ion-row *ngIf="productDetail?.description != null">
-          <ion-col>
-            <div>
-              <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase"> About {{productDataFromDashboardPage?.name}}</h4>
-              <p class="size-14 jostBook font-weight-400 p-l-10 p-r-10">
-                {{productDetail?.description}}
-              </p>
-              <!-- <p class="size-14 futuraFontsMedium font-weight-500 p-l-10 p-r-10">
-                The gardener set his eldest son to watch; but about twelve o’clock he fell asleep, and in the morning another of the apples was missing. Then the second son was ordered to watch; and at midnig
-              </p><p class="size-14 futuraFontsMedium font-weight-500 p-l-10 p-r-10">
-                The gardener set his eldest son to watch; but about twelve o’clock he fell asleep, and in the morning another of the apples was missing. Then the second son was ordered to watch; and at midnig
-              </p> -->
-            </div>
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="productDetail?.isUCProdcut == true">
+      
+        <!-- <ion-row *ngIf="productDetail?.isUCProdcut == true">
           <ion-col>
             <div>
               <h4 class="jostDemi size-19 color-tertiary-dark font-weight-600 p-l-10 ion-text-left ion-text-uppercase"> Deeper Drive</h4>
@@ -280,8 +278,8 @@
               <ion-button expand="block" fill="outline" fill="clear" class="size-10 p-l-10 shadownot ion-text-left white-space ion-float-left p-0-srart color-primary font-weight-600 jostDemi"> Click here to learn more at CoinMarketCap.com </ion-button>
             </div>
           </ion-col>
-        </ion-row>
-        <ion-row *ngIf="productDetail?.description != null">
+        </ion-row> -->
+        <!-- <ion-row *ngIf="productDetail?.description != null">
           <ion-col>
             <ion-button expand="block" (click)="backtomarktplace()" size="large" class="custom-color-background shadownot no-border border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
               <h5 class="jostHeavy size-15 font-weight-800 m-t-10">KEEP SHOPPING</h5>
@@ -289,14 +287,14 @@
           </ion-col>
           <ion-col>
             
-            <!-- <ion-button expand="block" (click)="addtocart()" *ngIf="productDataFromDashboardPage?.available" size="large" class="primary-color-background no-border shadownot border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
+            <ion-button expand="block" (click)="addtocart()" *ngIf="productDataFromDashboardPage?.available" size="large" class="primary-color-background no-border shadownot border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
               <h5 class="jostHeavy size-15 font-weight-800 m-t-10">ADD TO CART</h5>
             </ion-button>
             <ion-button expand="block" (click)="customizeorder()" *ngIf="productDataFromDashboardPage?.available" size="large" class="primary-color-background no-border shadownot border-radius-8 p-t-10p  height-50  m-l-a m-r-a w-85 letter-spacing">
               <h5 class="jostHeavy size-15 font-weight-800 m-t-10">CUSTOMIZE ORDER</h5>
-            </ion-button> -->
+            </ion-button>
           </ion-col>
-        </ion-row>
+        </ion-row> -->
       </ion-grid>
     </div>
     <div class="backgroundimage-footer-productpage z-index-0" *ngIf="isProductData"></div>

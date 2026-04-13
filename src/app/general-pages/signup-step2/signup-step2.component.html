@@ -27,7 +27,7 @@
               <ion-label class="m-t-13 m-b-5 size-13 color-secondary display-block font-weight-600 jostDemi">FIRST NAME
                 <span class="text-gray jostDemi">(AS SHOWN ON LEGAL ID)</span>
               </ion-label>
-              <ion-input class="itemclass height-60" formControlName="FirstName"></ion-input>
+              <ion-input class="itemclass height-60" formControlName="FirstName" [disabled]="true"></ion-input>
               <div *ngFor="let error of errorMessages.FirstName" class="errormsg">
                 <ng-container *ngIf="FirstName.hasError(error.type) && (FirstName.dirty || FirstName.touched)">
                   <div class="erroronform">
@@ -39,7 +39,7 @@
             <div>
               <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block ">LAST NAME <span
                   class="text-gray jostDemi">(AS SHOWN ON LEGAL ID)</span></ion-label>
-              <ion-input class="itemclass height-60" formControlName="LastName"></ion-input>
+              <ion-input class="itemclass height-60" formControlName="LastName" [disabled]="true"></ion-input>
               <div *ngFor="let error of errorMessages.LastName" class="errormsg">
                 <ng-container *ngIf="LastName.hasError(error.type) && (LastName.dirty || LastName.touched)">
                   <div class="erroronform">
@@ -101,7 +101,7 @@
                     (click)="toggleshowtipc()"></ion-icon>
                 </span>
               </ion-label>
-              <ion-select class="itemclass height-60 " interface="action-sheet" formControlName="country">
+              <ion-select class="itemclass height-60 " interface="action-sheet" formControlName="country" [disabled]="true">
                 <ion-select-option>
                   CHOOSE COUNTRY
                 </ion-select-option>
@@ -162,7 +162,7 @@
                <div>
               <ion-label class="m-t-15 m-b-5 size-13 jostDemi color-secondary display-block">CURRENCY</ion-label>
               <ion-select class="itemclass height-60" interface="action-sheet" formControlName="preferredCurrency">
-                <ion-select-option *ngFor="let item of GetCryptoCurrencies" [value]="item">
+                <ion-select-option *ngFor="let item of GetCurrencies" [value]="item">
                   {{item}}
                 </ion-select-option>
               </ion-select>
