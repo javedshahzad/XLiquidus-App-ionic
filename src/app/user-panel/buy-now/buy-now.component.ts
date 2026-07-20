@@ -125,7 +125,7 @@ export class BuyNowComponent implements OnInit {
           "marketType": this.productDetailtobuy.marketType == "Secondary" ? 2 : 1,
           "quantity": this.productuantity,
           "pricePerUnit": this.productDetail.price,
-          "currency": this.created_cart_data?.cart_data?.cart?.currency
+          "currency": this.created_cart_data?.currency
         }
         if(this.productDetailtobuy.marketType == "Secondary"){
           payload.sellerId = this.productDetailtobuy.seller.id;
@@ -133,7 +133,7 @@ export class BuyNowComponent implements OnInit {
           payload.notes = "Adding into cart"
         }
         console.log(payload,"cart payload")
-      this._appApi.post_v2026_add_cart_items(payload,this.created_cart_data?.cart_data?.cart.id).subscribe(res => {
+      this._appApi.post_v2026_add_cart_items(payload,this.created_cart_data?.id).subscribe(res => {
       console.log("post_v2026_add_cart_items data", res);
       this._appServices.loaderDismiss();
       this._appServices.cartRefresh.next(true);
@@ -157,21 +157,35 @@ export class BuyNowComponent implements OnInit {
   clear() {
     this.productuantity = 0;
   }
-    async open_Create_Cart_Modal() {
+   async open_Create_Cart_Modal() {
+    this._appApi.getFirstCartId().subscribe(cartData => {
+  console.log('Cart ID:', cartData);
+  if(!!cartData && cartData != null){
+      this.created_cart_data = cartData;
+      this.addtocart();
+  }else{
+  this.open_cart_modal();
+  }
+  }, error=>{
+    this.open_cart_modal();
+  }
+);
+  }
+  async open_cart_modal(){
       const modal = await this.modalCtrl.create({
-        component: CreateCartComponent,
-        cssClass:"create-cart-modal"
-      });
-      modal.present();
-  
-      const { data, role } = await modal.onWillDismiss();
-  
-      console.log(data,role)
-      if(data.isCartCreated === true){
-        this.created_cart_data = data;
-        this.addtocart();
-      }
+      component: CreateCartComponent,
+      cssClass:"create-cart-modal"
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+
+    console.log(data,role)
+    if(data.isCartCreated === true){
+      this.created_cart_data = data?.cart_data?.cart;
+      this.addtocart();
     }
+  }
         async open_deposit_account_Modal() {
         const modal = await this.modalCtrl.create({
           component: AccountDepositComponent,

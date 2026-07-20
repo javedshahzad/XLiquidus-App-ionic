@@ -5,6 +5,7 @@ import { forkJoin, Subscription } from 'rxjs';
 import { B2C_config_setting } from 'src/app/B2C_config_setting';
 import { AppApiService } from 'src/app/services/app-apis.service';
 import { AppService } from 'src/app/services/app.service';
+
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
 @Component({
   selector: 'app-dashboard',
@@ -71,7 +72,10 @@ export class DashboardComponent implements OnInit {
    this.isDataLoad = true;
     const dashboard$ = forkJoin({
       balance: this._appApi.get_v2026_portfolio_balance("USD"),
-      market_featured: this._appApi.get_v2026_market_featured(this.pageSize)
+      market_featured: this._appApi.get_v2026_market_featured(this.pageSize),
+      get_v2026_portfolio_tokens: this._appApi.get_v2026_portfolio_tokens(),
+      get_v2026_market_primary_listings:this._appApi.get_v2026_market_primary_listings(),
+      get_v2026_market_secondary_listings:this._appApi.get_v2026_market_secondary_listings()
     });
 
     this.subs.add(

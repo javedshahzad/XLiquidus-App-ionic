@@ -5,6 +5,7 @@ import { AlertController, NavController, Platform } from '@ionic/angular';
 import { AppService } from 'src/app/services/app.service';
 import { EncryptionDecryptionService } from 'src/app/services/encryption.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { AppApiService } from 'src/app/services/app-apis.service';
 @Component({
   selector: 'app-shoping-cart',
   templateUrl: './shoping-cart.component.html',
@@ -19,7 +20,14 @@ export class ShopingCartComponent implements OnInit {
   public backButtonSubscription: any;
   @ViewChild('myModal', { static: false }) myModal: ElementRef;
   elm1: HTMLElement;
-  constructor(public _appServices: AppService, public iab: InAppBrowser, public alertController: AlertController, public platform: Platform, public _nav: NavController, public router: Router, public _encServices: EncryptionDecryptionService) { }
+  constructor(public _appServices: AppService, 
+    public iab: InAppBrowser,
+     public alertController: AlertController, 
+     public platform: Platform,
+      public _nav: NavController,
+       public router: Router, 
+       public _appApi : AppApiService,
+       public _encServices: EncryptionDecryptionService) { }
 
   ngOnInit() { }
 
@@ -41,47 +49,51 @@ export class ShopingCartComponent implements OnInit {
   async getCartDetails() {
     this._appServices.simpleLoader();
     // var UserDetailsUrl = `ShoppingCart/GetActiveCart?emailAddress=${encodeURIComponent(this._appServices.loggedInUserDetails['email'])}&clientIpAddress=${this._appServices.ipAddress.ip}`
-    this._appServices.getCart(this._appServices.loggedInUserDetails.email).then(_res => {
+    this._appApi.get_v2026_get_cart().subscribe(_res => {
       console.log(_res.status);
-      console.log(_res);
+      console.log(_res,"== get_v2026_get_cart");
+      this.showCart = true;
+      this.isDataLoad = false;
       this._appServices.loaderDismiss();
       if (_res.status == 200) {
         this.showCart = true;
         this.isDataLoad = false;
-        localStorage.setItem('cartId', _res.data.data.cart.cartId);
-        this.cartDetail = _res?.data?.data?.cart;
+        if(!!_res.data && _res.data.length > 0)
+        localStorage.setItem('cartId', _res.data[0].id);
+        this.cartDetail = _res?.data[0];
         console.log(this.cartDetail);
-      } else if (_res.status == 202) {
-        console.log(_res.data.error);
-        // var result = JSON.parse(_res.data.error)
-        this.isDataLoad = false;
-        this.getCheckoutCode(_res.data.message);
       }
-      else if (_res.status == 402) {
-        console.log(_res.data.error);
-        var result = JSON.parse(_res.data.error)
-        this.isDataLoad = false;
-        this.getCheckoutCode(result.message);
-      }else if (_res.status == 404){
-        this.showCart = true;
-        this.isDataLoad = false;
-        this._appServices.createCart(this._appServices.loggedInUserDetails.email)
-      }
+      //  else if (_res.status == 202) {
+      //   console.log(_res.data.error);
+      //   // var result = JSON.parse(_res.data.error)
+      //   this.isDataLoad = false;
+      //   this.getCheckoutCode(_res.data.message);
+      // }
+      // else if (_res.status == 402) {
+      //   console.log(_res.data.error);
+      //   var result = JSON.parse(_res.data.error)
+      //   this.isDataLoad = false;
+      //   this.getCheckoutCode(result.message);
+      // }else if (_res.status == 404){
+      //   this.showCart = true;
+      //   this.isDataLoad = false;
+      //   this._appServices.createCart(this._appServices.loggedInUserDetails.email)
+      // }
     }, (err) => {
       this.isDataLoad = false;
       this._appServices.loaderDismiss();
       console.log(err);
       console.log(err.status)
       
-      if (err.status == 402) {
-        var result = JSON.parse(err.error)
-        this.getCheckoutCode(result.message);
-      }
-      if (err.status == 202) {
-        var result = JSON.parse(err.error)
-        this.getCheckoutCode(result.message);
-        // this.confirmation(result.message)
-      }
+      // if (err.status == 402) {
+      //   var result = JSON.parse(err.error)
+      //   this.getCheckoutCode(result.message);
+      // }
+      // if (err.status == 202) {
+      //   var result = JSON.parse(err.error)
+      //   this.getCheckoutCode(result.message);
+      //   // this.confirmation(result.message)
+      // }
     });
   }
 

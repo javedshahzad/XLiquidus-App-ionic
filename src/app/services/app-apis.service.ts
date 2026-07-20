@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppService } from './app.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AppApiService {
@@ -425,6 +426,9 @@ export class AppApiService {
   post_v2026_create_cart(payload: any) {
     return this.appService.postDataByHttp(`v2026/cart`, payload);
   }
+  get_v2026_get_cart() {
+    return this.appService.getDataByHttp(`v2026/cart`);
+  }
    post_v2026_add_cart_items(payload: any,cartId:any) {
     return this.appService.postDataByHttp(`v2026/cart/${cartId}/items`, payload);
   }
@@ -568,4 +572,47 @@ export class AppApiService {
     return this.appService.getDataByHttp(`v2026/withdrawals/blueprint/${blueprintId}/status`);
   }
 
+  /* ===== NEW v2026 MARKET ENDPOINTS ===== */
+
+// Primary market listings (with query params)
+get_v2026_market_primary_listings(category: string = 'tokens', page: number = 1, pageSize: number = 20) {
+  return this.appService.getDataByHttp(
+    `v2026/market/primary/listings?category=${category}&page=${page}&pageSize=${pageSize}`
+  );
+}
+
+// Single primary listing
+get_v2026_market_primary_listings_listingId(listingId: any) {
+  return this.appService.getDataByHttp(
+    `v2026/market/primary/listings/${listingId}`
+  );
+}
+
+// Secondary market listings (with query params)
+get_v2026_market_secondary_listings(category: string = 'tokens', sellerId?: string) {
+  let url = `v2026/market/secondary/listings?category=${category}`;
+  if (sellerId) {
+    url += `&sellerId=${sellerId}`;
+  }
+  return this.appService.getDataByHttp(url);
+}
+
+// Single secondary listing
+get_v2026_market_secondary_listings_listingId(listingId: any) {
+  return this.appService.getDataByHttp(
+    `v2026/market/secondary/listings/${listingId}`
+  );
+}
+
+// Market statistics
+get_v2026_market_statistics(marketType: string = 'Primary', period: string = '24h') {
+  return this.appService.getDataByHttp(
+    `v2026/market/statistics?marketType=${marketType}&period=${period}`
+  );
+}
+getFirstCartId() {
+  return this.get_v2026_get_cart().pipe(
+    map((carts: any) => carts.data && carts.data.length ? carts.data[0] : null)
+  );
+}
 }

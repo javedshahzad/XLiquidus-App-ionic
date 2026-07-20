@@ -282,7 +282,7 @@ GetProduct(){
           "marketType": this.productDataFromDashboardPage.marketType == "Secondary" ? 2 : 1,
           "quantity": 1,
           "pricePerUnit": this.productDetail.price,
-          "currency": this.created_cart_data?.cart_data?.cart?.currency
+          "currency": this.created_cart_data?.currency
         }
         if(this.productDataFromDashboardPage.marketType == "Secondary"){
           payload.sellerId = this.productDataFromDashboardPage.seller.id;
@@ -290,7 +290,7 @@ GetProduct(){
           payload.notes = "Adding into cart"
         }
         console.log(payload,"cart payload")
-      this._appApi.post_v2026_add_cart_items(payload,this.created_cart_data?.cart_data?.cart.id).subscribe(res => {
+      this._appApi.post_v2026_add_cart_items(payload,this.created_cart_data?.id).subscribe(res => {
       console.log("post_v2026_add_cart_items data", res);
       this._appservices.loaderDismiss();
       this._appservices.cartRefresh.next(true);
@@ -318,7 +318,21 @@ GetProduct(){
     }, 100);
   }
   async open_Create_Cart_Modal() {
-    const modal = await this.modalCtrl.create({
+    this._appApi.getFirstCartId().subscribe(cartData => {
+  console.log('Cart ID:', cartData);
+  if(!!cartData && cartData != null){
+      this.created_cart_data = cartData;
+      this.addtocart();
+  }else{
+  this.open_cart_modal();
+  }
+  }, error=>{
+    this.open_cart_modal();
+  }
+);
+  }
+  async open_cart_modal(){
+      const modal = await this.modalCtrl.create({
       component: CreateCartComponent,
       cssClass:"create-cart-modal"
     });
@@ -328,11 +342,11 @@ GetProduct(){
 
     console.log(data,role)
     if(data.isCartCreated === true){
-      this.created_cart_data = data;
+      this.created_cart_data = data?.cart_data?.cart;
       this.addtocart();
     }
   }
-    async open_deposit_account_Modal() {
+  async open_deposit_account_Modal() {
     const modal = await this.modalCtrl.create({
       component: AccountDepositComponent,
       cssClass:"deposit-account-modal"
